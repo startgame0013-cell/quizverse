@@ -13,6 +13,11 @@ import WaitingRoom from './pages/WaitingRoom'
 import Leaderboard from './pages/Leaderboard'
 import MiniGames from './pages/MiniGames'
 import MemoryMatch from './pages/MemoryMatch'
+import WordScramble from './pages/WordScramble'
+import QuickMath from './pages/QuickMath'
+import TrueOrFalse from './pages/TrueOrFalse'
+import FlagChallenge from './pages/FlagChallenge'
+import QuickTrivia from './pages/QuickTrivia'
 import AiQuizGenerator from './pages/AiQuizGenerator'
 import SignIn from './pages/SignIn'
 import Register from './pages/Register'
@@ -36,6 +41,11 @@ export default function App() {
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/mini-games" element={<MiniGames />} />
               <Route path="/mini-games/memory" element={<MemoryMatch />} />
+              <Route path="/mini-games/word-scramble" element={<WordScramble />} />
+              <Route path="/mini-games/quick-math" element={<QuickMath />} />
+              <Route path="/mini-games/true-false" element={<TrueOrFalse />} />
+              <Route path="/mini-games/flag-challenge" element={<FlagChallenge />} />
+              <Route path="/mini-games/quick-trivia" element={<QuickTrivia />} />
               <Route path="/ai-generator" element={<AiQuizGenerator />} />
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/register" element={<Register />} />

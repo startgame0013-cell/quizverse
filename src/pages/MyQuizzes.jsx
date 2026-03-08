@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { PenSquare, Trash2, Play, Copy, Radio, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,9 @@ import { Input } from '@/components/ui/input'
 import { getAllQuizzes, deleteQuiz, duplicateQuiz } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
+import Pagination from '@/components/Pagination'
+
+const PAGE_SIZE = 5
 
 function formatDate(ts, lang) {
   if (!ts) return ''
@@ -22,6 +25,7 @@ export default function MyQuizzes() {
   const [search, setSearch] = useState('')
   const [filterDifficulty, setFilterDifficulty] = useState('')
   const [filterCategory, setFilterCategory] = useState('')
+  const [page, setPage] = useState(0)
 
   const quizzes = getAllQuizzes()
 
@@ -33,6 +37,13 @@ export default function MyQuizzes() {
       return matchSearch && matchDiff && matchCat
     })
   }, [quizzes, search, filterDifficulty, filterCategory])
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+
+  useEffect(() => {
+    setPage(0)
+  }, [search, filterDifficulty, filterCategory])
 
   const handleDelete = (e, id) => {
     e.preventDefault()
@@ -125,8 +136,9 @@ export default function MyQuizzes() {
           </CardContent>
         </Card>
       ) : (
+        <>
         <div className="space-y-4">
-          {filtered.map((quiz) => (
+          {paginated.map((quiz) => (
             <Card key={quiz.id} className="transition-shadow hover:shadow-soft">
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                 <Link to={`/quiz/${quiz.id}/details`} className="flex-1 min-w-0">
@@ -177,6 +189,8 @@ export default function MyQuizzes() {
             </Card>
           ))}
         </div>
+        <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        </>
       )}
     </div>
   )

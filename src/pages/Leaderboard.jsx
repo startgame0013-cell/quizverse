@@ -6,15 +6,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/context/LanguageContext'
 import { DEMO_LEADERBOARD } from '@/data/demoContent'
+import Pagination from '@/components/Pagination'
+
+const PAGE_SIZE = 5
 
 const TAB_KEYS = ['global', 'school', 'family', 'week']
 
 export default function Leaderboard() {
   const { t } = useLanguage()
   const [tab, setTab] = useState('global')
+  const [page, setPage] = useState(0)
   const data = DEMO_LEADERBOARD[tab] || DEMO_LEADERBOARD.global
   const topThree = data.filter((r) => r.rank <= 3)
   const rest = data.filter((r) => r.rank > 3)
+  const totalPages = Math.ceil(rest.length / PAGE_SIZE)
+  const paginatedRest = rest.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
   const currentUserName = 'QuizMaster99'
 
   return (
@@ -29,7 +35,7 @@ export default function Leaderboard() {
         </div>
       </div>
 
-      <Tabs value={tab} onValueChange={setTab} className="space-y-6">
+      <Tabs value={tab} onValueChange={(v) => { setTab(v); setPage(0); }} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           {TAB_KEYS.map((k) => (
             <TabsTrigger key={k} value={k}>
@@ -81,7 +87,7 @@ export default function Leaderboard() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y divide-border">
-                {rest.map((row) => (
+                {paginatedRest.map((row) => (
                   <div
                     key={row.rank}
                     className={cn(
@@ -106,6 +112,7 @@ export default function Leaderboard() {
                   </div>
                 ))}
               </div>
+              <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
             </CardContent>
           </Card>
         </TabsContent>
