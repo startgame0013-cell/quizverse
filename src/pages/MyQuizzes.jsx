@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { PenSquare, Trash2, Play, Copy, Radio, Search } from 'lucide-react'
+import { PenSquare, Trash2, Play, Copy, Radio, Search, SlidersHorizontal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getAllQuizzes, deleteQuiz, duplicateQuiz } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
@@ -26,6 +27,7 @@ export default function MyQuizzes() {
   const [filterDifficulty, setFilterDifficulty] = useState('')
   const [filterCategory, setFilterCategory] = useState('')
   const [page, setPage] = useState(0)
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   const quizzes = getAllQuizzes()
 
@@ -81,39 +83,80 @@ export default function MyQuizzes() {
       </div>
 
       {quizzes.length > 0 && (
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row">
+        <div className="mb-8 flex gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               placeholder={t('myQuizzes.searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
+              className="h-11 pl-11 rounded-xl border-border/60 bg-muted/30"
             />
           </div>
-          <select
-            value={filterDifficulty}
-            onChange={(e) => setFilterDifficulty(e.target.value)}
-            className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
-          >
-            <option value="">{t('myQuizzes.filterAll')} {t('createQuiz.difficulty')}</option>
-            <option value="easy">{t('difficulty.easy')}</option>
-            <option value="medium">{t('difficulty.medium')}</option>
-            <option value="hard">{t('difficulty.hard')}</option>
-          </select>
-          <select
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-            className="rounded-lg border border-input bg-background px-3 py-2 text-sm"
-          >
-            <option value="">{t('myQuizzes.filterAll')} {t('createQuiz.category')}</option>
-            <option value="general">{t('category.general')}</option>
-            <option value="science">{t('category.science')}</option>
-            <option value="history">{t('category.history')}</option>
-            <option value="geography">{t('category.geography')}</option>
-            <option value="language">{t('category.language')}</option>
-            <option value="religion">{t('category.religion')}</option>
-          </select>
+          <div className="relative">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-11 gap-2 rounded-xl border-border/60 bg-muted/30 px-4"
+              onClick={() => setFiltersOpen((o) => !o)}
+            >
+              <SlidersHorizontal className="size-4" />
+              {t('myQuizzes.filters')}
+              {(filterDifficulty || filterCategory) && (
+                <span className="size-2 rounded-full bg-primary" />
+              )}
+            </Button>
+            {filtersOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setFiltersOpen(false)}
+                  aria-hidden="true"
+                />
+                <div className="absolute end-0 top-full z-50 mt-2 w-72 rounded-xl border border-border bg-card p-4 shadow-xl">
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="text-sm font-medium">{t('myQuizzes.filters')}</span>
+                    <Button variant="ghost" size="icon" className="size-8" onClick={() => setFiltersOpen(false)}>
+                      <X className="size-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="mb-1.5 block text-xs text-muted-foreground">{t('createQuiz.difficulty')}</label>
+                      <Select value={filterDifficulty || '__all__'} onValueChange={(v) => setFilterDifficulty(v === '__all__' ? '' : v)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__all__">{t('myQuizzes.filterAll')}</SelectItem>
+                          <SelectItem value="easy">{t('difficulty.easy')}</SelectItem>
+                          <SelectItem value="medium">{t('difficulty.medium')}</SelectItem>
+                          <SelectItem value="hard">{t('difficulty.hard')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="mb-1.5 block text-xs text-muted-foreground">{t('createQuiz.category')}</label>
+                      <Select value={filterCategory || '__all__'} onValueChange={(v) => setFilterCategory(v === '__all__' ? '' : v)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__all__">{t('myQuizzes.filterAll')}</SelectItem>
+                          <SelectItem value="general">{t('category.general')}</SelectItem>
+                          <SelectItem value="science">{t('category.science')}</SelectItem>
+                          <SelectItem value="history">{t('category.history')}</SelectItem>
+                          <SelectItem value="geography">{t('category.geography')}</SelectItem>
+                          <SelectItem value="language">{t('category.language')}</SelectItem>
+                          <SelectItem value="religion">{t('category.religion')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
 
@@ -142,7 +185,9 @@ export default function MyQuizzes() {
             <Card key={quiz.id} className="transition-shadow hover:shadow-soft">
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                 <Link to={`/quiz/${quiz.id}/details`} className="flex-1 min-w-0">
-                  <CardTitle className="text-lg truncate">{quiz.title || t('myQuizzes.untitled')}</CardTitle>
+                  <CardTitle className="text-lg truncate">
+                    {lang === 'ar' && quiz.titleAr ? quiz.titleAr : (quiz.title || t('myQuizzes.untitled'))}
+                  </CardTitle>
                   <CardDescription className="mt-1">
                     {quiz.questions?.length || 0} {t('myQuizzes.questions')} · {formatDate(quiz.updatedAt, lang)}
                   </CardDescription>

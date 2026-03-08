@@ -3,11 +3,11 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getQuizById } from '@/lib/quizStore'
+import { getQuizById, getQuestionDisplay } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function PlayQuiz() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { id } = useParams()
   const quiz = getQuizById(id)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -27,6 +27,7 @@ export default function PlayQuiz() {
 
   const questions = quiz.questions || []
   const current = questions[currentIndex]
+  const display = getQuestionDisplay(current, lang)
   const selected = answers[currentIndex] ?? null
   const isFirst = currentIndex === 0
   const isLast = currentIndex === questions.length - 1
@@ -92,15 +93,17 @@ export default function PlayQuiz() {
 
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">{quiz.title}</CardTitle>
+          <CardTitle className="text-lg">
+            {lang === 'ar' && quiz.titleAr ? quiz.titleAr : (quiz.title || '')}
+          </CardTitle>
           <p className="text-sm text-muted-foreground">
             {t('playQuiz.questionOf')} {currentIndex + 1} {t('playQuiz.of')} {questions.length}
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-lg font-medium text-foreground">{current?.text}</p>
+          <p className="text-lg font-medium text-foreground">{display.text}</p>
           <div className="space-y-2">
-            {current?.options.map((opt, i) => (
+            {display.options.map((opt, i) => (
               <button
                 key={i}
                 type="button"

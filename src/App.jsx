@@ -22,13 +22,16 @@ import AiQuizGenerator from './pages/AiQuizGenerator'
 import SignIn from './pages/SignIn'
 import Register from './pages/Register'
 import GetStarted from './pages/GetStarted'
+import VisitorStats from './pages/VisitorStats'
 import NotFound from './pages/NotFound'
+import VisitTracker from './components/VisitTracker'
 
 export default function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
         <ToastProvider>
+          <VisitTracker />
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -50,6 +53,7 @@ export default function App() {
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/register" element={<Register />} />
               <Route path="/get-started" element={<GetStarted />} />
+              <Route path="/visitor-stats" element={<VisitorStats />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

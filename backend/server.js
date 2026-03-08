@@ -7,6 +7,7 @@ import quizzesRoutes from './routes/quizzes.js';
 import scoresRoutes from './routes/scores.js';
 import classesRoutes from './routes/classes.js';
 import aiRoutes from './routes/ai.js';
+import statsRoutes from './routes/stats.js';
 
 await connectDB();
 
@@ -21,6 +22,7 @@ app.use('/api/quizzes', quizzesRoutes);
 app.use('/api/scores', scoresRoutes);
 app.use('/api/classes', classesRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/stats', statsRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

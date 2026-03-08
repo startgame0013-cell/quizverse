@@ -3,12 +3,12 @@ import { ArrowLeft, PenSquare, Play, Copy, Radio, CheckCircle2 } from 'lucide-re
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { getQuizById, duplicateQuiz, deleteQuiz } from '@/lib/quizStore'
+import { getQuizById, duplicateQuiz, deleteQuiz, getQuestionDisplay } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
 
 export default function QuizDetails() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { success } = useToast()
   const { id } = useParams()
   const navigate = useNavigate()
@@ -50,9 +50,13 @@ export default function QuizDetails() {
       </Link>
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{quiz.title || t('myQuizzes.untitled')}</h1>
-        {quiz.description && (
-          <p className="mt-2 text-muted-foreground">{quiz.description}</p>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          {lang === 'ar' && quiz.titleAr ? quiz.titleAr : (quiz.title || t('myQuizzes.untitled'))}
+        </h1>
+        {(quiz.description || quiz.descriptionAr) && (
+          <p className="mt-2 text-muted-foreground">
+            {lang === 'ar' && quiz.descriptionAr ? quiz.descriptionAr : (quiz.description || '')}
+          </p>
         )}
         <div className="mt-3 flex flex-wrap gap-2">
           <Badge variant="secondary">{t(`difficulty.${quiz.difficulty || 'medium'}`)}</Badge>
@@ -91,11 +95,13 @@ export default function QuizDetails() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {questions.map((q, i) => (
+          {questions.map((q, i) => {
+            const d = getQuestionDisplay(q, lang)
+            return (
             <div key={q.id || i} className="rounded-xl border border-border bg-muted/20 p-4">
-              <p className="font-medium text-foreground">{i + 1}. {q.text || t('createQuiz.noQuestion')}</p>
+              <p className="font-medium text-foreground">{i + 1}. {d.text || t('createQuiz.noQuestion')}</p>
               <ul className="mt-3 space-y-2">
-                {q.options?.map((opt, j) => (
+                {d.options?.map((opt, j) => (
                   <li
                     key={j}
                     className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
@@ -111,7 +117,7 @@ export default function QuizDetails() {
                 <p className="mt-2 text-xs text-muted-foreground italic">{q.explanation}</p>
               )}
             </div>
-          ))}
+          )})}
         </CardContent>
       </Card>
     </div>

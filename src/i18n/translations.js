@@ -9,6 +9,7 @@ export const translations = {
       joinGame: 'Join Live Game',
       leaderboard: 'Leaderboard',
       miniGames: 'Mini Games',
+      visitorStats: 'Visitor Stats',
       signIn: 'Sign In',
       getStarted: 'Get Started',
     },
@@ -129,6 +130,7 @@ export const translations = {
       untitled: 'Untitled',
       searchPlaceholder: 'Search quizzes...',
       filterAll: 'All',
+      filters: 'Filters',
     },
     // Quiz Details
     quizDetails: {
@@ -329,6 +331,7 @@ export const translations = {
       joinGame: 'انضم للعبة',
       leaderboard: 'المتصدرين',
       miniGames: 'ألعاب مصغرة',
+      visitorStats: 'إحصائيات الزوار',
       signIn: 'تسجيل الدخول',
       getStarted: 'ابدأ الآن',
     },
@@ -446,6 +449,7 @@ export const translations = {
       untitled: 'بدون عنوان',
       searchPlaceholder: 'بحث في الكويزات...',
       filterAll: 'الكل',
+      filters: 'تصفية',
     },
     quizDetails: {
       title: 'تفاصيل الكويز',

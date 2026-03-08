@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Trophy, Medal, Users } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/context/LanguageContext'
 import { DEMO_LEADERBOARD } from '@/data/demoContent'
@@ -35,16 +35,22 @@ export default function Leaderboard() {
         </div>
       </div>
 
-      <Tabs value={tab} onValueChange={(v) => { setTab(v); setPage(0); }} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          {TAB_KEYS.map((k) => (
-            <TabsTrigger key={k} value={k}>
-              {t(`leaderboardTabs.${k}`)}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+      <div className="mb-6 flex justify-end">
+        <Select value={tab} onValueChange={(v) => { setTab(v); setPage(0); }}>
+          <SelectTrigger className="w-[180px] rounded-xl border-border/60 bg-muted/30">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {TAB_KEYS.map((k) => (
+              <SelectItem key={k} value={k}>
+                {t(`leaderboardTabs.${k}`)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-        <TabsContent value={tab} className="space-y-6">
+      <div className="space-y-6">
           {topThree.length >= 3 && (
             <div className="grid grid-cols-3 gap-4">
               {[topThree[1], topThree[0], topThree[2]].filter(Boolean).map((row) => (
@@ -115,8 +121,7 @@ export default function Leaderboard() {
               <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+      </div>
     </div>
   )
 }

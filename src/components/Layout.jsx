@@ -8,16 +8,16 @@ export default function Layout({ children }) {
   const isHome = location.pathname === '/'
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 pt-14">
         {children}
       </main>
       {!isHome && (
-        <footer className="border-t border-border bg-card px-4 py-6 sm:px-6 lg:px-8">
+        <footer className="border-t border-white/5 bg-[#0a0a0a] px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <Link to="/" className="text-sm font-bold text-primary">
+              <Link to="/" className="text-sm font-bold text-[#FACC15] hover:opacity-90">
                 QuizVerse
               </Link>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
