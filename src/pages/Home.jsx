@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Play,
@@ -21,14 +22,49 @@ import { useLanguage } from '@/context/LanguageContext'
 
 const iconClass = 'size-5 shrink-0'
 
+const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:4000' : '')
+
+function formatCount(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k'
+  return String(n)
+}
+
 export default function Home() {
   const { t } = useLanguage()
+  const [stats, setStats] = useState([
+    { value: '...', labelKey: 'home.statsQuizzes', icon: PenSquare },
+    { value: '...', labelKey: 'home.statsPlayers', icon: Users },
+    { value: '...', labelKey: 'home.statsSchools', icon: School },
+  ])
 
-  const stats = [
-    { value: '10k+', labelKey: 'home.statsQuizzes', icon: PenSquare },
-    { value: '50k+', labelKey: 'home.statsPlayers', icon: Users },
-    { value: '1k+', labelKey: 'home.statsSchools', icon: School },
-  ]
+  useEffect(() => {
+    fetch(`${API}/api/stats`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.quizzes !== undefined) {
+          setStats([
+            { value: formatCount(data.quizzes), labelKey: 'home.statsQuizzes', icon: PenSquare },
+            { value: formatCount(data.players), labelKey: 'home.statsPlayers', icon: Users },
+            { value: formatCount(data.schools), labelKey: 'home.statsSchools', icon: School },
+          ])
+        } else {
+          setStats([
+            { value: '0', labelKey: 'home.statsQuizzes', icon: PenSquare },
+            { value: '0', labelKey: 'home.statsPlayers', icon: Users },
+            { value: '0', labelKey: 'home.statsSchools', icon: School },
+          ])
+        }
+      })
+      .catch(() => {
+        setStats([
+          { value: '0', labelKey: 'home.statsQuizzes', icon: PenSquare },
+          { value: '0', labelKey: 'home.statsPlayers', icon: Users },
+          { value: '0', labelKey: 'home.statsSchools', icon: School },
+        ])
+      })
+  }, [])
+
 
   const audienceSections = [
     {
