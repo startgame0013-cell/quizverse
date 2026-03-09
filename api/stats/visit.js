@@ -5,11 +5,9 @@ import geoip from 'geoip-lite'
 let cached = null
 
 async function connect() {
-  if (cached) return cached
   const uri = process.env.MONGODB_URI || process.env.ATLAS_URI
-  if (!uri) {
-    throw new Error('MONGODB_URI or ATLAS_URI not set')
-  }
+  if (!uri) return null
+  if (cached) return cached
   cached = mongoose.connection
   if (cached.readyState === 0) {
     await mongoose.connect(uri)
@@ -36,7 +34,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    await connect()
+    const conn = await connect()
+    if (!conn) return res.json({ ok: true })
     const ip = getClientIp(req)
     const userAgent = req.headers['user-agent'] || ''
     const path = req.body?.path || '/'
@@ -56,6 +55,6 @@ export default async function handler(req, res) {
     res.json({ ok: true })
   } catch (err) {
     console.error('Visit error:', err.message)
-    res.status(500).json({ ok: false, error: err.message })
+    res.json({ ok: true })
   }
 }
