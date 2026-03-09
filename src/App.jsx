@@ -23,6 +23,8 @@ import SignIn from './pages/SignIn'
 import Register from './pages/Register'
 import GetStarted from './pages/GetStarted'
 import VisitorStats from './pages/VisitorStats'
+import Privacy from './pages/Privacy'
+import About from './pages/About'
 import NotFound from './pages/NotFound'
 import VisitTracker from './components/VisitTracker'
 
@@ -54,6 +56,8 @@ export default function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/get-started" element={<GetStarted />} />
               <Route path="/visitor-stats" element={<VisitorStats />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/about" element={<About />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

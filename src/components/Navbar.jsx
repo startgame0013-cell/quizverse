@@ -11,6 +11,8 @@ const navItems = [
   ['/leaderboard', 'nav.leaderboard'],
   ['/mini-games', 'nav.miniGames'],
   ['/visitor-stats', 'nav.visitorStats'],
+  ['/about', 'nav.about'],
+  ['/privacy', 'nav.privacy'],
   ['/sign-in', 'nav.signIn'],
   ['/register', 'auth.register'],
 ]

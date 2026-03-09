@@ -26,6 +26,8 @@ export default function Layout({ children }) {
                 <Link to="/leaderboard" className="transition-colors hover:text-foreground">{t('nav.leaderboard')}</Link>
                 <Link to="/mini-games" className="transition-colors hover:text-foreground">{t('nav.miniGames')}</Link>
                 <Link to="/ai-generator" className="transition-colors hover:text-foreground">{t('nav.aiGenerator')}</Link>
+                <Link to="/about" className="transition-colors hover:text-foreground">{t('nav.about')}</Link>
+                <Link to="/privacy" className="transition-colors hover:text-foreground">{t('nav.privacy')}</Link>
               </div>
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground sm:text-left">
