@@ -125,6 +125,21 @@ export async function seedDemoQuizzesIfNeeded() {
 function getDemoQuizzes() {
   return [
     {
+      title: 'Welcome to QuizNova',
+      titleAr: 'مرحباً بك في QuizNova',
+      description: 'أول كويز على QuizNova. جرّب وتعلم!',
+      descriptionAr: 'أول كويز على QuizNova. جرّب وتعلم!',
+      category: 'general',
+      audience: 'students',
+      difficulty: 'easy',
+      language: 'ar',
+      questions: [
+        { text: 'What is QuizNova?', textAr: 'ما هو QuizNova؟', options: ['A game', 'A quiz platform', 'A social app', 'A music app'], optionsAr: ['لعبة', 'منصة كويزات', 'تطبيق تواصل', 'تطبيق موسيقى'], correctIndex: 1 },
+        { text: 'How do you create a quiz?', textAr: 'كيف تنشئ كويزاً؟', options: ['Join game', 'Create Quiz', 'Play only', 'Sign out'], optionsAr: ['انضم للعبة', 'إنشاء كويز', 'العب فقط', 'تسجيل خروج'], correctIndex: 1 },
+        { text: 'Can you play in Arabic?', textAr: 'هل يمكنك اللعب بالعربية؟', options: ['No', 'Yes', 'English only', 'Maybe'], optionsAr: ['لا', 'نعم', 'إنجليزي فقط', 'ربما'], correctIndex: 1 },
+      ],
+    },
+    {
       title: 'Kuwait History Grade 5',
       titleAr: 'تاريخ الكويت الصف الخامس',
       description: 'Basic Kuwait history for fifth grade students.',
