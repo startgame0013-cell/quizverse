@@ -271,7 +271,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <Link to="/" className="text-lg font-bold text-primary">
-              QuizVerse
+              QuizNova
             </Link>
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
               <Link to="/create-quiz" className="transition-colors hover:text-foreground">{t('nav.createQuiz')}</Link>

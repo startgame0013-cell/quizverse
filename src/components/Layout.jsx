@@ -18,7 +18,7 @@ export default function Layout({ children }) {
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <Link to="/" className="text-sm font-bold text-[#FACC15] hover:opacity-90">
-                QuizVerse
+                QuizNova
               </Link>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
                 <Link to="/create-quiz" className="transition-colors hover:text-foreground">{t('nav.createQuiz')}</Link>

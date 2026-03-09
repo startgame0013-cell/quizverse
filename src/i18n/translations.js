@@ -18,7 +18,7 @@ export const translations = {
     // Home
     home: {
       headline: 'Play. Create.',
-      brand: 'QuizVerse',
+      brand: 'QuizNova',
       subtitle: 'The Arabic-first quiz platform for schools, teachers, students, and families. Create quizzes in seconds, join live games with a PIN, and climb the leaderboard.',
       joinLiveGame: 'Join Live Game',
       createQuiz: 'Create Quiz',
@@ -53,7 +53,7 @@ export const translations = {
       forTeachersCta: 'Create a quiz',
       forSchools: 'For schools',
       forSchoolsSub: 'Engage your class and track progress.',
-      forSchoolsDesc: 'Deploy QuizVerse across grades and subjects. Manage classes, assign quizzes, and view analytics in one place.',
+      forSchoolsDesc: 'Deploy QuizNova across grades and subjects. Manage classes, assign quizzes, and view analytics in one place.',
       forSchoolsCta: 'Learn more',
       forStudents: 'For students',
       forStudentsSub: 'Learn by playing.',
@@ -64,7 +64,7 @@ export const translations = {
       forFamiliesDesc: 'Host a family quiz or run trivia at a party. Share one game PIN—everyone joins from their phone. Leaderboard updates in real time.',
       forFamiliesCta: 'Set up a game',
       readyToPlay: 'Ready to play?',
-      readyToPlaySub: 'Join a live game, create your own quiz, or try the AI generator. QuizVerse is free to use.',
+      readyToPlaySub: 'Join a live game, create your own quiz, or try the AI generator. QuizNova is free to use.',
       getStarted: 'Get started',
       joinWithPin: 'Join with PIN',
       footerLinks: 'Create Quiz · Join Game · Leaderboard · Mini Games · AI Generator',
@@ -178,7 +178,7 @@ export const translations = {
     // Mini Games extended
     miniGames: {
       title: 'Mini Games',
-      subtitle: 'Quick fun games on QuizVerse. Warm up or take a break.',
+      subtitle: 'Quick fun games on QuizNova. Warm up or take a break.',
       comingSoon: 'Coming soon',
       play: 'Play',
       playable: 'Playable',
@@ -262,13 +262,13 @@ export const translations = {
     // Leaderboard
     leaderboard: {
       title: 'Leaderboard',
-      subtitle: 'Top scores on QuizVerse. Compete and climb the ranks.',
+      subtitle: 'Top scores on QuizNova. Compete and climb the ranks.',
       allRankings: 'All rankings',
     },
     // Mini Games
     miniGames: {
       title: 'Mini Games',
-      subtitle: 'Quick fun games on QuizVerse. Warm up or take a break.',
+      subtitle: 'Quick fun games on QuizNova. Warm up or take a break.',
       comingSoon: 'Coming soon',
       play: 'Play',
       playable: 'Playable',
@@ -290,7 +290,7 @@ export const translations = {
     // AI Generator
     aiGenerator: {
       title: 'AI Quiz Generator',
-      subtitle: 'Enter a topic and difficulty. QuizVerse will generate sample questions (mock data for now).',
+      subtitle: 'Enter a topic and difficulty. QuizNova will generate sample questions (mock data for now).',
       generateTitle: 'Generate questions',
       generateDesc: 'Topic and difficulty shape the kind of questions you get.',
       topic: 'Topic',
@@ -307,19 +307,19 @@ export const translations = {
     },
     // Sign In / Get Started
     signIn: {
-      title: 'Sign In to QuizVerse',
+      title: 'Sign In to QuizNova',
       subtitle: 'Placeholder. Connect a backend to enable sign in.',
       backToHome: 'Back to Home',
     },
     getStarted: {
-      title: 'Get Started with QuizVerse',
+      title: 'Get Started with QuizNova',
       subtitle: 'Create an account or jump straight into a game. Placeholder.',
       joinGame: 'Join a Game',
       createQuiz: 'Create a Quiz',
     },
     privacy: {
       title: 'Privacy Policy',
-      subtitle: 'How QuizVerse collects and uses your information.',
+      subtitle: 'How QuizNova collects and uses your information.',
       collect: 'Information we collect',
       collectText: 'We collect minimal data: email and password when you register, quiz content you create, and basic usage data (e.g., page visits) to improve the service.',
       use: 'How we use it',
@@ -336,9 +336,9 @@ export const translations = {
       backHome: 'Back to Home',
     },
     about: {
-      title: 'About QuizVerse',
+      title: 'About QuizNova',
       subtitle: 'The Arabic-first quiz platform for learning and fun.',
-      intro: 'QuizVerse helps teachers, students, and families create and play interactive quizzes. Join live games with a PIN, climb the leaderboard, and learn while having fun.',
+      intro: 'QuizNova helps teachers, students, and families create and play interactive quizzes. Join live games with a PIN, climb the leaderboard, and learn while having fun.',
       missionTitle: 'Our mission',
       missionText: 'Make learning engaging and accessible for Arabic speakers and bilingual learners.',
       whoTitle: 'Who is it for?',
@@ -371,7 +371,7 @@ export const translations = {
     },
     home: {
       headline: 'العب. أنشئ.',
-      brand: 'QuizVerse',
+      brand: 'QuizNova',
       subtitle: 'منصة الكويز العربية الأولى للمدارس والمعلمين والطلاب والعائلات. أنشئ كويزات في ثوانٍ، انضم لألعاب مباشرة برمز، وتصدر لوحة المتصدرين.',
       joinLiveGame: 'انضم للعبة مباشرة',
       createQuiz: 'إنشاء كويز',
@@ -406,7 +406,7 @@ export const translations = {
       forTeachersCta: 'إنشاء كويز',
       forSchools: 'للمدارس',
       forSchoolsSub: 'فعّل صفك وتتبع التقدم.',
-      forSchoolsDesc: 'نشر QuizVerse عبر الصفوف والمواد. إدارة الفصول، تعيين الكويزات، وعرض التحليلات في مكان واحد.',
+      forSchoolsDesc: 'نشر QuizNova عبر الصفوف والمواد. إدارة الفصول، تعيين الكويزات، وعرض التحليلات في مكان واحد.',
       forSchoolsCta: 'اعرف المزيد',
       forStudents: 'للطلاب',
       forStudentsSub: 'تعلّم باللعب.',
@@ -417,7 +417,7 @@ export const translations = {
       forFamiliesDesc: 'استضف كويز عائلي أو ترافيا في حفلة. شارك رمز لعبة واحد—الجميع ينضم من جواله. لوحة المتصدرين تتحدث مباشرة.',
       forFamiliesCta: 'إعداد لعبة',
       readyToPlay: 'مستعد للعب؟',
-      readyToPlaySub: 'انضم للعبة مباشرة، أنشئ كويزك، أو جرّب مولد الذكاء الاصطناعي. QuizVerse مجاني.',
+      readyToPlaySub: 'انضم للعبة مباشرة، أنشئ كويزك، أو جرّب مولد الذكاء الاصطناعي. QuizNova مجاني.',
       getStarted: 'ابدأ الآن',
       joinWithPin: 'انضم برمز',
       footerLinks: 'إنشاء كويز · انضم للعبة · المتصدرين · ألعاب مصغرة · مولد الذكاء',
@@ -523,7 +523,7 @@ export const translations = {
     },
     miniGames: {
       title: 'ألعاب مصغرة',
-      subtitle: 'ألعاب سريعة ممتعة على QuizVerse. احمِ نفسك أو خذ استراحة.',
+      subtitle: 'ألعاب سريعة ممتعة على QuizNova. احمِ نفسك أو خذ استراحة.',
       comingSoon: 'قريباً',
       play: 'العب',
       playable: 'قابل للعب',
@@ -544,7 +544,7 @@ export const translations = {
     },
     privacy: {
       title: 'سياسة الخصوصية',
-      subtitle: 'كيف يجمع QuizVerse ويستخدم معلوماتك.',
+      subtitle: 'كيف يجمع QuizNova ويستخدم معلوماتك.',
       collect: 'المعلومات التي نجمعها',
       collectText: 'نجمع الحد الأدنى من البيانات: البريد الإلكتروني وكلمة المرور عند التسجيل، محتوى الكويزات التي تنشئها، وبيانات الاستخدام الأساسية (مثل زيارة الصفحات) لتحسين الخدمة.',
       use: 'كيف نستخدمها',
@@ -561,9 +561,9 @@ export const translations = {
       backHome: 'العودة للرئيسية',
     },
     about: {
-      title: 'حول QuizVerse',
+      title: 'حول QuizNova',
       subtitle: 'منصة الكويز العربية الأولى للتعلم والمتعة.',
-      intro: 'QuizVerse يساعد المعلمين والطلاب والعائلات على إنشاء ولعب كويزات تفاعلية. انضم لألعاب مباشرة برمز، تصدر لوحة المتصدرين، وتعلم أثناء الاستمتاع.',
+      intro: 'QuizNova يساعد المعلمين والطلاب والعائلات على إنشاء ولعب كويزات تفاعلية. انضم لألعاب مباشرة برمز، تصدر لوحة المتصدرين، وتعلم أثناء الاستمتاع.',
       missionTitle: 'مهمتنا',
       missionText: 'جعل التعلم تفاعلياً ومتاحاً للناطقين بالعربية والمتعلمين ثنائيي اللغة.',
       whoTitle: 'لمن هو؟',
@@ -631,12 +631,12 @@ export const translations = {
     },
     leaderboard: {
       title: 'المتصدرين',
-      subtitle: 'أعلى النتائج في QuizVerse. تنافس وتصدر اللوحة.',
+      subtitle: 'أعلى النتائج في QuizNova. تنافس وتصدر اللوحة.',
       allRankings: 'كل التصنيفات',
     },
     miniGames: {
       title: 'ألعاب مصغرة',
-      subtitle: 'ألعاب سريعة ممتعة على QuizVerse. احمِ نفسك أو خذ استراحة.',
+      subtitle: 'ألعاب سريعة ممتعة على QuizNova. احمِ نفسك أو خذ استراحة.',
       comingSoon: 'قريباً',
       play: 'العب',
       playable: 'قابل للعب',
@@ -657,7 +657,7 @@ export const translations = {
     },
     aiGenerator: {
       title: 'مولد كويز بالذكاء الاصطناعي',
-      subtitle: 'أدخل موضوعاً ومستوى صعوبة. QuizVerse سينشئ أسئلة نموذجية (بيانات تجريبية حالياً).',
+      subtitle: 'أدخل موضوعاً ومستوى صعوبة. QuizNova سينشئ أسئلة نموذجية (بيانات تجريبية حالياً).',
       generateTitle: 'إنشاء أسئلة',
       generateDesc: 'الموضوع والصعوبة يحددان نوع الأسئلة.',
       topic: 'الموضوع',
@@ -673,12 +673,12 @@ export const translations = {
       editAndSave: 'تعديل وحفظ',
     },
     signIn: {
-      title: 'تسجيل الدخول لـ QuizVerse',
+      title: 'تسجيل الدخول لـ QuizNova',
       subtitle: 'مؤقت. اتصل بخادم لتفعيل تسجيل الدخول.',
       backToHome: 'العودة للرئيسية',
     },
     getStarted: {
-      title: 'ابدأ مع QuizVerse',
+      title: 'ابدأ مع QuizNova',
       subtitle: 'أنشئ حساباً أو ابدأ اللعب مباشرة. مؤقت.',
       joinGame: 'انضم للعبة',
       createQuiz: 'إنشاء كويز',

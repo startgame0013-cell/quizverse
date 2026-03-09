@@ -24,7 +24,7 @@ export default function Navbar() {
   return (
     <>
       <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, background: '#0a0a0a', borderBottom: '1px solid #222', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none' }}>QuizVerse</Link>
+        <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none' }}>QuizNova</Link>
         <button onClick={() => setOpen(true)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '2rem', cursor: 'pointer' }} aria-label="Open menu">☰</button>
       </header>
       {open && (
