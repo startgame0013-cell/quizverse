@@ -33,6 +33,13 @@ const AUDIENCES = [
   { value: 'schools', labelKey: 'audience.schools' },
 ]
 
+const STAGES = [
+  { value: 'elementary', labelKey: 'stage.elementary' },
+  { value: 'intermediate', labelKey: 'stage.intermediate' },
+  { value: 'secondary', labelKey: 'stage.secondary' },
+  { value: 'university', labelKey: 'stage.university' },
+]
+
 const emptyQuestion = () => ({
   text: '',
   options: ['', '', '', ''],
@@ -190,6 +197,7 @@ export default function CreateQuiz() {
   const [difficulty, setDifficulty] = useState('medium')
   const [category, setCategory] = useState('')
   const [audience, setAudience] = useState('')
+  const [stage, setStage] = useState('')
   const [questions, setQuestions] = useState([emptyQuestion()])
   const [saved, setSaved] = useState(false)
 
@@ -216,6 +224,7 @@ export default function CreateQuiz() {
         setDifficulty(q.difficulty || 'medium')
         setCategory(q.category || '')
         setAudience(q.audience || '')
+        setStage(q.stage || '')
         setQuestions(
           (q.questions?.length ? q.questions : [emptyQuestion()]).map((qn) => ({
             text: qn.text || '',
@@ -258,6 +267,7 @@ export default function CreateQuiz() {
       difficulty,
       category: category || undefined,
       audience: audience || undefined,
+      stage: stage || undefined,
       questions: questions.map((q) => ({
         ...q,
         text: q.text.trim(),
@@ -372,6 +382,22 @@ export default function CreateQuiz() {
                     {AUDIENCES.map((a) => (
                       <SelectItem key={a.value} value={a.value}>
                         {t(a.labelKey)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="stage">{t('createQuiz.stage')}</Label>
+                <Select value={stage || ''} onValueChange={setStage}>
+                  <SelectTrigger id="stage">
+                    <SelectValue placeholder={t('common.selectStage') || 'Any'} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">{t('common.selectStage') || 'Any'}</SelectItem>
+                    {STAGES.map((s) => (
+                      <SelectItem key={s.value} value={s.value}>
+                        {t(s.labelKey)}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -7,21 +7,39 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
-
-const DEMO_PIN = '123456'
+import API from '@/lib/api.js'
 
 export default function JoinGame() {
   const { t } = useLanguage()
-  const { success } = useToast()
+  const { success, error: showError } = useToast()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [pin, setPin] = useState(searchParams.get('pin') || '')
   const [nickname, setNickname] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    success(t('waitingRoom.youJoined'))
-    navigate(`/waiting?pin=${pin}`)
+    if (!API) {
+      success(t('live.demoJoin', 'Demo mode — joining...'))
+      navigate(`/live/play/123456?playerIndex=0&nickname=${encodeURIComponent(nickname)}`)
+      return
+    }
+    try {
+      const res = await fetch(`${API}/api/game/join`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: pin.trim(), nickname: nickname.trim() }),
+      })
+      const data = await res.json()
+      if (data.ok && data.playerIndex !== undefined) {
+        success(t('waitingRoom.youJoined'))
+        navigate(`/live/play/${pin}?playerIndex=${data.playerIndex}&nickname=${encodeURIComponent(nickname.trim())}`)
+      } else {
+        showError(data.error || t('joinGame.error', 'Could not join game'))
+      }
+    } catch (e) {
+      showError(t('joinGame.error', 'Could not join game'))
+    }
   }
 
   return (

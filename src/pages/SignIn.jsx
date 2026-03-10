@@ -12,17 +12,25 @@ import { useLanguage } from '@/context/LanguageContext'
 export default function SignIn() {
   const { t } = useLanguage()
   const { signIn } = useAuth()
-  const { success } = useToast()
+  const { success, error: showError } = useToast()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email.trim() || !password.trim()) return
-    signIn(email, password)
-    success(t('auth.signInSuccess'))
-    navigate('/')
+    setSubmitting(true)
+    try {
+      await signIn(email, password)
+      success(t('auth.signInSuccess'))
+      navigate('/')
+    } catch (err) {
+      showError(err.message || t('auth.signInFailed', 'Invalid email or password'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -48,8 +56,8 @@ export default function SignIn() {
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={4} className="pl-9" />
               </div>
             </div>
-            <Button type="submit" className="w-full gap-2">
-              {t('auth.signIn')}
+            <Button type="submit" className="w-full gap-2" disabled={submitting}>
+              {submitting ? '...' : t('auth.signIn')}
               <ArrowRight className="size-4" />
             </Button>
           </form>

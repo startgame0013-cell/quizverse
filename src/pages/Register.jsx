@@ -12,18 +12,26 @@ import { useLanguage } from '@/context/LanguageContext'
 export default function Register() {
   const { t } = useLanguage()
   const { register } = useAuth()
-  const { success } = useToast()
+  const { success, error: showError } = useToast()
   const navigate = useNavigate()
+  const [submitting, setSubmitting] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email.trim() || !password.trim()) return
-    register(email, password, name.trim() || undefined)
-    success(t('auth.registerSuccess'))
-    navigate('/')
+    setSubmitting(true)
+    try {
+      await register(email, password, name.trim() || undefined)
+      success(t('auth.registerSuccess'))
+      navigate('/')
+    } catch (err) {
+      showError(err.message || t('auth.registerFailed', 'Registration failed'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -56,8 +64,8 @@ export default function Register() {
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={4} className="pl-9" />
               </div>
             </div>
-            <Button type="submit" className="w-full gap-2">
-              {t('auth.register')}
+            <Button type="submit" className="w-full gap-2" disabled={submitting}>
+              {submitting ? '...' : t('auth.register')}
               <ArrowRight className="size-4" />
             </Button>
           </form>

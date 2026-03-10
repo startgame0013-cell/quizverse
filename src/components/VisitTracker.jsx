@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:4000' : '')
+import API from '@/lib/api.js'
 
 export default function VisitTracker() {
   const { pathname } = useLocation()
 
   useEffect(() => {
+    if (!API) return
     fetch(`${API}/api/stats/visit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -15,7 +16,7 @@ export default function VisitTracker() {
         referrer: typeof document !== 'undefined' ? document.referrer || '' : '',
       }),
     }).catch(() => {})
-  }, [pathname])
+  }, [pathname, API])
 
   return null
 }

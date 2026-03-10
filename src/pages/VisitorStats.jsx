@@ -3,7 +3,7 @@ import { Users, Globe, MapPin, Clock } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
 
-const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:4000' : '')
+import API from '@/lib/api.js'
 
 export default function VisitorStats() {
   const { t } = useLanguage()

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../lib/api';
 
 export default function Classes() {
   const { user, getToken } = useAuth();
@@ -33,12 +34,9 @@ export default function Classes() {
       return;
     }
     setMessage('');
-    fetch('/api/classes/join', {
+    apiFetch('/api/classes/join', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code: joinCode.trim().toUpperCase() }),
     })
       .then((res) => res.json())
@@ -63,12 +61,9 @@ export default function Classes() {
     if (!name?.trim()) return;
     setMessage('');
     try {
-      const res = await fetch('/api/classes', {
+      const res = await apiFetch('/api/classes', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name.trim() }),
       });
       const data = await res.json();

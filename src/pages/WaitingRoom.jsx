@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { Users, Radio, Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -5,11 +6,34 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
 import { DEMO_GAME_SESSION } from '@/data/demoContent'
 
+import API from '@/lib/api.js'
+
 export default function WaitingRoom() {
   const { t } = useLanguage()
   const [searchParams] = useSearchParams()
   const pin = searchParams.get('pin') || DEMO_GAME_SESSION.pin
-  const session = { ...DEMO_GAME_SESSION, pin }
+  const [session, setSession] = useState({ ...DEMO_GAME_SESSION, pin })
+
+  useEffect(() => {
+    if (!pin || !API) return
+    fetch(`${API}/api/game/session/${pin}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && d.session) {
+          setSession({
+            pin: d.session.pin,
+            hostName: d.session.hostName || 'Host',
+            quizTitle: d.session.quizTitle || 'Quiz',
+            playersJoined: d.session.playersCount || 0,
+            players: d.session.players || [],
+          })
+        }
+      })
+      .catch(() => {})
+  }, [pin])
+
+  const players = session.players || []
+  const playersCount = players.length || session.playersJoined || 0
 
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6 lg:px-8">
@@ -33,8 +57,15 @@ export default function WaitingRoom() {
             </p>
             <p className="flex items-center gap-2 text-sm">
               <Users className="size-4 text-primary" />
-              <span>{session.playersJoined} {t('waitingRoom.playersJoined')}</span>
+              <span>{playersCount} {t('waitingRoom.playersJoined')}</span>
             </p>
+            {players.length > 0 && (
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                {players.map((p, i) => (
+                  <li key={i}>{i + 1}. {p.nickname}</li>
+                ))}
+              </ul>
+            )}
           </div>
           <p className="text-center text-sm text-muted-foreground">
             Game PIN: <span className="font-mono font-bold text-primary">{pin}</span>

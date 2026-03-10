@@ -27,6 +27,8 @@ import Privacy from './pages/Privacy'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
 import VisitTracker from './components/VisitTracker'
+import HostLiveGame from './pages/HostLiveGame'
+import LiveGamePlayer from './pages/LiveGamePlayer'
 
 export default function App() {
   return (
@@ -42,6 +44,8 @@ export default function App() {
               <Route path="/quiz/:id" element={<PlayQuiz />} />
               <Route path="/quiz/:id/details" element={<QuizDetails />} />
               <Route path="/join" element={<JoinGame />} />
+              <Route path="/live/host/:pin" element={<HostLiveGame />} />
+              <Route path="/live/play/:pin" element={<LiveGamePlayer />} />
               <Route path="/waiting" element={<WaitingRoom />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/mini-games" element={<MiniGames />} />

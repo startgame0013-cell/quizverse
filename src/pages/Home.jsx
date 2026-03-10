@@ -22,7 +22,7 @@ import { useLanguage } from '@/context/LanguageContext'
 
 const iconClass = 'size-5 shrink-0'
 
-const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:4000' : '')
+import API from '@/lib/api.js'
 
 function formatCount(n) {
   if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
@@ -31,7 +31,7 @@ function formatCount(n) {
 }
 
 export default function Home() {
-  const { t } = useLanguage()
+  const { t, lang, setLang } = useLanguage()
   const [stats, setStats] = useState([
     { value: '...', labelKey: 'home.statsQuizzes', icon: PenSquare },
     { value: '...', labelKey: 'home.statsPlayers', icon: Users },
@@ -39,6 +39,7 @@ export default function Home() {
   ])
 
   useEffect(() => {
+    if (!API) return
     fetch(`${API}/api/stats`)
       .then((res) => res.json())
       .then((data) => {
@@ -63,7 +64,7 @@ export default function Home() {
           { value: '0', labelKey: 'home.statsSchools', icon: School },
         ])
       })
-  }, [])
+  }, [API])
 
 
   const audienceSections = [
@@ -135,6 +136,13 @@ export default function Home() {
                 {t('home.joinGame')}
               </Link>
             </Button>
+            <button
+              type="button"
+              onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+              className="inline-flex items-center justify-center rounded-lg border-2 border-[#FACC15] bg-[#FACC15] px-6 py-3 text-base font-semibold text-[#0a0a0a] transition-colors hover:bg-[#FACC15]/90"
+            >
+              {lang === 'ar' ? 'English' : 'العربية'}
+            </button>
           </div>
         </div>
       </section>

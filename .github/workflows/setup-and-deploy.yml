@@ -1,0 +1,39 @@
+# QuizVerse — Push MONGODB_URI to Render and trigger deploy
+# Run manually: Actions → setup-and-deploy → Run workflow
+# Requires secrets: MONGODB_URI, RENDER_API_KEY, RENDER_SERVICE_ID
+
+name: Setup and Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Push MONGODB_URI to Render and trigger deploy
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          if [ -z "$MONGODB_URI" ] || [ -z "$RENDER_API_KEY" ]; then
+            echo "::error::Add secrets: MONGODB_URI, RENDER_API_KEY, RENDER_SERVICE_ID"
+            exit 1
+          fi
+          SID="${RENDER_SERVICE_ID:-srv-d6n3nn3h46gs73c1qa4g}"
+          BODY=$(node -e "console.log(JSON.stringify({value:process.env.MONGODB_URI}))")
+          curl -s -X PUT \
+            "https://api.render.com/v1/services/${SID}/env-vars/MONGODB_URI" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "$BODY"
+          curl -s -X POST \
+            "https://api.render.com/v1/services/${SID}/deploys" \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache":"do_not_clear"}'
+          echo ""
+          echo "Done. Check https://dashboard.render.com and https://quizverse-lyart.vercel.app"

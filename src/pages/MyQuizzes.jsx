@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { getAllQuizzes, deleteQuiz, duplicateQuiz } from '@/lib/quizStore'
+import { getAllQuizzes, deleteQuiz, duplicateQuiz, getQuizDisplay, resetQuizzesToDefault } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
 import Pagination from '@/components/Pagination'
@@ -26,6 +26,7 @@ export default function MyQuizzes() {
   const [search, setSearch] = useState('')
   const [filterDifficulty, setFilterDifficulty] = useState('')
   const [filterCategory, setFilterCategory] = useState('')
+  const [filterStage, setFilterStage] = useState('')
   const [page, setPage] = useState(0)
   const [filtersOpen, setFiltersOpen] = useState(false)
 
@@ -33,19 +34,25 @@ export default function MyQuizzes() {
 
   const filtered = useMemo(() => {
     return quizzes.filter((q) => {
-      const matchSearch = !search.trim() || (q.title || '').toLowerCase().includes(search.toLowerCase()) || (q.description || '').toLowerCase().includes(search.toLowerCase())
+      const searchLower = search.toLowerCase()
+      const matchSearch = !search.trim() ||
+        (q.title || '').toLowerCase().includes(searchLower) ||
+        (q.titleAr || '').toLowerCase().includes(searchLower) ||
+        (q.description || '').toLowerCase().includes(searchLower) ||
+        (q.descriptionAr || '').toLowerCase().includes(searchLower)
       const matchDiff = !filterDifficulty || (q.difficulty || '') === filterDifficulty
       const matchCat = !filterCategory || (q.category || '') === filterCategory
-      return matchSearch && matchDiff && matchCat
+      const matchStage = !filterStage || (q.stage || '') === filterStage
+      return matchSearch && matchDiff && matchCat && matchStage
     })
-  }, [quizzes, search, filterDifficulty, filterCategory])
+  }, [quizzes, search, filterDifficulty, filterCategory, filterStage])
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
   const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
 
   useEffect(() => {
     setPage(0)
-  }, [search, filterDifficulty, filterCategory])
+  }, [search, filterDifficulty, filterCategory, filterStage])
 
   const handleDelete = (e, id) => {
     e.preventDefault()
@@ -67,6 +74,13 @@ export default function MyQuizzes() {
     }
   }
 
+  const handleReset = async () => {
+    if (!window.confirm(t('myQuizzes.resetConfirm'))) return
+    await resetQuizzesToDefault()
+    success(t('myQuizzes.resetSuccess'))
+    window.location.reload()
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -74,12 +88,17 @@ export default function MyQuizzes() {
           <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('myQuizzes.title')}</h1>
           <p className="mt-2 text-muted-foreground">{t('myQuizzes.subtitle')}</p>
         </div>
-        <Button asChild>
-          <Link to="/create-quiz" className="gap-2">
-            <PenSquare className="size-4" />
-            {t('myQuizzes.createQuiz')}
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={handleReset} title={t('myQuizzes.resetToDefault')}>
+            {t('myQuizzes.resetToDefault')}
+          </Button>
+          <Button asChild>
+            <Link to="/create-quiz" className="gap-2">
+              <PenSquare className="size-4" />
+              {t('myQuizzes.createQuiz')}
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {quizzes.length > 0 && (
@@ -102,7 +121,7 @@ export default function MyQuizzes() {
             >
               <SlidersHorizontal className="size-4" />
               {t('myQuizzes.filters')}
-              {(filterDifficulty || filterCategory) && (
+              {(filterDifficulty || filterCategory || filterStage) && (
                 <span className="size-2 rounded-full bg-primary" />
               )}
             </Button>
@@ -152,6 +171,21 @@ export default function MyQuizzes() {
                         </SelectContent>
                       </Select>
                     </div>
+                    <div>
+                      <label className="mb-1.5 block text-xs text-muted-foreground">{t('createQuiz.stage')}</label>
+                      <Select value={filterStage || '__all__'} onValueChange={(v) => setFilterStage(v === '__all__' ? '' : v)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__all__">{t('myQuizzes.filterAll')}</SelectItem>
+                          <SelectItem value="elementary">{t('stage.elementary')}</SelectItem>
+                          <SelectItem value="intermediate">{t('stage.intermediate')}</SelectItem>
+                          <SelectItem value="secondary">{t('stage.secondary')}</SelectItem>
+                          <SelectItem value="university">{t('stage.university')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
               </>
@@ -181,12 +215,14 @@ export default function MyQuizzes() {
       ) : (
         <>
         <div className="space-y-4">
-          {paginated.map((quiz) => (
+          {paginated.map((quiz) => {
+            const d = getQuizDisplay(quiz, lang)
+            return (
             <Card key={quiz.id} className="transition-shadow hover:shadow-soft">
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                 <Link to={`/quiz/${quiz.id}/details`} className="flex-1 min-w-0">
                   <CardTitle className="text-lg truncate">
-                    {lang === 'ar' && quiz.titleAr ? quiz.titleAr : (quiz.title || t('myQuizzes.untitled'))}
+                    {d.title || t('myQuizzes.untitled')}
                   </CardTitle>
                   <CardDescription className="mt-1">
                     {quiz.questions?.length || 0} {t('myQuizzes.questions')} · {formatDate(quiz.updatedAt, lang)}
@@ -223,16 +259,18 @@ export default function MyQuizzes() {
                 </div>
               </CardHeader>
               <CardContent>
-                {quiz.description && (
-                  <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{quiz.description}</p>
+                {d.description && (
+                  <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{d.description}</p>
                 )}
                 <div className="flex flex-wrap gap-2">
                   {quiz.difficulty && <Badge variant="secondary">{t(`difficulty.${quiz.difficulty}`)}</Badge>}
                   {quiz.category && <Badge variant="outline">{t(`category.${quiz.category}`) || quiz.category}</Badge>}
+                  {quiz.stage && <Badge variant="outline">{t(`stage.${quiz.stage}`)}</Badge>}
                 </div>
               </CardContent>
             </Card>
-          ))}
+            )
+          })}
         </div>
         <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </>

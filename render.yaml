@@ -1,0 +1,22 @@
+# Render Blueprint — QuizNova Live Game API
+# Deploy: Connect repo → Render reads this file
+# Add MONGODB_URI in Dashboard → Environment
+
+services:
+  - type: web
+    name: quiznova-api
+    runtime: node
+
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false  # optional; app works without it
+      - key: FRONTEND_URL
+        sync: false  # e.g. https://quizverse-lyart.vercel.app

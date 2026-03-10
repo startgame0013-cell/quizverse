@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../lib/api';
 
 export default function CreateQuiz() {
   const { getToken } = useAuth();
@@ -33,12 +34,9 @@ export default function CreateQuiz() {
     setAiLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/ai/generate-quiz', {
+      const res = await apiFetch('/api/ai/generate-quiz', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic: aiTopic.trim(), language: 'en', count: 5 }),
       });
       const data = await res.json();
@@ -75,12 +73,9 @@ export default function CreateQuiz() {
     setSaving(true);
     setError('');
     try {
-      const res = await fetch('/api/quizzes', {
+      const res = await apiFetch('/api/quizzes', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: title.trim(),
           description: description.trim(),

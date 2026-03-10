@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../lib/api';
 
 export default function TakeQuiz() {
   const { id } = useParams();
@@ -53,12 +54,9 @@ export default function TakeQuiz() {
     setFinished(true);
 
     if (user && getToken()) {
-      fetch('/api/scores', {
+      apiFetch('/api/scores', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           quizId: quiz._id,
           score: correct,

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getQuizById, getQuestionDisplay } from '@/lib/quizStore'
+import { getQuizById, getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function PlayQuiz() {
@@ -94,7 +94,7 @@ export default function PlayQuiz() {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-lg">
-            {lang === 'ar' && quiz.titleAr ? quiz.titleAr : (quiz.title || '')}
+            {getQuizDisplay(quiz, lang).title || ''}
           </CardTitle>
           <p className="text-sm text-muted-foreground">
             {t('playQuiz.questionOf')} {currentIndex + 1} {t('playQuiz.of')} {questions.length}

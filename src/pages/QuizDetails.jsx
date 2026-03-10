@@ -3,13 +3,14 @@ import { ArrowLeft, PenSquare, Play, Copy, Radio, CheckCircle2 } from 'lucide-re
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { getQuizById, duplicateQuiz, deleteQuiz, getQuestionDisplay } from '@/lib/quizStore'
+import { getQuizById, duplicateQuiz, deleteQuiz, getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
+import API from '@/lib/api.js'
 
 export default function QuizDetails() {
   const { t, lang } = useLanguage()
-  const { success } = useToast()
+  const { success, error: showError } = useToast()
   const { id } = useParams()
   const navigate = useNavigate()
   const quiz = getQuizById(id)
@@ -33,11 +34,36 @@ export default function QuizDetails() {
     }
   }
 
-  const handleHost = () => {
-    navigate(`/waiting?pin=123456`)
+  const handleHost = async () => {
+    if (!API) {
+      success(t('live.demoPin', 'Demo mode — PIN: 123456'))
+      navigate(`/live/host/123456?quizData=${encodeURIComponent(JSON.stringify(quiz))}`)
+      return
+    }
+    try {
+      const res = await fetch(`${API}/api/game/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quizId: id,
+          quizTitle: quizDisplay.title || t('myQuizzes.untitled'),
+          quizData: quiz,
+        }),
+      })
+      const data = await res.json()
+      if (data.ok && data.pin) {
+        success(t('live.sessionCreated', 'Game session created!'))
+        navigate(`/live/host/${data.pin}?quizData=${encodeURIComponent(JSON.stringify(quiz))}`)
+      } else {
+        showError(data.error || t('live.createFailed', 'Failed to create session'))
+      }
+    } catch (e) {
+      showError(t('live.createFailed', 'Failed to create session'))
+    }
   }
 
   const questions = quiz.questions || []
+  const quizDisplay = getQuizDisplay(quiz, lang)
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
@@ -51,16 +77,17 @@ export default function QuizDetails() {
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          {lang === 'ar' && quiz.titleAr ? quiz.titleAr : (quiz.title || t('myQuizzes.untitled'))}
+          {quizDisplay.title || t('myQuizzes.untitled')}
         </h1>
-        {(quiz.description || quiz.descriptionAr) && (
+        {quizDisplay.description && (
           <p className="mt-2 text-muted-foreground">
-            {lang === 'ar' && quiz.descriptionAr ? quiz.descriptionAr : (quiz.description || '')}
+            {quizDisplay.description}
           </p>
         )}
         <div className="mt-3 flex flex-wrap gap-2">
           <Badge variant="secondary">{t(`difficulty.${quiz.difficulty || 'medium'}`)}</Badge>
           {quiz.category && <Badge variant="outline">{t(`category.${quiz.category}`) || quiz.category}</Badge>}
+          {quiz.stage && <Badge variant="outline">{t(`stage.${quiz.stage}`)}</Badge>}
           {quiz.audience && <Badge variant="outline">{t(`audience.${quiz.audience}`) || quiz.audience}</Badge>}
         </div>
       </div>
