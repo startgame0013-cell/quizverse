@@ -31,7 +31,7 @@ function formatCount(n) {
 }
 
 export default function Home() {
-  const { t, lang, setLang } = useLanguage()
+  const { t } = useLanguage()
   const [stats, setStats] = useState([
     { value: '...', labelKey: 'home.statsQuizzes', icon: PenSquare },
     { value: '...', labelKey: 'home.statsPlayers', icon: Users },
@@ -136,14 +136,6 @@ export default function Home() {
                 {t('home.joinGame')}
               </Link>
             </Button>
-            <button
-              type="button"
-              onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
-              className="inline-flex items-center justify-center rounded-lg border-2 border-[#FACC15] px-6 py-3 text-base font-semibold transition-colors"
-              style={{ background: lang === 'en' ? '#FACC15' : 'transparent', color: lang === 'en' ? '#0a0a0a' : '#FACC15' }}
-            >
-              {lang === 'en' ? 'English' : 'العربية'}
-            </button>
           </div>
         </div>
       </section>
