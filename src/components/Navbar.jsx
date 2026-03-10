@@ -39,10 +39,10 @@ export default function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button
             onClick={toggleLang}
-            style={{ background: '#FACC15', color: '#0a0a0a', border: 'none', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }}
-            title={lang === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
+            style={{ background: lang === 'en' ? '#FACC15' : 'transparent', color: lang === 'en' ? '#0a0a0a' : '#FACC15', border: '1px solid #FACC15', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }}
+            title={lang === 'ar' ? 'Click to switch to English' : 'اضغط للتبديل إلى العربية'}
           >
-            {lang === 'ar' ? 'EN' : 'العربية'}
+            {lang === 'en' ? 'English' : 'العربية'}
           </button>
           <button onClick={() => setOpen(true)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '2rem', cursor: 'pointer' }} aria-label="Open menu">☰</button>
         </div>
@@ -53,8 +53,8 @@ export default function Navbar() {
             <button onClick={() => setOpen(false)} style={{ alignSelf: 'flex-end', background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }} aria-label="Close menu">✕</button>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', paddingBottom: '0.75rem', borderBottom: '1px solid #222' }}>
               <span style={{ color: '#888', fontSize: '0.9rem' }}>{t('settings.language')}</span>
-              <button onClick={toggleLang} style={{ background: 'rgba(250,204,21,0.15)', border: '1px solid #FACC15', color: '#FACC15', padding: '0.35rem 0.7rem', borderRadius: '6px', fontSize: '0.85rem', cursor: 'pointer' }}>
-                {lang === 'ar' ? 'English' : 'العربية'}
+              <button onClick={toggleLang} style={{ background: lang === 'en' ? '#FACC15' : 'rgba(250,204,21,0.15)', border: '1px solid #FACC15', color: lang === 'en' ? '#0a0a0a' : '#FACC15', padding: '0.35rem 0.7rem', borderRadius: '6px', fontSize: '0.85rem', cursor: 'pointer' }}>
+                {lang === 'en' ? 'English' : 'العربية'}
               </button>
             </div>
             {navItems.map(([path, labelKey]) => (

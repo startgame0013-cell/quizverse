@@ -139,9 +139,10 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
-              className="inline-flex items-center justify-center rounded-lg border-2 border-[#FACC15] bg-[#FACC15] px-6 py-3 text-base font-semibold text-[#0a0a0a] transition-colors hover:bg-[#FACC15]/90"
+              className="inline-flex items-center justify-center rounded-lg border-2 border-[#FACC15] px-6 py-3 text-base font-semibold transition-colors"
+              style={{ background: lang === 'en' ? '#FACC15' : 'transparent', color: lang === 'en' ? '#0a0a0a' : '#FACC15' }}
             >
-              {lang === 'ar' ? 'English' : 'العربية'}
+              {lang === 'en' ? 'English' : 'العربية'}
             </button>
           </div>
         </div>
