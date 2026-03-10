@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Gamepad2, Zap, Type, CheckCircle, Calculator, Flag, Brain, ArrowRight } from 'lucide-react'
+import { Gamepad2, Zap, Type, CheckCircle, Calculator, Flag, Brain, CircleDot, ArrowRight } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -59,6 +59,15 @@ const GAMES = [
     descAr: 'جولة سريعة من صح أو خطأ. سريع وممتع.',
     path: '/mini-games/true-false',
     icon: CheckCircle,
+  },
+  {
+    id: 'vortex',
+    nameEn: 'Vortex',
+    nameAr: 'فورتكس',
+    descEn: 'Interactive particle vortex. Touch or move to control the flow.',
+    descAr: 'دوامة جزيئات تفاعلية. المس أو حرّك للتحكم بالتيار.',
+    path: '/mini-games/vortex',
+    icon: CircleDot,
   },
 ]
 

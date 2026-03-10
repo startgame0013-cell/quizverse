@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>VORTEX.IO</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; touch-action: none; }
+    canvas { display: block; width: 100%; height: 100%; background: #0a0a0a; }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [], mouse = { x: 0, y: 0 }, hue = 0;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    function Particle() {
+      this.x = w / 2;
+      this.y = h / 2;
+      this.vx = (Math.random() - 0.5) * 4;
+      this.vy = (Math.random() - 0.5) * 4;
+      this.radius = Math.random() * 2 + 0.5;
+      this.life = 1;
+    }
+
+    Particle.prototype.update = function() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vx += (mouse.x - this.x) * 0.0005;
+      this.vy += (mouse.y - this.y) * 0.0005;
+      this.life -= 0.008;
+    };
+
+    Particle.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'hsla(' + hue + ', 100%, 60%, ' + this.life + ')';
+      ctx.fill();
+    };
+
+    function loop() {
+      ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+      ctx.fillRect(0, 0, w, h);
+      hue = (hue + 0.5) % 360;
+      if (particles.length < 200) particles.push(new Particle());
+      particles = particles.filter(p => {
+        p.update();
+        p.draw();
+        return p.life > 0;
+      });
+      requestAnimationFrame(loop);
+    }
+
+    canvas.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    canvas.addEventListener('touchmove', e => {
+      e.preventDefault();
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }, { passive: false });
+
+    resize();
+    window.addEventListener('resize', resize);
+    loop();
+  </script>
+</body>
+</html>

@@ -18,6 +18,7 @@ import QuickMath from './pages/QuickMath'
 import TrueOrFalse from './pages/TrueOrFalse'
 import FlagChallenge from './pages/FlagChallenge'
 import QuickTrivia from './pages/QuickTrivia'
+import Vortex from './pages/Vortex'
 import AiQuizGenerator from './pages/AiQuizGenerator'
 import SignIn from './pages/SignIn'
 import Register from './pages/Register'
@@ -55,6 +56,7 @@ export default function App() {
               <Route path="/mini-games/true-false" element={<TrueOrFalse />} />
               <Route path="/mini-games/flag-challenge" element={<FlagChallenge />} />
               <Route path="/mini-games/quick-trivia" element={<QuickTrivia />} />
+              <Route path="/mini-games/vortex" element={<Vortex />} />
               <Route path="/ai-generator" element={<AiQuizGenerator />} />
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/register" element={<Register />} />
