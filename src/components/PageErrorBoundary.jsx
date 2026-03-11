@@ -16,14 +16,14 @@ export class PageErrorBoundary extends Component {
   render() {
     if (!this.state.hasError) return this.props.children
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 py-12 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 py-12 text-center relative z-[1]">
         <h2 className="text-lg font-semibold text-white">حدث خطأ في الصفحة / Page error</h2>
         <p className="max-w-md text-sm text-gray-400">
           المحتوى لم يُحمّل. استخدم زر الرجوع أعلاه أو الرابط أدناه.
         </p>
         <Link
           to="/"
-          className="inline-flex items-center gap-2 rounded-lg bg-[#FACC15] px-4 py-2 font-semibold text-[#0a0a0a] no-underline hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-lg bg-[#FACC15] px-4 py-2 font-semibold text-[#0a0a0a] no-underline hover:opacity-90 cursor-pointer"
         >
           ← الرئيسية / Home
         </Link>

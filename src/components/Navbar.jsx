@@ -45,28 +45,46 @@ export default function Navbar() {
 
   const isRtl = lang === 'ar'
 
+  const headerStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 9999,
+    pointerEvents: 'auto',
+    background: '#0a0a0a',
+    borderBottom: '1px solid #222',
+    padding: '0.6rem 1rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: '0.5rem',
+  }
+
   return (
     <>
-      <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, background: '#0a0a0a', borderBottom: '1px solid #222', padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
-        {/* زر الرجوع — أول عنصر في الشريط، أصفر كبير */}
-        <button type="button" onClick={goBack} title={t('nav.back')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#FACC15', border: 'none', color: '#0a0a0a', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700, boxShadow: '0 2px 8px rgba(250,204,21,0.4)' }} aria-label={t('nav.back')}>
+      <header style={headerStyle}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0, pointerEvents: 'auto' }}>
+        {/* زر الرجوع — Link يضمن أن الضغط يعمل حتى لو حدث خطأ في الصفحة */}
+        <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#FACC15', border: 'none', color: '#0a0a0a', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700, boxShadow: '0 2px 8px rgba(250,204,21,0.4)', textDecoration: 'none' }} title={t('nav.back')} aria-label={t('nav.back')}>
           <span style={{ fontSize: '1.3rem' }}>{isRtl ? '→' : '←'}</span> {t('nav.back')}
-        </button>
-        <button type="button" onClick={goForward} title={t('nav.next')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.4)', color: '#fafafa', padding: '0.6rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }} aria-label={t('nav.next')}>
+        </Link>
+        <button type="button" onClick={() => { try { goForward() } catch (_) {} }} title={t('nav.next')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.4)', color: '#fafafa', padding: '0.6rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }} aria-label={t('nav.next')}>
           {t('nav.next')} <span style={{ fontSize: '1.2rem' }}>{isRtl ? '←' : '→'}</span>
         </button>
         </div>
-        <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none' }}>QuizVerse</Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none', pointerEvents: 'auto' }}>QuizVerse</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', pointerEvents: 'auto' }}>
           <button
-            onClick={toggleLang}
+            type="button"
+            onClick={() => { try { toggleLang() } catch (_) {} }}
             style={{ background: lang === 'en' ? '#FACC15' : 'transparent', color: lang === 'en' ? '#0a0a0a' : '#FACC15', border: '1px solid #FACC15', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }}
             title={lang === 'ar' ? 'Click to switch to English' : 'اضغط للتبديل إلى العربية'}
           >
             {lang === 'en' ? 'English' : 'العربية'}
           </button>
-          <button onClick={() => setOpen(true)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '2rem', cursor: 'pointer' }} aria-label="Open menu">☰</button>
+          <button type="button" onClick={() => setOpen(true)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '2rem', cursor: 'pointer' }} aria-label="Open menu">☰</button>
         </div>
       </header>
       {open && (

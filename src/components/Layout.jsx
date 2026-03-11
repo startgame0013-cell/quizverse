@@ -12,7 +12,7 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar />
-      <main className="flex-1 pt-14">
+      <main className="flex-1 pt-14 relative z-[1]">
         <PageErrorBoundary>
           {children}
         </PageErrorBoundary>
