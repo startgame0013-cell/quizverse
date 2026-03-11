@@ -4,7 +4,6 @@ import { Plus, Trash2, Save, Sparkles, PenSquare, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { saveQuiz, getQuizById } from '@/lib/quizStore'
@@ -343,65 +342,37 @@ export default function CreateQuiz() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="difficulty">{t('createQuiz.difficulty')}</Label>
-                  <Select value={difficulty} onValueChange={setDifficulty}>
-                    <SelectTrigger id="difficulty">
-                      <SelectValue placeholder={t('common.selectDifficulty')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {DIFFICULTIES.map((d) => (
-                        <SelectItem key={d.value} value={d.value}>
-                          {t(d.labelKey)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <select id="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className="flex h-10 w-full rounded-lg border border-[#404040] bg-[#0a0a0a] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FACC15]">
+                    {DIFFICULTIES.map((d) => (
+                      <option key={d.value} value={d.value}>{t(d.labelKey)}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="category">{t('createQuiz.category')}</Label>
-                  <Select value={category} onValueChange={setCategory}>
-                    <SelectTrigger id="category">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CATEGORIES.map((c) => (
-                        <SelectItem key={c.value} value={c.value}>
-                          {t(c.labelKey)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <select id="category" value={category} onChange={(e) => setCategory(e.target.value)} className="flex h-10 w-full rounded-lg border border-[#404040] bg-[#0a0a0a] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FACC15]">
+                    {CATEGORIES.map((c) => (
+                      <option key={c.value} value={c.value}>{t(c.labelKey)}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="audience">{t('createQuiz.audience')}</Label>
-                <Select value={audience} onValueChange={setAudience}>
-                  <SelectTrigger id="audience">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {AUDIENCES.map((a) => (
-                      <SelectItem key={a.value} value={a.value}>
-                        {t(a.labelKey)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <select id="audience" value={audience} onChange={(e) => setAudience(e.target.value)} className="flex h-10 w-full rounded-lg border border-[#404040] bg-[#0a0a0a] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FACC15]">
+                  {AUDIENCES.map((a) => (
+                    <option key={a.value} value={a.value}>{t(a.labelKey)}</option>
+                  ))}
+                </select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="stage">{t('createQuiz.stage')}</Label>
-                <Select value={stage} onValueChange={setStage}>
-                  <SelectTrigger id="stage">
-                    <SelectValue placeholder={t('common.selectStage') || 'Any'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">{t('common.selectStage') || 'Any'}</SelectItem>
-                    {STAGES.map((s) => (
-                      <SelectItem key={s.value} value={s.value}>
-                        {t(s.labelKey)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <select id="stage" value={stage} onChange={(e) => setStage(e.target.value)} className="flex h-10 w-full rounded-lg border border-[#404040] bg-[#0a0a0a] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FACC15]">
+                  <option value="any">{t('common.selectStage') || 'Any'}</option>
+                  {STAGES.map((s) => (
+                    <option key={s.value} value={s.value}>{t(s.labelKey)}</option>
+                  ))}
+                </select>
               </div>
             </CardContent>
           </Card>
