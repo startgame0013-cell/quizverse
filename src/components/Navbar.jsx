@@ -11,15 +11,9 @@ const mainNavItems = [
   ['/join', 'nav.joinGame'],
   ['/leaderboard', 'nav.leaderboard'],
   ['/mini-games', 'nav.miniGames'],
-  ['/visitor-stats', 'nav.visitorStats'],
   ['/about', 'nav.about'],
   ['/privacy', 'nav.privacy'],
   ['/pricing', 'nav.pricing'],
-]
-
-const authNavItems = [
-  ['/sign-in', 'nav.signIn'],
-  ['/register', 'auth.register'],
 ]
 
 export default function Navbar() {
@@ -28,7 +22,7 @@ export default function Navbar() {
   const { t, lang, setLang } = useLanguage()
   const { user, signOut, isAuthenticated } = useAuth()
 
-  const navItems = [...mainNavItems, ...(isAuthenticated ? [] : authNavItems)]
+  const navItems = [...mainNavItems]
 
   const toggleLang = () => {
     setLang(lang === 'ar' ? 'en' : 'ar')
@@ -37,14 +31,6 @@ export default function Navbar() {
   const goBack = () => {
     if (window.history.length > 1) window.history.back()
     else navigate('/', { replace: true })
-  }
-
-  const goForward = () => {
-    if (window.history.length > 1) {
-      try { window.history.forward() } catch (_) { navigate('/create-quiz') }
-    } else {
-      navigate('/create-quiz')
-    }
   }
 
   const isRtl = lang === 'ar'
@@ -74,9 +60,6 @@ export default function Navbar() {
         <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#FACC15', border: 'none', color: '#0a0a0a', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700, boxShadow: '0 2px 8px rgba(250,204,21,0.4)', textDecoration: 'none' }} title={t('nav.back')} aria-label={t('nav.back')}>
           <span style={{ fontSize: '1.3rem' }}>{isRtl ? '→' : '←'}</span> {t('nav.back')}
         </Link>
-        <Link to="/create-quiz" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.4)', color: '#fafafa', padding: '0.6rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600, textDecoration: 'none' }} title={t('nav.next')} aria-label={t('nav.next')}>
-          {t('nav.next')} <span style={{ fontSize: '1.2rem' }}>{isRtl ? '←' : '→'}</span>
-        </Link>
         </div>
         <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none', pointerEvents: 'auto' }}>QuizVerse</Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', pointerEvents: 'auto' }}>
@@ -98,9 +81,6 @@ export default function Navbar() {
             <button type="button" onClick={() => { window.history.back(); setOpen(false); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', background: '#FACC15', border: 'none', color: '#0a0a0a', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 600 }}>
               ← {t('nav.back')}
             </button>
-            <Link to="/create-quiz" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid #333', color: 'white', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', textDecoration: 'none' }}>
-              {t('nav.next')} →
-            </Link>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', paddingBottom: '0.75rem', borderBottom: '1px solid #222' }}>
               <span style={{ color: '#888', fontSize: '0.9rem' }}>{t('settings.language')}</span>
               <button onClick={toggleLang} style={{ background: lang === 'en' ? '#FACC15' : 'rgba(250,204,21,0.15)', border: '1px solid #FACC15', color: lang === 'en' ? '#0a0a0a' : '#FACC15', padding: '0.35rem 0.7rem', borderRadius: '6px', fontSize: '0.85rem', cursor: 'pointer' }}>
