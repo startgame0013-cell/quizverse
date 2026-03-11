@@ -18,7 +18,7 @@ const DIFFICULTIES = [
 ]
 
 export default function AiQuizGenerator() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const { success } = useToast()
   const navigate = useNavigate()
   const [topic, setTopic] = useState('')
@@ -32,7 +32,7 @@ export default function AiQuizGenerator() {
     setLoading(true)
     setQuestions(null)
     setTimeout(() => {
-      const generated = getMockQuestions(topic, difficulty, 5)
+      const generated = getMockQuestions(topic, difficulty, 5, lang)
       setQuestions(generated)
       setLoading(false)
     }, 800)
@@ -40,9 +40,12 @@ export default function AiQuizGenerator() {
 
   const handleSave = () => {
     if (!questions?.length) return
+    const titleFallback = lang === 'ar' ? 'كويز مولّد بالذكاء الاصطناعي' : 'AI Generated Quiz'
     const quiz = {
-      title: topic.trim() || 'AI Generated Quiz',
-      description: `Generated from topic: ${topic}. Difficulty: ${difficulty}.`,
+      title: topic.trim() || titleFallback,
+      description: lang === 'ar'
+        ? `مولّد من الموضوع: ${topic}. الصعوبة: ${t(`difficulty.${difficulty}`)}.`
+        : `Generated from topic: ${topic}. Difficulty: ${difficulty}.`,
       difficulty,
       questions,
     }
