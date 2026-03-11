@@ -1,8 +1,6 @@
 import { useLocation, Link } from 'react-router-dom'
-import { useEffect } from 'react'
 import Navbar from './Navbar'
 import CookieBanner from './CookieBanner'
-import FloatingBackButton from './FloatingBackButton'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Layout({ children }) {
@@ -10,16 +8,9 @@ export default function Layout({ children }) {
   const location = useLocation()
   const isHome = location.pathname === '/'
 
-  // إخفاء زر الرجوع الثابت في الـ HTML لأن التطبيق حمّل ونعرض زر React
-  useEffect(() => {
-    const el = document.getElementById('floating-back-btn')
-    if (el) el.style.display = 'none'
-  }, [])
-
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar />
-      <FloatingBackButton />
       <main className="flex-1 pt-14">
         {children}
       </main>
