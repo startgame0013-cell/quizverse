@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 
-const CONSENT_KEY = 'quiznova_cookie_consent'
+const CONSENT_KEY = 'quizverse_cookie_consent'
 
 export default function CookieBanner() {
   const { t } = useLanguage()

@@ -10,9 +10,9 @@ const FAQ_SCHEMA = {
     { '@type': 'Question', name: 'Do I need an account to play?', acceptedAnswer: { '@type': 'Answer', text: 'No. You can join a live game with just a PIN and a nickname. Creating and saving quizzes or using the AI generator may require an account.' } },
     { '@type': 'Question', name: 'How do I join a live game?', acceptedAnswer: { '@type': 'Answer', text: 'Get the game PIN from the host, go to Join Live Game, enter the PIN and a nickname, then join. No sign-up needed to play.' } },
     { '@type': 'Question', name: 'How many players can join one game?', acceptedAnswer: { '@type': 'Answer', text: 'It depends on your plan. Free tier allows a limited number; paid plans support more players per game (e.g. 50–200).' } },
-    { '@type': 'Question', name: 'Is QuizNova available in Arabic?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. QuizNova is Arabic-first with full English support. You can switch language from the site.' } },
+    { '@type': 'Question', name: 'Is QuizVerse available in Arabic?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. QuizVerse is Arabic-first with full English support. You can switch language from the site.' } },
     { '@type': 'Question', name: 'How do I create a quiz?', acceptedAnswer: { '@type': 'Answer', text: 'Go to Create Quiz, add a title and questions (or use the AI generator), then save. Your quizzes are stored and can be played or hosted as live games.' } },
-    { '@type': 'Question', name: 'Can I use QuizNova in the classroom?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Teachers can create quizzes, host live games with one PIN, and use the leaderboard for engagement. Perfect for review and formative assessment.' } },
+    { '@type': 'Question', name: 'Can I use QuizVerse in the classroom?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Teachers can create quizzes, host live games with one PIN, and use the leaderboard for engagement. Perfect for review and formative assessment.' } },
   ],
 }
 

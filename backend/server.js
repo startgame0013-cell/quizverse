@@ -149,5 +149,5 @@ io.on('connection', (socket) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.log(`QuizNova API — http://localhost:${PORT}`);
+  console.log(`QuizVerse API — http://localhost:${PORT}`);
 });

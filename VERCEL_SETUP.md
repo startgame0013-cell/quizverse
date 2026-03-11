@@ -6,7 +6,7 @@
 
 **أضف رابط MongoDB في Vercel:**
 
-1. افتح [vercel.com](https://vercel.com) → مشروعك QuizNova
+1. افتح [vercel.com](https://vercel.com) → مشروعك QuizVerse
 2. Settings → Environment Variables
 3. أضف متغير:
    - **Name:** `MONGODB_URI`

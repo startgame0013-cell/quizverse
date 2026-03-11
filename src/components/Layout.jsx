@@ -1,6 +1,7 @@
 import { useLocation, Link } from 'react-router-dom'
 import Navbar from './Navbar'
 import CookieBanner from './CookieBanner'
+import { PageErrorBoundary } from './PageErrorBoundary'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Layout({ children }) {
@@ -12,7 +13,9 @@ export default function Layout({ children }) {
     <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar />
       <main className="flex-1 pt-14">
-        {children}
+        <PageErrorBoundary>
+          {children}
+        </PageErrorBoundary>
       </main>
       <CookieBanner />
       {!isHome && (
@@ -20,7 +23,7 @@ export default function Layout({ children }) {
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <Link to="/" className="text-sm font-bold text-[#FACC15] hover:opacity-90">
-                QuizNova
+                QuizVerse
               </Link>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
                 <Link to="/create-quiz" className="transition-colors hover:text-foreground">{t('nav.createQuiz')}</Link>

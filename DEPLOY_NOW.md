@@ -1,4 +1,4 @@
-# Deploy QuizNova Backend — خطوة بخطوة
+# Deploy QuizVerse Backend — خطوة بخطوة
 
 ## الطريقة 1: Render (مجاني)
 

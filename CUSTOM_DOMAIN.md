@@ -4,11 +4,11 @@
 
 من أي مزود (Namecheap, GoDaddy, Google Domains):
 
-- اشترِ دومين مثل `quizverse.com` أو `quiznova.com`
+- اشترِ دومين مثل `quizverse.com
 
 ## 2. ربطه في Vercel
 
-1. ادخل [vercel.com](https://vercel.com) → مشروعك QuizNova
+1. ادخل [vercel.com](https://vercel.com) → مشروعك QuizVerse
 2. **Settings** → **Domains**
 3. اضغط **Add** → اكتب دومينك (مثل `quizverse.com`)
 4. اضغط **Add**

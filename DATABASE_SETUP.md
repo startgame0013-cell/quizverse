@@ -19,7 +19,7 @@ mongodb+srv://startgame0013_db_user:MyPass123@cluster0.kwdmpdu.mongodb.net/?appN
 ## خطوة 2: أضف الرابط في Vercel
 
 1. افتح https://vercel.com
-2. اختر مشروع **quizverse** (أو QuizNova)
+2. اختر مشروع **quizverse** (أو QuizVerse)
 3. **Settings** → **Environment Variables**
 4. **Add New**
 5. **Key:** `MONGODB_URI`

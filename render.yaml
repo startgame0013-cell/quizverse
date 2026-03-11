@@ -1,10 +1,10 @@
-# Render Blueprint — QuizNova Live Game API
+# Render Blueprint — QuizVerse Live Game API
 # Deploy: Connect repo → Render reads this file
 # Add MONGODB_URI in Dashboard → Environment
 
 services:
   - type: web
-    name: quiznova-api
+    name: quizverse-api
     runtime: node
 
     rootDir: backend

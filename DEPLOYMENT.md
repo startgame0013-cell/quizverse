@@ -1,4 +1,4 @@
-# نشر QuizNova Live Game على الإنترنت
+# نشر QuizVerse Live Game على الإنترنت
 
 هذا الدليل يشرح كيفية نشر اللعبة الحية بحيث يعمل الطلاب والمعلمون من أي مكان.
 
@@ -23,7 +23,7 @@
 الطلاب/المعلمون (المتصفح)
         │
         ▼
-QuizNova Frontend (Vercel) — quizverse-lyart.vercel.app
+QuizVerse Frontend (Vercel) — quizverse-lyart.vercel.app
         │
         ▼
 Backend API + Socket.IO (Render أو Railway)
@@ -71,7 +71,7 @@ MongoDB Atlas
 
 ### 4. الحصول على الرابط
 - Settings → Generate Domain
-- الرابط مثل: `https://quiznova-api.up.railway.app`
+- الرابط مثل: `https://quizverse-api.up.railway.app`
 
 ---
 

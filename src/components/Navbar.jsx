@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 
@@ -24,6 +24,7 @@ const authNavItems = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
   const { t, lang, setLang } = useLanguage()
   const { user, signOut, isAuthenticated } = useAuth()
 
@@ -33,6 +34,15 @@ export default function Navbar() {
     setLang(lang === 'ar' ? 'en' : 'ar')
   }
 
+  const goBack = () => {
+    if (window.history.length > 1) window.history.back()
+    else navigate('/', { replace: true })
+  }
+
+  const goForward = () => {
+    window.history.forward()
+  }
+
   const isRtl = lang === 'ar'
 
   return (
@@ -40,14 +50,14 @@ export default function Navbar() {
       <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, background: '#0a0a0a', borderBottom: '1px solid #222', padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
         {/* زر الرجوع — أول عنصر في الشريط، أصفر كبير */}
-        <button type="button" onClick={() => window.history.back()} title={t('nav.back')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#FACC15', border: 'none', color: '#0a0a0a', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700, boxShadow: '0 2px 8px rgba(250,204,21,0.4)' }} aria-label={t('nav.back')}>
+        <button type="button" onClick={goBack} title={t('nav.back')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#FACC15', border: 'none', color: '#0a0a0a', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', fontWeight: 700, boxShadow: '0 2px 8px rgba(250,204,21,0.4)' }} aria-label={t('nav.back')}>
           <span style={{ fontSize: '1.3rem' }}>{isRtl ? '→' : '←'}</span> {t('nav.back')}
         </button>
-        <button type="button" onClick={() => window.history.forward()} title={t('nav.next')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.4)', color: '#fafafa', padding: '0.6rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }} aria-label={t('nav.next')}>
+        <button type="button" onClick={goForward} title={t('nav.next')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.4)', color: '#fafafa', padding: '0.6rem 1rem', borderRadius: '8px', fontSize: '1rem', cursor: 'pointer', fontWeight: 600 }} aria-label={t('nav.next')}>
           {t('nav.next')} <span style={{ fontSize: '1.2rem' }}>{isRtl ? '←' : '→'}</span>
         </button>
         </div>
-        <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none' }}>QuizNova</Link>
+        <Link to="/" style={{ color: '#FACC15', fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'none' }}>QuizVerse</Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button
             onClick={toggleLang}
