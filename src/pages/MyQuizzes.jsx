@@ -19,6 +19,40 @@ function formatDate(ts, lang) {
   return d.toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US', { dateStyle: 'medium' })
 }
 
+function buildDisplayTitle(quiz, lang, t, display) {
+  const rawTitle = (display.title || '').trim()
+  if (rawTitle) return rawTitle
+
+  const parts = []
+  if (quiz.category) {
+    const catLabel = t(`category.${quiz.category}`) || quiz.category
+    parts.push(catLabel)
+  }
+  if (quiz.stage) {
+    parts.push(t(`stage.${quiz.stage}`))
+  }
+  if (quiz.difficulty) {
+    parts.push(t(`difficulty.${quiz.difficulty}`))
+  }
+
+  if (parts.length > 0) {
+    if (lang === 'ar') {
+      return `كويز ${parts.join(' - ')}`
+    }
+    return `Quiz - ${parts.join(' · ')}`
+  }
+
+  const datePart = formatDate(quiz.updatedAt || quiz.createdAt, lang)
+  if (datePart) {
+    if (lang === 'ar') {
+      return `كويز ${datePart}`
+    }
+    return `Quiz ${datePart}`
+  }
+
+  return t('myQuizzes.untitled')
+}
+
 export default function MyQuizzes() {
   const { t, lang } = useLanguage()
   const { success } = useToast()
@@ -217,12 +251,13 @@ export default function MyQuizzes() {
         <div className="space-y-4">
           {paginated.map((quiz) => {
             const d = getQuizDisplay(quiz, lang)
+            const title = buildDisplayTitle(quiz, lang, t, d)
             return (
             <Card key={quiz.id} className="transition-shadow hover:shadow-soft">
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                 <Link to={`/quiz/${quiz.id}/details`} className="flex-1 min-w-0">
                   <CardTitle className="text-lg truncate">
-                    {d.title || t('myQuizzes.untitled')}
+                    {title}
                   </CardTitle>
                   <CardDescription className="mt-1">
                     {quiz.questions?.length || 0} {t('myQuizzes.questions')} · {formatDate(quiz.updatedAt, lang)}
