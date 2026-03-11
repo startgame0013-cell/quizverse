@@ -102,26 +102,30 @@ export function duplicateQuiz(id) {
   return saveQuiz(copy)
 }
 
-/** Seed quizzes on first load. Only ALL_SUBJECTS to avoid duplication (demo/Kuwait overlap). */
+/** Seed quizzes on first load: كل المواد + منهج الكويت الابتدائي 2026 */
 export async function seedDemoQuizzesIfNeeded() {
   try {
     if (!localStorage.getItem(DEMO_SEEDED_KEY)) localStorage.setItem(DEMO_SEEDED_KEY, '1')
     if (!localStorage.getItem(KUWAIT_2026_SEEDED_KEY)) localStorage.setItem(KUWAIT_2026_SEEDED_KEY, '1')
     if (!localStorage.getItem(ALL_SUBJECTS_SEEDED_KEY)) {
       const { ALL_SUBJECTS_QUIZZES } = await import('@/data/allSubjectsQuizzes.js')
+      const { KUWAIT_ELEMENTARY_2026_QUIZZES } = await import('@/data/kuwaitElementary2026.js')
       const existing = getAllQuizzes()
       if (existing.length === 0) {
         ALL_SUBJECTS_QUIZZES.forEach((quiz) => saveQuiz(quiz))
+        KUWAIT_ELEMENTARY_2026_QUIZZES.forEach((quiz) => saveQuiz(quiz))
       }
       localStorage.setItem(ALL_SUBJECTS_SEEDED_KEY, '1')
     }
   } catch {}
 }
 
-/** Reset quizzes to default set only (removes duplicates). */
+/** Reset quizzes to default: كل المواد + منهج الكويت الابتدائي 2026 */
 export async function resetQuizzesToDefault() {
   const { ALL_SUBJECTS_QUIZZES } = await import('@/data/allSubjectsQuizzes.js')
+  const { KUWAIT_ELEMENTARY_2026_QUIZZES } = await import('@/data/kuwaitElementary2026.js')
   localStorage.setItem(STORAGE_KEY, '[]')
   ALL_SUBJECTS_QUIZZES.forEach((quiz) => saveQuiz(quiz))
+  KUWAIT_ELEMENTARY_2026_QUIZZES.forEach((quiz) => saveQuiz(quiz))
 }
 
