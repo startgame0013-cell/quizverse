@@ -25,9 +25,13 @@ import Register from './pages/Register'
 import GetStarted from './pages/GetStarted'
 import VisitorStats from './pages/VisitorStats'
 import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
+import FAQ from './pages/FAQ'
+import Pricing from './pages/Pricing'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
 import VisitTracker from './components/VisitTracker'
+import { Analytics } from '@vercel/analytics/react'
 import HostLiveGame from './pages/HostLiveGame'
 import LiveGamePlayer from './pages/LiveGamePlayer'
 
@@ -63,6 +67,9 @@ export default function App() {
               <Route path="/get-started" element={<GetStarted />} />
               <Route path="/visitor-stats" element={<VisitorStats />} />
               <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
@@ -70,6 +77,7 @@ export default function App() {
           </Layout>
         </ToastProvider>
       </AuthProvider>
+      <Analytics />
     </LanguageProvider>
   )
 }

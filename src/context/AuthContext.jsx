@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
 
   const signIn = async (email, password) => {
     if (!API) {
-      const u = { id: 'u1', email, name: email.split('@')[0], demo: true }
+      const u = { id: 'u1', email, name: email.split('@')[0], displayName: email.split('@')[0], demo: true }
       persist(u, null)
       return u
     }
@@ -42,25 +42,25 @@ export function AuthProvider({ children }) {
     })
     const data = await res.json()
     if (!data.ok) throw new Error(data.error || 'Login failed')
-    const u = { id: data.user.id, email: data.user.email, name: data.user.name, role: data.user.role }
+    const u = { id: data.user.id, email: data.user.email, name: data.user.name, displayName: data.user.displayName || data.user.name, role: data.user.role }
     persist(u, data.token)
     return u
   }
 
-  const register = async (email, password, name) => {
+  const register = async (email, password, name, displayName) => {
     if (!API) {
-      const u = { id: 'u_' + Date.now(), email, name: name || email.split('@')[0], demo: true }
+      const u = { id: 'u_' + Date.now(), email, name: name || email.split('@')[0], displayName: displayName || name || email.split('@')[0], demo: true }
       persist(u, null)
       return u
     }
     const res = await fetch(`${API}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.trim(), password, name: (name || '').trim() || email.split('@')[0] }),
+      body: JSON.stringify({ email: email.trim(), password, name: (name || '').trim() || email.split('@')[0], displayName: (displayName || '').trim() || undefined }),
     })
     const data = await res.json()
     if (!data.ok) throw new Error(data.error || 'Registration failed')
-    const u = { id: data.user.id, email: data.user.email, name: data.user.name, role: data.user.role }
+    const u = { id: data.user.id, email: data.user.email, name: data.user.name, displayName: data.user.displayName || data.user.name, role: data.user.role }
     persist(u, data.token)
     return u
   }

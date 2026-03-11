@@ -263,6 +263,11 @@ export default function Home() {
                 {t('home.joinWithPin')}
               </Link>
             </Button>
+            <Button size="lg" variant="outline" className="gap-2" asChild>
+              <Link to="/pricing">
+                {t('nav.pricing')}
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       </Section>

@@ -3,6 +3,8 @@ import { createServer } from 'http';
 import express from 'express';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { connectDB } from './config/db.js';
 import authRoutes from './routes/auth.js';
 import quizzesRoutes from './routes/quizzes.js';
@@ -10,6 +12,7 @@ import scoresRoutes from './routes/scores.js';
 import classesRoutes from './routes/classes.js';
 import aiRoutes from './routes/ai.js';
 import statsRoutes from './routes/stats.js';
+import subscriptionRoutes from './routes/subscription.js';
 import gameRoutes from './routes/game.js';
 import GameSession from './models/GameSession.js';
 
@@ -28,14 +31,22 @@ const io = new Server(httpServer, { cors: { origin: corsOrigins } });
 const PORT = process.env.PORT || 4000;
 
 app.use(cors({ origin: corsOrigins, credentials: true }));
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+// Rate limit auth routes to prevent brute force
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { ok: false, error: 'Too many attempts. Try again later.' },
+});
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/quizzes', quizzesRoutes);
 app.use('/api/scores', scoresRoutes);
 app.use('/api/classes', classesRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/subscription', subscriptionRoutes);
 app.set('io', io);
 app.use('/api/game', gameRoutes);
 

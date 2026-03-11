@@ -20,10 +20,23 @@
     <meta property="og:url" content="https://quizverse-lyart.vercel.app" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="QuizNova – Play & Create Quizzes" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="canonical" href="https://quizverse-lyart.vercel.app/" />
+    <link rel="manifest" href="/manifest.json" />
     <title>QuizNova – Play & Create Quizzes</title>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"Organization","name":"QuizNova","url":"https://quizverse-lyart.vercel.app","description":"Arabic-first interactive quiz platform for schools, teachers, students, and families."}
+    </script>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"WebSite","name":"QuizNova","url":"https://quizverse-lyart.vercel.app","description":"Play and create quizzes. Join live games with a PIN. Leaderboard and mini games."}
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- زر رجوع ثابت يظهر دائماً حتى لو الصفحة سوداء أو فيها خطأ -->
+    <a href="/" id="floating-back-btn" style="position:fixed;top:80px;left:12px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:#FACC15;color:#0a0a0a;padding:10px 16px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.4);" title="رجوع / Back">← رجوع</a>
+    <div id="root">
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0a0a;color:#FACC15;font-size:1.2rem;">جاري التحميل… / Loading…</div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

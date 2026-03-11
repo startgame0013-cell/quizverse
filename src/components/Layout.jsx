@@ -1,5 +1,8 @@
 import { useLocation, Link } from 'react-router-dom'
+import { useEffect } from 'react'
 import Navbar from './Navbar'
+import CookieBanner from './CookieBanner'
+import FloatingBackButton from './FloatingBackButton'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Layout({ children }) {
@@ -7,12 +10,20 @@ export default function Layout({ children }) {
   const location = useLocation()
   const isHome = location.pathname === '/'
 
+  // إخفاء زر الرجوع الثابت في الـ HTML لأن التطبيق حمّل ونعرض زر React
+  useEffect(() => {
+    const el = document.getElementById('floating-back-btn')
+    if (el) el.style.display = 'none'
+  }, [])
+
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar />
+      <FloatingBackButton />
       <main className="flex-1 pt-14">
         {children}
       </main>
+      <CookieBanner />
       {!isHome && (
         <footer className="border-t border-white/5 bg-[#0a0a0a] px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
@@ -28,6 +39,9 @@ export default function Layout({ children }) {
                 <Link to="/ai-generator" className="transition-colors hover:text-foreground">{t('nav.aiGenerator')}</Link>
                 <Link to="/about" className="transition-colors hover:text-foreground">{t('nav.about')}</Link>
                 <Link to="/privacy" className="transition-colors hover:text-foreground">{t('nav.privacy')}</Link>
+                <Link to="/terms" className="transition-colors hover:text-foreground">{t('nav.terms')}</Link>
+                <Link to="/faq" className="transition-colors hover:text-foreground">{t('nav.faq')}</Link>
+                <Link to="/pricing" className="transition-colors hover:text-foreground">{t('nav.pricing')}</Link>
               </div>
             </div>
             <p className="mt-4 text-center text-xs text-muted-foreground sm:text-left">

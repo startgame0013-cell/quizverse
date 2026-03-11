@@ -18,13 +18,14 @@ export default function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [displayName, setDisplayName] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email.trim() || !password.trim()) return
     setSubmitting(true)
     try {
-      await register(email, password, name.trim() || undefined)
+      await register(email, password, name.trim() || undefined, displayName.trim() || undefined)
       success(t('auth.registerSuccess'))
       navigate('/')
     } catch (err) {
@@ -49,6 +50,15 @@ export default function Register() {
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                 <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="pl-9" />
               </div>
+              <p className="text-xs text-muted-foreground">{t('auth.namePrivate', 'Kept private, not shown publicly.')}</p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="displayName">{t('auth.displayName')}</Label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Input id="displayName" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="e.g. QuizMaster99" className="pl-9" />
+              </div>
+              <p className="text-xs text-muted-foreground">{t('auth.displayNameHint', 'Optional. Shown in leaderboard and games. Leave empty to use your name.')}</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">{t('auth.email')}</Label>
