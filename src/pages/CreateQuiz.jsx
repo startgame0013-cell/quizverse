@@ -195,9 +195,9 @@ export default function CreateQuiz() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [difficulty, setDifficulty] = useState('medium')
-  const [category, setCategory] = useState('')
-  const [audience, setAudience] = useState('')
-  const [stage, setStage] = useState('')
+  const [category, setCategory] = useState('general')
+  const [audience, setAudience] = useState('students')
+  const [stage, setStage] = useState('any')
   const [questions, setQuestions] = useState([emptyQuestion()])
   const [saved, setSaved] = useState(false)
 
@@ -222,9 +222,9 @@ export default function CreateQuiz() {
         setTitle(q.title || '')
         setDescription(q.description || '')
         setDifficulty(q.difficulty || 'medium')
-        setCategory(q.category || '')
-        setAudience(q.audience || '')
-        setStage(q.stage || '')
+        setCategory(q.category || 'general')
+        setAudience(q.audience || 'students')
+        setStage(q.stage || 'any')
         setQuestions(
           (q.questions?.length ? q.questions : [emptyQuestion()]).map((qn) => ({
             text: qn.text || '',
@@ -267,7 +267,7 @@ export default function CreateQuiz() {
       difficulty,
       category: category || undefined,
       audience: audience || undefined,
-      stage: stage || undefined,
+      stage: stage === 'any' ? undefined : stage,
       questions: questions.map((q) => ({
         ...q,
         text: q.text.trim(),
@@ -358,7 +358,7 @@ export default function CreateQuiz() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="category">{t('createQuiz.category')}</Label>
-                  <Select value={category || 'general'} onValueChange={setCategory}>
+                  <Select value={category} onValueChange={setCategory}>
                     <SelectTrigger id="category">
                       <SelectValue />
                     </SelectTrigger>
@@ -374,7 +374,7 @@ export default function CreateQuiz() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="audience">{t('createQuiz.audience')}</Label>
-                <Select value={audience || 'students'} onValueChange={setAudience}>
+                <Select value={audience} onValueChange={setAudience}>
                   <SelectTrigger id="audience">
                     <SelectValue />
                   </SelectTrigger>
@@ -389,12 +389,12 @@ export default function CreateQuiz() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="stage">{t('createQuiz.stage')}</Label>
-                <Select value={stage || ''} onValueChange={setStage}>
+                <Select value={stage} onValueChange={setStage}>
                   <SelectTrigger id="stage">
                     <SelectValue placeholder={t('common.selectStage') || 'Any'} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">{t('common.selectStage') || 'Any'}</SelectItem>
+                    <SelectItem value="any">{t('common.selectStage') || 'Any'}</SelectItem>
                     {STAGES.map((s) => (
                       <SelectItem key={s.value} value={s.value}>
                         {t(s.labelKey)}
