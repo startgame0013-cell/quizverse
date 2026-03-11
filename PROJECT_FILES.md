@@ -8,8 +8,7 @@ Press **Cmd+P** (Mac) or **Ctrl+P** (Windows) and type the file name to open it 
 
 ```
 quizverse/
-├── src/                 ← MAIN FRONTEND (active app, deployed to Vercel)
-├── frontend/            ← Alternate frontend (older/different version)
+├── src/                 ← Frontend (React + Vite, deployed to Vercel)
 ├── backend/             ← Node.js API server
 ├── index.html
 ├── vercel.json
@@ -148,35 +147,9 @@ Node.js + Express API. Run with `cd backend && npm start`.
 
 ---
 
-## FRONTEND (alternate) (`frontend/`)
-
-Alternate frontend. Separate from main `src/`.
-
-| File | Description |
-|------|-------------|
-| `frontend/package.json` | Dependencies |
-| `frontend/vite.config.js` | Vite config |
-| `frontend/src/main.jsx` | Entry |
-| `frontend/src/App.jsx` | App |
-| `frontend/src/components/Navbar.jsx` | Navbar |
-| `frontend/src/components/Layout.jsx` | Layout |
-| `frontend/src/context/AuthContext.jsx` | Auth |
-| `frontend/src/pages/Home.jsx` | Home |
-| `frontend/src/pages/Login.jsx` | Login |
-| `frontend/src/pages/Register.jsx` | Register |
-| `frontend/src/pages/CreateQuiz.jsx` | Create quiz |
-| `frontend/src/pages/QuizList.jsx` | Quiz list |
-| `frontend/src/pages/TakeQuiz.jsx` | Take quiz |
-| `frontend/src/pages/Leaderboard.jsx` | Leaderboard |
-| `frontend/src/pages/Classes.jsx` | Classes |
-| `frontend/src/pages/Dashboard.jsx` | Dashboard |
-
----
-
 ## How to run
 
 | Part | Command | URL |
 |------|---------|-----|
-| Main frontend | `npm run dev` | http://localhost:5173 |
+| Frontend | `npm run dev` | http://localhost:5173 |
 | Backend | `cd backend && npm start` | http://localhost:4000 |
-| Alternate frontend | `cd frontend && npm run dev` | (check port) |

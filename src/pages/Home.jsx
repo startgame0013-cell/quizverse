@@ -103,9 +103,9 @@ export default function Home() {
   ]
 
   const howItWorksSteps = [
-    { titleKey: 'home.step1Title', descKey: 'home.step1Desc', to: '/create-quiz', icon: PenSquare },
-    { titleKey: 'home.step2Title', descKey: 'home.step2Desc', to: '/join', icon: Play },
-    { titleKey: 'home.step3Title', descKey: 'home.step3Desc', to: '/leaderboard', icon: Trophy },
+    { titleKey: 'home.step1Title', descKey: 'home.step1Desc', icon: PenSquare },
+    { titleKey: 'home.step2Title', descKey: 'home.step2Desc', icon: Play },
+    { titleKey: 'home.step3Title', descKey: 'home.step3Desc', icon: Trophy },
   ]
 
   return (
@@ -191,20 +191,18 @@ export default function Home() {
         className="border-t border-border"
       >
         <div className="grid gap-6 sm:grid-cols-3">
-          {howItWorksSteps.map(({ titleKey, descKey, to, icon: Icon }) => (
-            <Link key={to} to={to}>
-              <Card className="h-full transition-all hover:border-primary/30 hover:shadow-soft group">
-                <CardContent className="pt-6 text-center">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary group-hover:bg-primary/25 transition-colors">
-                    <Icon className="size-6" strokeWidth={2} />
-                  </span>
-                  <h3 className="mt-4 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {t(titleKey)}
-                  </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{t(descKey)}</p>
-                </CardContent>
-              </Card>
-            </Link>
+          {howItWorksSteps.map(({ titleKey, descKey, icon: Icon }) => (
+            <Card key={titleKey} className="h-full">
+              <CardContent className="pt-6 text-center">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <Icon className="size-6" strokeWidth={2} />
+                </span>
+                <h3 className="mt-4 text-lg font-semibold text-foreground">
+                  {t(titleKey)}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground">{t(descKey)}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </Section>
@@ -229,47 +227,10 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{t(descKey)}</p>
-                <Button size="sm" className="mt-4 gap-2" asChild>
-                  <Link to={to}>
-                    {t(ctaKey)}
-                    <Play className="size-3.5" />
-                  </Link>
-                </Button>
               </CardContent>
             </Card>
           ))}
         </div>
-      </Section>
-
-      {/* CTA */}
-      <Section className="border-t border-border pb-20" title={null} subtitle={null}>
-        <Card className="mx-auto max-w-2xl text-center">
-          <CardHeader>
-            <CardTitle className="text-2xl">{t('home.readyToPlay')}</CardTitle>
-            <CardDescription className="text-base">
-              {t('home.readyToPlaySub')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-wrap items-center justify-center gap-3">
-            <Button size="lg" className="gap-2" asChild>
-              <Link to="/get-started">
-                <Sparkles className={iconClass} />
-                {t('home.getStarted')}
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2" asChild>
-              <Link to="/join">
-                <Play className={iconClass} />
-                {t('home.joinWithPin')}
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2" asChild>
-              <Link to="/pricing">
-                {t('nav.pricing')}
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
       </Section>
 
       {/* Footer */}
