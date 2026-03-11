@@ -31,6 +31,7 @@ export default function Layout({ children }) {
                 <Link to="/leaderboard" className="transition-colors hover:text-foreground">{t('nav.leaderboard')}</Link>
                 <Link to="/mini-games" className="transition-colors hover:text-foreground">{t('nav.miniGames')}</Link>
                 <Link to="/ai-generator" className="transition-colors hover:text-foreground">{t('nav.aiGenerator')}</Link>
+                <Link to="/flashcards" className="transition-colors hover:text-foreground">{t('nav.flashcards')}</Link>
                 <Link to="/about" className="transition-colors hover:text-foreground">{t('nav.about')}</Link>
                 <Link to="/privacy" className="transition-colors hover:text-foreground">{t('nav.privacy')}</Link>
                 <Link to="/terms" className="transition-colors hover:text-foreground">{t('nav.terms')}</Link>

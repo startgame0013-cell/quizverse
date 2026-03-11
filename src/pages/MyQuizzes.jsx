@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { PenSquare, Trash2, Play, Copy, Radio, Search, SlidersHorizontal, X } from 'lucide-react'
+import { PenSquare, Trash2, Play, Copy, Radio, Search, SlidersHorizontal, X, Layers } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -272,6 +272,11 @@ export default function MyQuizzes() {
                   <Button variant="ghost" size="icon" asChild title={t('myQuizzes.play')}>
                     <Link to={`/quiz/${quiz.id}`}>
                       <Play className="size-4" />
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="icon" asChild title={t('myQuizzes.flashcards')}>
+                    <Link to={`/flashcards/${quiz.id}`}>
+                      <Layers className="size-4" />
                     </Link>
                   </Button>
                   <Button variant="ghost" size="icon" onClick={(e) => handleDuplicate(e, quiz.id)} title={t('myQuizzes.duplicate')}>

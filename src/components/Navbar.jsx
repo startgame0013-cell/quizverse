@@ -11,6 +11,7 @@ const mainNavItems = [
   ['/join', 'nav.joinGame'],
   ['/leaderboard', 'nav.leaderboard'],
   ['/mini-games', 'nav.miniGames'],
+  ['/flashcards', 'nav.flashcards'],
   ['/about', 'nav.about'],
   ['/privacy', 'nav.privacy'],
   ['/pricing', 'nav.pricing'],

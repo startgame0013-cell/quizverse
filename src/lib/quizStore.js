@@ -47,25 +47,21 @@ export function getQuizById(id) {
   return getAllQuizzes().find((q) => q.id === id) ?? null
 }
 
-/** Get question text/options in the current language, with fallback to the other language. */
+/** Get question text/options in the selected language only (no fallback — توحيد اللغة). */
 export function getQuestionDisplay(question, lang) {
   if (!question) return { text: '', options: [] }
   const isAr = lang === 'ar'
-  const text = isAr
-    ? (question.textAr || question.text || '')
-    : (question.text || question.textAr || '')
-  const options = isAr
-    ? (question.optionsAr || question.options || [])
-    : (question.options || question.optionsAr || [])
+  const text = isAr ? (question.textAr || '') : (question.text || '')
+  const options = isAr ? (question.optionsAr || []) : (question.options || [])
   return { text, options }
 }
 
-/** Get quiz title/description in the current language, with fallback to the other language. */
+/** Get quiz title/description in the selected language only (no fallback). */
 export function getQuizDisplay(quiz, lang) {
   if (!quiz) return { title: '', description: '' }
   const isAr = lang === 'ar'
-  const title = (isAr ? (quiz.titleAr || quiz.title) : (quiz.title || quiz.titleAr)) || ''
-  const description = (isAr ? (quiz.descriptionAr || quiz.description) : (quiz.description || quiz.descriptionAr)) || ''
+  const title = isAr ? (quiz.titleAr || '') : (quiz.title || '')
+  const description = isAr ? (quiz.descriptionAr || '') : (quiz.description || '')
   return { title, description }
 }
 

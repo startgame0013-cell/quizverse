@@ -36,7 +36,7 @@ export default function Flashcards() {
           <div className="space-y-3">
             {withQuestions.map((q) => {
               const d = getQuizDisplay(q, lang)
-              const title = d.title || q.title || q.titleAr || t('flashcards.untitledQuiz')
+              const title = d.title || t('flashcards.untitledQuiz')
               return (
                 <Link key={q.id} to={`/flashcards/${q.id}`}>
                   <Card className="transition-shadow hover:shadow-lg cursor-pointer">
@@ -91,7 +91,7 @@ export default function Flashcards() {
   const correctAnswer = Array.isArray(display.options) && typeof current.correctIndex === 'number'
     ? (display.options[current.correctIndex] ?? '')
     : ''
-  const explanation = lang === 'ar' ? (current.explanationAr || current.explanation) : (current.explanation || current.explanationAr)
+  const explanation = lang === 'ar' ? (current.explanationAr || '') : (current.explanation || '')
   const isFirst = currentIndex === 0
   const isLast = currentIndex === questions.length - 1
 

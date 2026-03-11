@@ -14,15 +14,11 @@ import {
   Radio,
   Brain,
   Layers,
-  ChevronLeft,
-  ChevronRight,
-  RotateCw,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Section from '@/components/Section'
 import { useLanguage } from '@/context/LanguageContext'
-import { getAllQuizzes, getQuizById, getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
 
 const iconClass = 'size-5 shrink-0'
 
@@ -34,109 +30,8 @@ function formatCount(n) {
   return String(n)
 }
 
-function FlashcardBlock({ t, lang }) {
-  let quizzes = []
-  try {
-    quizzes = getAllQuizzes().filter((q) => (q.questions || []).length > 0)
-  } catch {
-    // localStorage قد لا يكون متاحاً أثناء البناء
-  }
-  const [quizId, setQuizId] = useState(quizzes[0]?.id || '')
-  const [index, setIndex] = useState(0)
-  const [flipped, setFlipped] = useState(false)
-
-  const quiz = quizId ? getQuizById(quizId) : null
-  const questions = quiz?.questions || []
-  const current = questions[index]
-  const display = current ? getQuestionDisplay(current, lang) : { text: '', options: [] }
-  const correctAnswer = current && Array.isArray(display.options) && typeof current.correctIndex === 'number'
-    ? (display.options[current.correctIndex] ?? '')
-    : ''
-  const explanation = current && (lang === 'ar' ? (current.explanationAr || current.explanation) : (current.explanation || current.explanationAr))
-  const isFirst = index === 0
-  const isLast = index >= questions.length - 1
-
-  if (quizzes.length === 0) {
-    return (
-      <Card className="h-full">
-        <CardHeader className="pb-2">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
-            <Layers className="size-6" />
-          </div>
-          <CardTitle className="text-lg mt-3">{t('home.flashcardsCard')}</CardTitle>
-          <CardDescription>{t('flashcards.noQuizzes')}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/my-quizzes">{t('flashcards.goToMyQuizzes')}</Link>
-          </Button>
-        </CardContent>
-      </Card>
-    )
-  }
-
-  useEffect(() => {
-    if (quizzes.length > 0 && !quizId) setQuizId(quizzes[0].id)
-  }, [quizzes.length, quizId])
-
-  return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="pb-2">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
-          <Layers className="size-6" />
-        </div>
-        <CardTitle className="text-lg mt-3">{t('home.flashcardsCard')}</CardTitle>
-        <CardDescription>{t('home.flashcardsCardDesc')}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col min-h-0 pt-2">
-        <select
-          value={quizId}
-          onChange={(e) => { setQuizId(e.target.value); setIndex(0); setFlipped(false); }}
-          className="mb-3 w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm text-foreground"
-        >
-          {quizzes.map((q) => (
-            <option key={q.id} value={q.id}>
-              {getQuizDisplay(q, lang).title || t('flashcards.untitledQuiz')}
-            </option>
-          ))}
-        </select>
-        {current ? (
-          <>
-            <div
-              className="flex-1 min-h-[120px] rounded-xl border border-border bg-muted/20 p-4 flex flex-col justify-center cursor-pointer"
-              onClick={() => setFlipped((f) => !f)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setFlipped((f) => !f); } }}
-            >
-              {!flipped ? (
-                <p className="text-sm font-medium text-foreground line-clamp-3">{display.text || t('flashcards.noQuestion')}</p>
-              ) : (
-                <div>
-                  <p className="text-sm font-semibold text-primary">{correctAnswer}</p>
-                  {explanation && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{explanation}</p>}
-                </div>
-              )}
-              <p className="text-xs text-muted-foreground mt-2">{t('flashcards.tapToFlip')}</p>
-            </div>
-            <div className="flex items-center justify-between gap-2 mt-3">
-              <Button variant="outline" size="sm" onClick={() => { setIndex((i) => Math.max(0, i - 1)); setFlipped(false); }} disabled={isFirst}>
-                {lang === 'ar' ? <ChevronRight className="size-4" /> : <ChevronLeft className="size-4" />}
-              </Button>
-              <span className="text-xs text-muted-foreground">{index + 1} / {questions.length}</span>
-              <Button variant="outline" size="sm" onClick={() => { setIndex((i) => Math.min(questions.length - 1, i + 1)); setFlipped(false); }} disabled={isLast}>
-                {lang === 'ar' ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
-              </Button>
-            </div>
-          </>
-        ) : null}
-      </CardContent>
-    </Card>
-  )
-}
-
 export default function Home() {
-  const { t, lang } = useLanguage()
+  const { t } = useLanguage()
   const [stats, setStats] = useState([
     { value: '...', labelKey: 'home.statsQuizzes', icon: PenSquare },
     { value: '...', labelKey: 'home.statsPlayers', icon: Users },
@@ -262,7 +157,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Feature cards + بطاقات تعليمية (مستطيل مدمج بجانب ألعاب مصغرة) */}
+      {/* Feature cards — فلاش كارد كرابط: تدخل وتلقى صفحة فلاش كارد */}
       <Section title={null} subtitle={null} className="border-t border-border">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
@@ -271,6 +166,7 @@ export default function Home() {
             { titleKey: 'home.liveModes', descKey: 'home.liveModesDesc', to: '/join', icon: Radio },
             { titleKey: 'home.leaderboardCard', descKey: 'home.leaderboardCardDesc', to: '/leaderboard', icon: Trophy },
             { titleKey: 'home.miniGamesCard', descKey: 'home.miniGamesCardDesc', to: '/mini-games', icon: Brain },
+            { titleKey: 'home.flashcardsCard', descKey: 'home.flashcardsCardDesc', to: '/flashcards', icon: Layers },
           ].map(({ titleKey, descKey, to, icon: Icon }) => (
             <Link key={to} to={to}>
               <Card className="h-full transition-all hover:border-primary/30 hover:shadow-soft group">
@@ -286,7 +182,6 @@ export default function Home() {
               </Card>
             </Link>
           ))}
-          <FlashcardBlock t={t} lang={lang} />
         </div>
       </Section>
 
@@ -351,6 +246,7 @@ export default function Home() {
               <Link to="/join" className="transition-colors hover:text-foreground">{t('nav.joinGame')}</Link>
               <Link to="/leaderboard" className="transition-colors hover:text-foreground">{t('nav.leaderboard')}</Link>
               <Link to="/mini-games" className="transition-colors hover:text-foreground">{t('nav.miniGames')}</Link>
+              <Link to="/flashcards" className="transition-colors hover:text-foreground">{t('nav.flashcards')}</Link>
               <Link to="/ai-generator" className="transition-colors hover:text-foreground">{t('nav.aiGenerator')}</Link>
             </div>
           </div>
