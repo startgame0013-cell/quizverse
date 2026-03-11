@@ -6,7 +6,8 @@
 export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   // لغة عربية - الصف الثالث
   {
-    title: 'لغة عربية - الصف الثالث ابتدائي 2026',
+    title: 'Arabic Language - Grade 3 Elementary 2026',
+    titleAr: 'لغة عربية - الصف الثالث ابتدائي 2026',
     description: 'قراءة ونحو وإملاء وفق مناهج الكويت للمرحلة الابتدائية.',
     category: 'language',
     audience: 'students',
@@ -22,7 +23,8 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   },
   // رياضيات - الصف الرابع
   {
-    title: 'رياضيات - الصف الرابع ابتدائي 2026',
+    title: 'Mathematics - Grade 4 Elementary 2026',
+    titleAr: 'رياضيات - الصف الرابع ابتدائي 2026',
     description: 'عمليات حسابية وكسور وهندسة للمرحلة الابتدائية.',
     category: 'science',
     audience: 'students',
@@ -38,7 +40,8 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   },
   // علوم - الصف الخامس
   {
-    title: 'علوم - الصف الخامس ابتدائي 2026',
+    title: 'Science - Grade 5 Elementary 2026',
+    titleAr: 'علوم - الصف الخامس ابتدائي 2026',
     description: 'علوم الحياة والطبيعة وفق مناهج وزارة التربية الكويتية.',
     category: 'science',
     audience: 'students',
@@ -54,7 +57,8 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   },
   // تربية إسلامية - ابتدائي
   {
-    title: 'تربية إسلامية - المرحلة الابتدائية 2026',
+    title: 'Islamic Education - Elementary Stage 2026',
+    titleAr: 'تربية إسلامية - المرحلة الابتدائية 2026',
     description: 'أركان الإسلام والإيمان وآداب وسنن.',
     category: 'religion',
     audience: 'students',
@@ -70,7 +74,8 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   },
   // تربية وطنية / اجتماعيات - الكويت
   {
-    title: 'تربية وطنية - الكويت والهوية 2026',
+    title: 'National Education - Kuwait and Identity 2026',
+    titleAr: 'تربية وطنية - الكويت والهوية 2026',
     description: 'تاريخ الكويت ومؤسساتها وهوية المواطن.',
     category: 'history',
     audience: 'students',
@@ -87,6 +92,7 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   // لغة إنجليزية - الصف الرابع/الخامس
   {
     title: 'English - Grade 4-5 Kuwait 2026',
+    titleAr: 'إنجليزي - الصف الرابع والخامس الكويت 2026',
     description: 'Vocabulary, grammar and reading for elementary level.',
     category: 'language',
     audience: 'students',
@@ -102,7 +108,8 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   },
   // رياضيات - الصف الثالث (أسهل)
   {
-    title: 'رياضيات - الصف الثالث ابتدائي 2026',
+    title: 'Mathematics - Grade 3 Elementary 2026',
+    titleAr: 'رياضيات - الصف الثالث ابتدائي 2026',
     description: 'جمع وطرح وضرب للأعداد الصحيحة.',
     category: 'science',
     audience: 'students',
@@ -118,7 +125,8 @@ export const KUWAIT_ELEMENTARY_2026_QUIZZES = [
   },
   // علوم - الصف الثالث والرابع
   {
-    title: 'علوم - الصف الثالث والرابع 2026',
+    title: 'Science - Grade 3 and 4 2026',
+    titleAr: 'علوم - الصف الثالث والرابع 2026',
     description: 'كائنات حية وطبيعة وبسيطة.',
     category: 'science',
     audience: 'students',
