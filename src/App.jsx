@@ -20,6 +20,7 @@ import FlagChallenge from './pages/FlagChallenge'
 import QuickTrivia from './pages/QuickTrivia'
 import Vortex from './pages/Vortex'
 import AiQuizGenerator from './pages/AiQuizGenerator'
+import Flashcards from './pages/Flashcards'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import FAQ from './pages/FAQ'
@@ -58,6 +59,8 @@ export default function App() {
               <Route path="/mini-games/quick-trivia" element={<QuickTrivia />} />
               <Route path="/mini-games/vortex" element={<Vortex />} />
               <Route path="/ai-generator" element={<AiQuizGenerator />} />
+              <Route path="/flashcards" element={<Flashcards />} />
+              <Route path="/flashcards/:quizId" element={<Flashcards />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/faq" element={<FAQ />} />

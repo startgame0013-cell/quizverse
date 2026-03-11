@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom'
-import { Plus, Trash2, Save, Sparkles, PenSquare, Eye } from 'lucide-react'
+import { Plus, Trash2, Save, Sparkles, PenSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { saveQuiz, getQuizById } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
@@ -118,65 +117,6 @@ function QuestionBlock({ index, question, onChange, onRemove, canRemove, t }) {
             className="flex h-10 w-full rounded-lg border border-[#404040] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FACC15] focus:ring-offset-2 focus:ring-offset-[#0a0a0a]"
           />
         </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function QuizPreview({ title, description, difficulty, questions, t }) {
-  const hasContent = title.trim() || questions.some((q) => q.text.trim())
-  return (
-    <Card className="sticky top-24">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Eye className="size-4 text-primary" />
-          {t('createQuiz.livePreview')}
-        </CardTitle>
-        <CardDescription>{t('createQuiz.livePreviewDesc')}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {!hasContent ? (
-          <p className="text-sm text-muted-foreground italic">{t('createQuiz.startAdding')}</p>
-        ) : (
-          <>
-            <div>
-              <h3 className="font-semibold text-foreground">
-                {title.trim() || t('createQuiz.untitled')}
-              </h3>
-              {description.trim() && (
-                <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-              )}
-              {difficulty && (
-                <Badge variant="secondary" className="mt-2">
-                  {t(`difficulty.${difficulty}`)}
-                </Badge>
-              )}
-            </div>
-            <div className="space-y-3">
-              {questions.map((q, i) => (
-                <div key={i} className="rounded-lg border border-border bg-muted/20 p-3 text-sm">
-                  <p className="font-medium text-foreground">
-                    {i + 1}. {q.text || t('createQuiz.noQuestion')}
-                  </p>
-                  <ul className="mt-2 space-y-1 pl-4">
-                    {q.options.map((opt, j) => (
-                      <li
-                        key={j}
-                        className={cn(
-                          'list-disc',
-                          j === q.correctIndex && 'text-primary font-medium'
-                        )}
-                      >
-                        {opt || t('createQuiz.empty')}
-                        {j === q.correctIndex && ' ✓'}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
       </CardContent>
     </Card>
   )
@@ -305,7 +245,7 @@ export default function CreateQuiz() {
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+      <div className="max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-8">
           <Card>
             <CardHeader>
@@ -410,27 +350,6 @@ export default function CreateQuiz() {
             </Button>
           </div>
         </form>
-
-        <aside className="hidden lg:block">
-          <QuizPreview
-            title={title}
-            description={description}
-            difficulty={difficulty}
-            questions={questions}
-            t={t}
-          />
-        </aside>
-      </div>
-
-      {/* Mobile preview - collapsible */}
-      <div className="mt-8 lg:hidden">
-        <QuizPreview
-          title={title}
-          description={description}
-          difficulty={difficulty}
-          questions={questions}
-          t={t}
-        />
       </div>
     </div>
   )
