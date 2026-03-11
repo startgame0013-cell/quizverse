@@ -47,23 +47,25 @@ export function getQuizById(id) {
   return getAllQuizzes().find((q) => q.id === id) ?? null
 }
 
-/** Get question text/options in the current language. No fallback to other language. */
+/** Get question text/options in the current language, with fallback to the other language. */
 export function getQuestionDisplay(question, lang) {
   if (!question) return { text: '', options: [] }
   const isAr = lang === 'ar'
-  const text = isAr ? (question.textAr || '') : (question.text || '')
+  const text = isAr
+    ? (question.textAr || question.text || '')
+    : (question.text || question.textAr || '')
   const options = isAr
-    ? (question.optionsAr || [])
-    : (question.options || [])
+    ? (question.optionsAr || question.options || [])
+    : (question.options || question.optionsAr || [])
   return { text, options }
 }
 
-/** Get quiz title/description in the current language. No fallback to other language. */
+/** Get quiz title/description in the current language, with fallback to the other language. */
 export function getQuizDisplay(quiz, lang) {
   if (!quiz) return { title: '', description: '' }
   const isAr = lang === 'ar'
-  const title = isAr ? (quiz.titleAr || '') : (quiz.title || '')
-  const description = isAr ? (quiz.descriptionAr || '') : (quiz.description || '')
+  const title = (isAr ? (quiz.titleAr || quiz.title) : (quiz.title || quiz.titleAr)) || ''
+  const description = (isAr ? (quiz.descriptionAr || quiz.description) : (quiz.description || quiz.descriptionAr)) || ''
   return { title, description }
 }
 
