@@ -67,10 +67,43 @@ export default function Navbar() {
           QuizVerse
         </Link>
 
-        {/* Spacer to keep logo left and controls right */}
-        <div className="flex-1" />
+        {/* Center: nav links */}
+        <div
+          className="hidden md:flex items-center gap-1 flex-1 justify-center"
+        >
+          {navItems.map(([path, labelKey]) => {
+            const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
+            return (
+              <Link
+                key={path}
+                to={path}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  ...linkStyle,
+                  color: isActive ? '#FACC15' : '#fafafa',
+                  background: isActive ? 'rgba(250,204,21,0.15)' : 'transparent',
+                }}
+                className="hover:opacity-90"
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = linkHoverBg
+                    e.currentTarget.style.color = '#FACC15'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = '#fafafa'
+                  }
+                }}
+              >
+                {t(labelKey)}
+              </Link>
+            )
+          })}
+        </div>
 
-        {/* Right: Language toggle + Login / Sign Out */}
+        {/* Right: Language toggle + menu button */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
