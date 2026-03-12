@@ -31,6 +31,8 @@ import VisitTracker from './components/VisitTracker'
 import { Analytics } from '@vercel/analytics/react'
 import HostLiveGame from './pages/HostLiveGame'
 import LiveGamePlayer from './pages/LiveGamePlayer'
+import SignIn from './pages/SignIn'
+import Register from './pages/Register'
 
 export default function App() {
   return (
@@ -50,6 +52,7 @@ export default function App() {
               <Route path="/live/play/:pin" element={<LiveGamePlayer />} />
               <Route path="/waiting" element={<WaitingRoom />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+
               <Route path="/mini-games" element={<MiniGames />} />
               <Route path="/mini-games/memory" element={<MemoryMatch />} />
               <Route path="/mini-games/word-scramble" element={<WordScramble />} />
@@ -58,7 +61,14 @@ export default function App() {
               <Route path="/mini-games/flag-challenge" element={<FlagChallenge />} />
               <Route path="/mini-games/quick-trivia" element={<QuickTrivia />} />
               <Route path="/mini-games/vortex" element={<Vortex />} />
+
               <Route path="/ai-generator" element={<AiQuizGenerator />} />
+
+              {/* Auth */}
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/signin" element={<Navigate to="/sign-in" replace />} />
+              <Route path="/register" element={<Register />} />
+
               <Route path="/flashcards" element={<Flashcards />} />
               <Route path="/flashcards/:quizId" element={<Flashcards />} />
               <Route path="/privacy" element={<Privacy />} />
