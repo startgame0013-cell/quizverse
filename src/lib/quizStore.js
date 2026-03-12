@@ -4,25 +4,9 @@
  */
 
 const STORAGE_KEY = 'quizverse_quizzes'
-const DEMO_SEEDED_KEY = 'quizverse_demo_seeded'
-const KUWAIT_2026_SEEDED_KEY = 'quizverse_kuwait2026_seeded'
-const ALL_SUBJECTS_SEEDED_KEY = 'quizverse_all_subjects_seeded'
-
-/**
- * Quiz data structure:
- * {
- *   id: string
- *   title: string
- *   description: string
- *   category: string
- *   audience: string
- *   difficulty: 'easy' | 'medium' | 'hard'
- *   language: string
- *   questions: [{ id, text, options[], correctIndex, explanation? }]
- *   createdAt: number
- *   updatedAt: number
- * }
- */
+const DEFAULTS_VERSION_KEY = 'quizverse_defaults_version'
+// Bump this whenever default quiz data changes (so devs/users can choose to reset).
+const DEFAULTS_VERSION = '2026-03-12-kuwait2026-v1'
 
 function generateId() {
   return `q_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
@@ -102,30 +86,36 @@ export function duplicateQuiz(id) {
   return saveQuiz(copy)
 }
 
-/** Seed quizzes on first load: كل المواد + منهج الكويت الابتدائي 2026 */
+async function loadDefaultQuizBank() {
+  const [{ ALL_SUBJECTS_QUIZZES }, { KUWAIT_ELEMENTARY_2026_QUIZZES }] = await Promise.all([
+    import('@/data/allSubjectsQuizzes.js'),
+    import('@/data/kuwaitElementary2026.js'),
+  ])
+  return [...ALL_SUBJECTS_QUIZZES, ...KUWAIT_ELEMENTARY_2026_QUIZZES]
+}
+
+/**
+ * Seed quizzes on first load.
+ * Note: we intentionally do NOT auto-overwrite existing user data.
+ */
 export async function seedDemoQuizzesIfNeeded() {
   try {
-    if (!localStorage.getItem(DEMO_SEEDED_KEY)) localStorage.setItem(DEMO_SEEDED_KEY, '1')
-    if (!localStorage.getItem(KUWAIT_2026_SEEDED_KEY)) localStorage.setItem(KUWAIT_2026_SEEDED_KEY, '1')
-    if (!localStorage.getItem(ALL_SUBJECTS_SEEDED_KEY)) {
-      const { ALL_SUBJECTS_QUIZZES } = await import('@/data/allSubjectsQuizzes.js')
-      const { KUWAIT_ELEMENTARY_2026_QUIZZES } = await import('@/data/kuwaitElementary2026.js')
-      const existing = getAllQuizzes()
-      if (existing.length === 0) {
-        ALL_SUBJECTS_QUIZZES.forEach((quiz) => saveQuiz(quiz))
-        KUWAIT_ELEMENTARY_2026_QUIZZES.forEach((quiz) => saveQuiz(quiz))
-      }
-      localStorage.setItem(ALL_SUBJECTS_SEEDED_KEY, '1')
-    }
-  } catch {}
+    const existing = getAllQuizzes()
+    if (existing.length > 0) return
+
+    const defaults = await loadDefaultQuizBank()
+    defaults.forEach((quiz) => saveQuiz(quiz))
+
+    localStorage.setItem(DEFAULTS_VERSION_KEY, DEFAULTS_VERSION)
+  } catch {
+    // ignore
+  }
 }
 
 /** Reset quizzes to default: كل المواد + منهج الكويت الابتدائي 2026 */
 export async function resetQuizzesToDefault() {
-  const { ALL_SUBJECTS_QUIZZES } = await import('@/data/allSubjectsQuizzes.js')
-  const { KUWAIT_ELEMENTARY_2026_QUIZZES } = await import('@/data/kuwaitElementary2026.js')
+  const defaults = await loadDefaultQuizBank()
   localStorage.setItem(STORAGE_KEY, '[]')
-  ALL_SUBJECTS_QUIZZES.forEach((quiz) => saveQuiz(quiz))
-  KUWAIT_ELEMENTARY_2026_QUIZZES.forEach((quiz) => saveQuiz(quiz))
+  defaults.forEach((quiz) => saveQuiz(quiz))
+  localStorage.setItem(DEFAULTS_VERSION_KEY, DEFAULTS_VERSION)
 }
-
