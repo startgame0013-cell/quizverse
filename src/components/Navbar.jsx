@@ -183,22 +183,41 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <Link
-                to="/sign-in"
-                onClick={() => setMenuOpen(false)}
-                className="block mt-3 text-center"
-                style={{
-                  background: '#FACC15',
-                  color: '#0a0a0a',
-                  padding: '0.75rem 1rem',
-                  borderRadius: '8px',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                }}
-              >
-                {t('nav.signIn', 'Login')}
-              </Link>
+              <div className="mt-3 space-y-2">
+                <Link
+                  to="/sign-in"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-center"
+                  style={{
+                    background: '#FACC15',
+                    color: '#0a0a0a',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '8px',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                  }}
+                >
+                  {t('nav.signIn', 'Sign In')}
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-center"
+                  style={{
+                    background: 'transparent',
+                    color: '#FACC15',
+                    padding: '0.7rem 1rem',
+                    borderRadius: '8px',
+                    fontSize: '0.95rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    border: '1px solid #FACC15',
+                  }}
+                >
+                  {t('auth.register', 'Register')}
+                </Link>
+              </div>
             )}
           </div>
         </div>
