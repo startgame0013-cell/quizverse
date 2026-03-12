@@ -1,11 +1,3 @@
-// Assuming the rest of the file remains unchanged and we are only updating the rendering logic:
-
-<<<<<<< HEAD
-// Render the question explanation based on the selected language
-let explanation = lang === 'ar' ? q.explanationAr : q.explanation;
-if (explanation) {
-    return (<div>{explanation}</div>);
-=======
 export default function QuizDetails() {
   const { t, lang } = useLanguage()
   const { success, error: showError } = useToast()
@@ -148,5 +140,4 @@ export default function QuizDetails() {
       </Card>
     </div>
   )
->>>>>>> 6cb2b44 (fix navbar, auth routes, and language search)
 }

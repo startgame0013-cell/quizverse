@@ -35,8 +35,6 @@ import VisitTracker from './components/VisitTracker'
 import { Analytics } from '@vercel/analytics/react'
 import HostLiveGame from './pages/HostLiveGame'
 import LiveGamePlayer from './pages/LiveGamePlayer'
-import SignIn from './pages/SignIn'
-import Register from './pages/Register'
 
 export default function App() {
   return (

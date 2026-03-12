@@ -67,42 +67,8 @@ export default function Navbar() {
           QuizVerse
         </Link>
 
-        {/* Desktop: Nav links (center/space) */}
-        <div
-          className="hidden md:flex items-center gap-1"
-          style={{ flex: 1, justifyContent: 'center' }}
-        >
-          {navItems.map(([path, labelKey]) => {
-            const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
-            return (
-              <Link
-                key={path}
-                to={path}
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  ...linkStyle,
-                  color: isActive ? '#FACC15' : '#fafafa',
-                  background: isActive ? 'rgba(250,204,21,0.15)' : 'transparent',
-                }}
-                className="hover:opacity-90"
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = linkHoverBg
-                    e.currentTarget.style.color = '#FACC15'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.color = '#fafafa'
-                  }
-                }}
-              >
-                {t(labelKey)}
-              </Link>
-            )
-          })}
-        </div>
+        {/* Spacer to keep logo left and controls right */}
+        <div className="flex-1" />
 
         {/* Right: Language toggle + Login / Sign Out */}
         <div className="flex items-center gap-2 shrink-0">
@@ -125,50 +91,7 @@ export default function Navbar() {
             {lang === 'en' ? 'English' : 'العربية'}
           </button>
 
-          {isAuthenticated ? (
-            <div className="hidden md:flex items-center gap-2">
-              <span
-                className="text-sm truncate max-w-[120px]"
-                style={{ color: '#FACC15' }}
-                title={user?.displayName || user?.name}
-              >
-                {user?.displayName || user?.name}
-              </span>
-              <button
-                type="button"
-                onClick={() => signOut()}
-                style={{
-                  background: 'transparent',
-                  color: '#888',
-                  border: '1px solid #444',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '8px',
-                  fontSize: '0.95rem',
-                  cursor: 'pointer',
-                }}
-                className="hover:border-[#FACC15] hover:text-[#FACC15]"
-              >
-                {t('auth.signOut', 'Sign Out')}
-              </button>
-            </div>
-          ) : (
-            <Link
-              to="/sign-in"
-              className="hidden md:inline-flex"
-              style={{
-                background: '#FACC15',
-                color: '#0a0a0a',
-                padding: '0.5rem 1rem',
-                borderRadius: '8px',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                textDecoration: 'none',
-                boxShadow: '0 2px 8px rgba(250,204,21,0.3)',
-              }}
-            >
-              {t('nav.signIn', 'Login')}
-            </Link>
-          )}
+          {/* لا نظهر زر تسجيل الدخول هنا – يكون داخل قائمة الهامبرغر مثل قبل */}
 
           {/* Hamburger - Mobile */}
           <button
