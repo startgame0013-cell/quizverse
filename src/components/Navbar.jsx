@@ -67,41 +67,8 @@ export default function Navbar() {
           QuizVerse
         </Link>
 
-        {/* Center: nav links */}
-        <div
-          className="hidden md:flex items-center gap-1 flex-1 justify-center"
-        >
-          {navItems.map(([path, labelKey]) => {
-            const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
-            return (
-              <Link
-                key={path}
-                to={path}
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  ...linkStyle,
-                  color: isActive ? '#FACC15' : '#fafafa',
-                  background: isActive ? 'rgba(250,204,21,0.15)' : 'transparent',
-                }}
-                className="hover:opacity-90"
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = linkHoverBg
-                    e.currentTarget.style.color = '#FACC15'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.color = '#fafafa'
-                  }
-                }}
-              >
-                {t(labelKey)}
-              </Link>
-            )
-          })}
-        </div>
+        {/* Spacer بين الشعار وأزرار اليمين */}
+        <div className="flex-1" />
 
         {/* Right: Language toggle + menu button */}
         <div className="flex items-center gap-2 shrink-0">
@@ -144,10 +111,10 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu overlay */}
+      {/* قائمة كاملة تظهر عند الضغط على زر الخطوط في أي مقاس */}
       {menuOpen && (
         <div
-          className="md:hidden fixed inset-0 z-[1999]"
+          className="fixed inset-0 z-[1999]"
           style={{ top: '56px', background: 'rgba(0,0,0,0.9)' }}
           onClick={() => setMenuOpen(false)}
         >
