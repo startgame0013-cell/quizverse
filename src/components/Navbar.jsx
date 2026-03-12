@@ -93,11 +93,11 @@ export default function Navbar() {
 
           {/* لا نظهر زر تسجيل الدخول هنا – يكون داخل قائمة الهامبرغر مثل قبل */}
 
-          {/* Hamburger - Mobile */}
+          {/* Hamburger menu (always visible) */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg"
+            className="flex items-center justify-center w-10 h-10 rounded-lg"
             style={{ background: 'rgba(255,255,255,0.08)', color: '#fafafa', border: 'none', cursor: 'pointer' }}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
