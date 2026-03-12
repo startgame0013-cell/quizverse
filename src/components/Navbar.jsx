@@ -67,10 +67,41 @@ export default function Navbar() {
           QuizVerse
         </Link>
 
-        {/* Spacer بين الشعار وأزرار اليمين */}
-        <div className="flex-1" />
+        {/* روابط في المنتصف (تظهر على اللابتوب فقط) */}
+        <div className="hidden md:flex flex-1 items-center justify-center gap-1">
+          {navItems.map(([path, labelKey]) => {
+            const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
+            return (
+              <Link
+                key={path}
+                to={path}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  ...linkStyle,
+                  color: isActive ? '#FACC15' : '#fafafa',
+                  background: isActive ? 'rgba(250,204,21,0.15)' : 'transparent',
+                }}
+                className="hover:opacity-90"
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = linkHoverBg
+                    e.currentTarget.style.color = '#FACC15'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = '#fafafa'
+                  }
+                }}
+              >
+                {t(labelKey)}
+              </Link>
+            )
+          })}
+        </div>
 
-        {/* Right: Language toggle + menu button */}
+        {/* يمين: زر اللغة + تسجيل الدخول + قائمة الموبايل */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
@@ -91,9 +122,27 @@ export default function Navbar() {
             {lang === 'en' ? 'English' : 'العربية'}
           </button>
 
-          {/* لا نظهر زر تسجيل الدخول هنا – يكون داخل قائمة الهامبرغر مثل قبل */}
+          {/* زر تسجيل الدخول – مثل المواقع العادية (يظهر على اللابتوب) */}
+          {!isAuthenticated && (
+            <Link
+              to="/sign-in"
+              className="hidden md:inline-flex"
+              style={{
+                background: '#FACC15',
+                color: '#0a0a0a',
+                padding: '0.5rem 1rem',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                boxShadow: '0 2px 8px rgba(250,204,21,0.3)',
+              }}
+            >
+              {t('nav.signIn', 'Sign In')}
+            </Link>
+          )}
 
-          {/* Hamburger menu (always visible) */}
+          {/* زر القائمة (موبايل وأيضاً لو حاب تفتحه على اللابتوب) */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
