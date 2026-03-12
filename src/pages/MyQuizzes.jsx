@@ -69,17 +69,16 @@ export default function MyQuizzes() {
   const filtered = useMemo(() => {
     return quizzes.filter((q) => {
       const searchLower = search.toLowerCase()
+      const d = getQuizDisplay(q, lang)
       const matchSearch = !search.trim() ||
-        (q.title || '').toLowerCase().includes(searchLower) ||
-        (q.titleAr || '').toLowerCase().includes(searchLower) ||
-        (q.description || '').toLowerCase().includes(searchLower) ||
-        (q.descriptionAr || '').toLowerCase().includes(searchLower)
+        (d.title || '').toLowerCase().includes(searchLower) ||
+        (d.description || '').toLowerCase().includes(searchLower)
       const matchDiff = !filterDifficulty || (q.difficulty || '') === filterDifficulty
       const matchCat = !filterCategory || (q.category || '') === filterCategory
       const matchStage = !filterStage || (q.stage || '') === filterStage
       return matchSearch && matchDiff && matchCat && matchStage
     })
-  }, [quizzes, search, filterDifficulty, filterCategory, filterStage])
+  }, [quizzes, search, filterDifficulty, filterCategory, filterStage, lang])
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
   const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)

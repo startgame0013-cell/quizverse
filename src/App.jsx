@@ -27,6 +27,10 @@ import FAQ from './pages/FAQ'
 import Pricing from './pages/Pricing'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
+import SignIn from './pages/SignIn'
+import Register from './pages/Register'
+import GetStarted from './pages/GetStarted'
+import VisitorStats from './pages/VisitorStats'
 import VisitTracker from './components/VisitTracker'
 import { Analytics } from '@vercel/analytics/react'
 import HostLiveGame from './pages/HostLiveGame'
@@ -76,6 +80,10 @@ export default function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/get-started" element={<GetStarted />} />
+              <Route path="/visitor-stats" element={<VisitorStats />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
