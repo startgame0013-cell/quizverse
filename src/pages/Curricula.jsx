@@ -7,25 +7,40 @@ import { getAllQuizzes, getQuizDisplay, seedDemoQuizzesIfNeeded } from '@/lib/qu
 import { useLanguage } from '@/context/LanguageContext'
 
 function isKuwaitCurriculum(quiz) {
+  if (!quiz || typeof quiz !== 'object') return false
   const t = (quiz.title || '') + (quiz.titleAr || '')
   return /2026|٢٠٢٦|Elementary|ابتدائي|Kuwait|الكويت/.test(t)
+}
+
+function safeGetQuizzes() {
+  try {
+    if (typeof getAllQuizzes !== 'function') return []
+    const q = getAllQuizzes()
+    return Array.isArray(q) ? q : []
+  } catch {
+    return []
+  }
 }
 
 export default function Curricula() {
   const { t, lang } = useLanguage()
   const [tick, setTick] = useState(0)
-  const quizzes = getAllQuizzes()
+  const quizzes = useMemo(() => safeGetQuizzes(), [tick])
 
   useEffect(() => {
-    if (quizzes.length === 0) {
-      seedDemoQuizzesIfNeeded().then(() => setTick((c) => c + 1))
+    if (quizzes.length === 0 && typeof seedDemoQuizzesIfNeeded === 'function') {
+      seedDemoQuizzesIfNeeded()
+        .then(() => setTick((c) => c + 1))
+        .catch(() => setTick((c) => c + 1))
     }
   }, [quizzes.length])
 
   const { kuwaitQuizzes, allSubjectsQuizzes } = useMemo(() => {
     const kuwait = []
     const all = []
-    quizzes.forEach((q) => {
+    const list = Array.isArray(quizzes) ? quizzes : []
+    list.forEach((q) => {
+      if (!q || !q.id) return
       if (isKuwaitCurriculum(q)) kuwait.push(q)
       else all.push(q)
     })
