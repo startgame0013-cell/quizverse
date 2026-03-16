@@ -14,6 +14,7 @@ import {
   Radio,
   Brain,
   Layers,
+  GraduationCap,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -157,7 +158,26 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Feature cards — فلاش كارد كرابط: تدخل وتلقى صفحة فلاش كارد */}
+      {/* مناهج دولة الكويت ٢٠٢٦ — مباشرة تحت الإحصائيات عشان تظهر بدون تمرير */}
+      <Section
+        title={t('home.kuwaitCurriculaTitle')}
+        subtitle={t('home.kuwaitCurriculaSubtitle')}
+        className="border-t border-border bg-primary/5"
+      >
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-muted-foreground mb-6">
+            {t('home.kuwaitCurriculaDesc')}
+          </p>
+          <Button size="lg" className="gap-2" asChild>
+            <Link to="/curricula" className="inline-flex">
+              <GraduationCap className={iconClass} />
+              {t('home.kuwaitCurriculaCta')}
+            </Link>
+          </Button>
+        </div>
+      </Section>
+
+      {/* Feature cards */}
       <Section title={null} subtitle={null} className="border-t border-border">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
