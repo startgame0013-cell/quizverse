@@ -158,24 +158,29 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* مناهج دولة الكويت ٢٠٢٦ — مباشرة تحت الإحصائيات عشان تظهر بدون تمرير */}
-      <Section
-        title={t('home.kuwaitCurriculaTitle')}
-        subtitle={t('home.kuwaitCurriculaSubtitle')}
-        className="border-t border-border bg-primary/5"
+      {/* مناهج دولة الكويت ٢٠٢٦ — واضح ومباشر تحت الإحصائيات */}
+      <section
+        id="kuwait-2026"
+        className="border-y border-primary/30 bg-primary/10 px-4 py-10 sm:px-6 sm:py-12 lg:px-8"
       >
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-muted-foreground mb-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-2xl font-bold text-foreground sm:text-3xl tracking-tight">
+            {t('home.kuwaitCurriculaTitle')}
+          </h2>
+          <p className="mt-2 text-base text-muted-foreground sm:text-lg">
+            {t('home.kuwaitCurriculaSubtitle')}
+          </p>
+          <p className="mt-4 text-sm text-muted-foreground">
             {t('home.kuwaitCurriculaDesc')}
           </p>
-          <Button size="lg" className="gap-2" asChild>
+          <Button size="lg" className="mt-6 gap-2 shadow-md" asChild>
             <Link to="/curricula" className="inline-flex">
               <GraduationCap className={iconClass} />
               {t('home.kuwaitCurriculaCta')}
             </Link>
           </Button>
         </div>
-      </Section>
+      </section>
 
       {/* Feature cards */}
       <Section title={null} subtitle={null} className="border-t border-border">
