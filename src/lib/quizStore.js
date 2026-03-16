@@ -31,12 +31,12 @@ export function getQuizById(id) {
   return getAllQuizzes().find((q) => q.id === id) ?? null
 }
 
-/** Get question text/options in the selected language only (no fallback — توحيد اللغة). */
+/** Get question text/options in the selected language. Falls back to the other language if missing (so quizzes with only text/options still show). */
 export function getQuestionDisplay(question, lang) {
   if (!question) return { text: '', options: [] }
   const isAr = lang === 'ar'
-  const text = isAr ? (question.textAr || '') : (question.text || '')
-  const options = isAr ? (question.optionsAr || []) : (question.options || [])
+  const text = isAr ? (question.textAr || question.text || '') : (question.text || question.textAr || '')
+  const options = isAr ? (question.optionsAr || question.options || []) : (question.options || question.optionsAr || [])
   return { text, options }
 }
 
