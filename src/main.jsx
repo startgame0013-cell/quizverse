@@ -9,7 +9,7 @@ import './index.css'
 try {
   seedDemoQuizzesIfNeeded()
 } catch (e) {
-  console.warn('seedDemoQuizzesIfNeeded:', e)
+  if (import.meta.env.DEV) console.warn('seedDemoQuizzesIfNeeded:', e)
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

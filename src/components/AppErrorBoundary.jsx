@@ -9,7 +9,7 @@ export class AppErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('AppErrorBoundary:', error, info)
+    if (import.meta.env.DEV) console.error('AppErrorBoundary:', error, info)
   }
 
   render() {

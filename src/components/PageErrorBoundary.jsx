@@ -10,7 +10,7 @@ export class PageErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('PageErrorBoundary:', error, info)
+    if (import.meta.env.DEV) console.error('PageErrorBoundary:', error, info)
   }
 
   render() {

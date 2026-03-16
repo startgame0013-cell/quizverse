@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { LanguageProvider } from './context/LanguageContext'
 import { ToastProvider } from './context/ToastContext'
@@ -11,15 +12,8 @@ import PlayQuiz from './pages/PlayQuiz'
 import JoinGame from './pages/JoinGame'
 import WaitingRoom from './pages/WaitingRoom'
 import Leaderboard from './pages/Leaderboard'
+import Curricula from './pages/Curricula'
 import MiniGames from './pages/MiniGames'
-import MemoryMatch from './pages/MemoryMatch'
-import WordScramble from './pages/WordScramble'
-import QuickMath from './pages/QuickMath'
-import TrueOrFalse from './pages/TrueOrFalse'
-import FlagChallenge from './pages/FlagChallenge'
-import QuickTrivia from './pages/QuickTrivia'
-import Vortex from './pages/Vortex'
-import AiQuizGenerator from './pages/AiQuizGenerator'
 import Flashcards from './pages/Flashcards'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
@@ -29,12 +23,29 @@ import About from './pages/About'
 import NotFound from './pages/NotFound'
 import SignIn from './pages/SignIn'
 import Register from './pages/Register'
-import GetStarted from './pages/GetStarted'
-import VisitorStats from './pages/VisitorStats'
 import VisitTracker from './components/VisitTracker'
 import { Analytics } from '@vercel/analytics/react'
-import HostLiveGame from './pages/HostLiveGame'
-import LiveGamePlayer from './pages/LiveGamePlayer'
+
+const MemoryMatch = lazy(() => import('./pages/MemoryMatch'))
+const WordScramble = lazy(() => import('./pages/WordScramble'))
+const QuickMath = lazy(() => import('./pages/QuickMath'))
+const TrueOrFalse = lazy(() => import('./pages/TrueOrFalse'))
+const FlagChallenge = lazy(() => import('./pages/FlagChallenge'))
+const QuickTrivia = lazy(() => import('./pages/QuickTrivia'))
+const Vortex = lazy(() => import('./pages/Vortex'))
+const AiQuizGenerator = lazy(() => import('./pages/AiQuizGenerator'))
+const GetStarted = lazy(() => import('./pages/GetStarted'))
+const VisitorStats = lazy(() => import('./pages/VisitorStats'))
+const HostLiveGame = lazy(() => import('./pages/HostLiveGame'))
+const LiveGamePlayer = lazy(() => import('./pages/LiveGamePlayer'))
+
+function PageFallback() {
+  return (
+    <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
+      Loading…
+    </div>
+  )
+}
 
 export default function App() {
   return (
@@ -43,6 +54,7 @@ export default function App() {
         <ToastProvider>
           <VisitTracker />
           <Layout>
+            <Suspense fallback={<PageFallback />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/create-quiz" element={<CreateQuiz />} />
@@ -54,6 +66,7 @@ export default function App() {
               <Route path="/live/play/:pin" element={<LiveGamePlayer />} />
               <Route path="/waiting" element={<WaitingRoom />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/curricula" element={<Curricula />} />
 
               <Route path="/mini-games" element={<MiniGames />} />
               <Route path="/mini-games/memory" element={<MemoryMatch />} />
@@ -78,13 +91,12 @@ export default function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
-              <Route path="/sign-in" element={<SignIn />} />
-              <Route path="/register" element={<Register />} />
               <Route path="/get-started" element={<GetStarted />} />
               <Route path="/visitor-stats" element={<VisitorStats />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </Suspense>
           </Layout>
         </ToastProvider>
       </AuthProvider>

@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 
 const navItems = [
   ['/', 'nav.home'],
+  ['/curricula', 'nav.curricula'],
   ['/create-quiz', 'nav.createQuiz'],
   ['/join', 'nav.joinGame'],
   ['/leaderboard', 'nav.leaderboard'],
@@ -30,7 +31,7 @@ export default function Navbar() {
     padding: '0.5rem 0.75rem',
     borderRadius: '8px',
     fontWeight: 500,
-    transition: 'background 0.2s, color 0.2s',
+    transition: 'background 0.15s ease-out, color 0.15s ease-out, transform 0.1s ease-out',
   }
 
   const linkHoverBg = 'rgba(250,204,21,0.15)'
@@ -46,8 +47,8 @@ export default function Navbar() {
         zIndex: 9999,
         background: '#0a0a0a',
         borderBottom: '1px solid #222',
-        padding: '0.6rem 1rem',
       }}
+      className="px-4 py-2.5 sm:px-5 md:px-6 md:py-3 lg:px-8"
     >
       <nav
         className="flex items-center justify-between gap-4"
@@ -56,38 +57,18 @@ export default function Navbar() {
         {/* Logo - Left */}
         <Link
           to="/"
-          className="shrink-0 text-xl font-bold"
+          className="shrink-0 text-xl font-bold transition-opacity duration-150 hover:opacity-90 active:opacity-95"
           style={{ color: '#FACC15', textDecoration: 'none' }}
         >
           QuizVerse
         </Link>
 
-        {/* Center: nav links on desktop */}
-        <div className="hidden md:flex flex-1 items-center justify-center gap-1">
-          {navItems.map(([path, labelKey]) => {
-            const isActive =
-              location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
-            return (
-              <Link
-                key={path}
-                to={path}
-                style={{
-                  ...baseLinkStyle,
-                  color: isActive ? '#FACC15' : '#fafafa',
-                  background: isActive ? linkHoverBg : 'transparent',
-                }}
-              >
-                {t(labelKey)}
-              </Link>
-            )
-          })}
-        </div>
-
-        {/* Right: language + auth + hamburger */}
+        {/* Right: language + auth + hamburger (all nav links are inside the menu) */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={toggleLang}
+            className="transition-all duration-150 ease-out hover:opacity-90 active:scale-[0.98] hover:brightness-105"
             style={{
               background: lang === 'en' ? '#FACC15' : 'transparent',
               color: lang === 'en' ? '#0a0a0a' : '#FACC15',
@@ -106,7 +87,7 @@ export default function Navbar() {
             <>
               <Link
                 to="/sign-in"
-                className="hidden md:inline-flex"
+                className="hidden md:inline-flex transition-all duration-150 hover:opacity-90 hover:brightness-105 active:scale-[0.98]"
                 style={{
                   background: '#FACC15',
                   color: '#0a0a0a',
@@ -121,7 +102,7 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/register"
-                className="hidden md:inline-flex"
+                className="hidden md:inline-flex transition-all duration-150 hover:bg-[rgba(250,204,21,0.12)] active:scale-[0.98]"
                 style={{
                   background: 'transparent',
                   color: '#FACC15',
@@ -146,6 +127,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={signOut}
+                className="transition-colors duration-150 hover:bg-white/10 hover:border-gray-500 hover:text-gray-300"
                 style={{
                   background: 'transparent',
                   color: '#888',
@@ -161,11 +143,11 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Hamburger for mobile */}
+          {/* Hamburger: always visible — all links (Home, Curricula, Create Quiz, Join, Leaderboard) open from here */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center justify-center w-10 h-10 rounded-lg md:hidden"
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg transition-colors duration-150 hover:bg-white/12 active:bg-white/16 active:scale-95"
             style={{
               background: 'rgba(255,255,255,0.08)',
               color: '#fafafa',
@@ -180,34 +162,41 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu (only on small screens) */}
+      {/* Dropdown menu: opens when clicking the hamburger (all screen sizes) */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-[1999] md:hidden"
+          className="fixed inset-0 z-[1999]"
           style={{ top: '56px', background: 'rgba(0,0,0,0.9)' }}
           onClick={() => setMenuOpen(false)}
         >
           <div
             dir={isRtl ? 'rtl' : 'ltr'}
-            className="flex flex-col gap-1 p-4"
+            className="flex flex-col gap-0.5 p-4 pb-6 sm:p-5 sm:pb-8"
             style={{ background: '#111', borderTop: '1px solid #222' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {navItems.map(([path, labelKey]) => (
-              <Link
-                key={path}
-                to={path}
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  ...baseLinkStyle,
-                  padding: '0.75rem 1rem',
-                  fontSize: '1.05rem',
-                  borderBottom: '1px solid #222',
-                }}
-              >
-                {t(labelKey)}
-              </Link>
-            ))}
+            {navItems.map(([path, labelKey]) => {
+              const isActive =
+                location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:bg-[rgba(250,204,21,0.1)] active:bg-[rgba(250,204,21,0.18)] rounded-lg transition-colors duration-150"
+                  style={{
+                    ...baseLinkStyle,
+                    padding: '0.75rem 1rem',
+                    fontSize: '1.05rem',
+                    borderBottom: '1px solid #222',
+                    color: isActive ? '#FACC15' : '#fafafa',
+                    background: isActive ? linkHoverBg : 'transparent',
+                  }}
+                >
+                  {t(labelKey)}
+                </Link>
+              )
+            })}
 
             <div className="flex items-center gap-2 pt-3 mt-2 border-t border-[#222]">
               <span style={{ color: '#888', fontSize: '0.9rem' }}>{t('settings.language', 'Language')}</span>
@@ -216,11 +205,12 @@ export default function Navbar() {
                   toggleLang()
                   setMenuOpen(false)
                 }}
+                className="transition-all duration-150 active:scale-[0.98]"
                 style={{
                   background: lang === 'en' ? '#FACC15' : 'rgba(250,204,21,0.15)',
                   color: lang === 'en' ? '#0a0a0a' : '#FACC15',
                   border: '1px solid #FACC15',
-                  padding: '0.4rem 0.8rem',
+                  padding: '0.5rem 0.9rem',
                   borderRadius: '8px',
                   fontSize: '0.9rem',
                   cursor: 'pointer',
@@ -259,7 +249,7 @@ export default function Navbar() {
                 <Link
                   to="/sign-in"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-center"
+                  className="block text-center transition-all duration-150 hover:opacity-90 active:scale-[0.99] min-h-[44px] flex items-center justify-center"
                   style={{
                     background: '#FACC15',
                     color: '#0a0a0a',
@@ -275,11 +265,11 @@ export default function Navbar() {
                 <Link
                   to="/register"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-center"
+                  className="block text-center transition-all duration-150 hover:bg-[rgba(250,204,21,0.12)] active:scale-[0.99] min-h-[44px] flex items-center justify-center"
                   style={{
                     background: 'transparent',
                     color: '#FACC15',
-                    padding: '0.7rem 1rem',
+                    padding: '0.75rem 1rem',
                     borderRadius: '8px',
                     fontSize: '0.95rem',
                     fontWeight: 600,

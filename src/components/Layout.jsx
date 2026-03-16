@@ -19,27 +19,31 @@ export default function Layout({ children }) {
       </main>
       <CookieBanner />
       {!isHome && (
-        <footer className="border-t border-white/5 bg-[#0a0a0a] px-4 py-6 sm:px-6 lg:px-8">
+        <footer className="border-t border-white/5 bg-[#0a0a0a] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <Link to="/" className="text-sm font-bold text-[#FACC15] hover:opacity-90">
+            <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:gap-8">
+              <Link
+                to="/"
+                className="text-sm font-bold text-[#FACC15] transition-opacity duration-150 hover:opacity-90 active:opacity-95"
+              >
                 QuizVerse
               </Link>
-              <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
-                <Link to="/create-quiz" className="transition-colors hover:text-foreground">{t('nav.createQuiz')}</Link>
-                <Link to="/join" className="transition-colors hover:text-foreground">{t('nav.joinGame')}</Link>
-                <Link to="/leaderboard" className="transition-colors hover:text-foreground">{t('nav.leaderboard')}</Link>
-                <Link to="/mini-games" className="transition-colors hover:text-foreground">{t('nav.miniGames')}</Link>
-                <Link to="/ai-generator" className="transition-colors hover:text-foreground">{t('nav.aiGenerator')}</Link>
-                <Link to="/flashcards" className="transition-colors hover:text-foreground">{t('nav.flashcards')}</Link>
-                <Link to="/about" className="transition-colors hover:text-foreground">{t('nav.about')}</Link>
-                <Link to="/privacy" className="transition-colors hover:text-foreground">{t('nav.privacy')}</Link>
-                <Link to="/terms" className="transition-colors hover:text-foreground">{t('nav.terms')}</Link>
-                <Link to="/faq" className="transition-colors hover:text-foreground">{t('nav.faq')}</Link>
-                <Link to="/pricing" className="transition-colors hover:text-foreground">{t('nav.pricing')}</Link>
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-gray-400">
+                <Link to="/create-quiz" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.createQuiz')}</Link>
+                <Link to="/join" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.joinGame')}</Link>
+                <Link to="/leaderboard" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.leaderboard')}</Link>
+                <Link to="/curricula" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.curricula')}</Link>
+                <Link to="/mini-games" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.miniGames')}</Link>
+                <Link to="/ai-generator" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.aiGenerator')}</Link>
+                <Link to="/flashcards" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.flashcards')}</Link>
+                <Link to="/about" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.about')}</Link>
+                <Link to="/privacy" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.privacy')}</Link>
+                <Link to="/terms" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.terms')}</Link>
+                <Link to="/faq" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.faq')}</Link>
+                <Link to="/pricing" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.pricing')}</Link>
               </div>
             </div>
-            <p className="mt-4 text-center text-xs text-muted-foreground sm:text-left">
+            <p className="mt-5 text-center text-xs text-gray-500 sm:text-left max-w-2xl">
               {t('home.footerTagline')}
             </p>
           </div>

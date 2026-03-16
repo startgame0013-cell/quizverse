@@ -3,15 +3,336 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>VORTEX.IO</title>
+  <title>Quizverse – Vortex Game</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; overflow: hidden; touch-action: none; }
-    canvas { display: block; width: 100%; height: 100%; background: #0a0a0a; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: none;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    body {
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top, #020617 0%, #020617 35%, #020617 50%, #020617 100%);
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+      padding: 1.25rem 1.5rem;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.55), transparent 55%);
+    }
+
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .brand-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: #facc15;
+      text-shadow: 0 0 18px rgba(250, 204, 21, 0.45);
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #facc15;
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.8);
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #9ca3af;
+    }
+
+    .title-block {
+      text-align: right;
+      direction: rtl;
+      max-width: 360px;
+    }
+
+    .title-main {
+      font-size: clamp(1.45rem, 3vw, 1.9rem);
+      font-weight: 800;
+      color: #e5e7eb;
+      text-shadow: 0 18px 55px rgba(15, 23, 42, 0.85);
+    }
+
+    .title-main span {
+      color: #facc15;
+    }
+
+    .title-sub {
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    .title-sub-en {
+      margin-top: 0.15rem;
+      font-size: 0.72rem;
+      color: #6b7280;
+    }
+
+    .overlay-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .instructions {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      max-width: 360px;
+      direction: rtl;
+      text-align: right;
+      font-size: 0.78rem;
+      color: #d1d5db;
+      background: linear-gradient(to left, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
+      border-radius: 0.9rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow:
+        0 18px 60px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(18px);
+    }
+
+    .instructions-title {
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+
+    .instructions-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+    }
+
+    .instructions-steps li::before {
+      content: "•";
+      margin-left: 0.35rem;
+      color: #facc15;
+    }
+
+    .instructions-en {
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      pointer-events: auto;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      transition:
+        transform 0.15s ease-out,
+        box-shadow 0.15s ease-out,
+        background 0.15s ease-out,
+        color 0.15s ease-out,
+        opacity 0.15s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at top, #facc15, #eab308);
+      color: #0f172a;
+      box-shadow:
+        0 15px 35px rgba(250, 204, 21, 0.55),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 20px 45px rgba(250, 204, 21, 0.65),
+        0 0 0 1px rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.92),
+        0 0 0 1px rgba(15, 23, 42, 0.98);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
+    .badge {
+      pointer-events: none;
+      font-size: 0.7rem;
+      color: #9ca3af;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      opacity: 0.85;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.85);
+    }
+
+    @media (max-width: 640px) {
+      .overlay {
+        padding: 0.9rem 0.85rem 1.1rem;
+        background: radial-gradient(circle at top, rgba(15, 23, 42, 0.78), transparent 60%);
+      }
+
+      .overlay-top {
+        align-items: flex-start;
+      }
+
+      .title-block {
+        max-width: 260px;
+      }
+
+      .title-main {
+        font-size: 1.3rem;
+      }
+
+      .instructions {
+        width: 100%;
+        font-size: 0.76rem;
+      }
+
+      .cta-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .btn {
+        flex: 1;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
   <canvas id="game"></canvas>
+  <div class="overlay">
+    <div class="overlay-top">
+      <div class="brand">
+        <div class="brand-main">
+          <span class="brand-dot"></span>
+          QUIZVERSE
+        </div>
+        <div class="brand-sub">Interactive learning · Vortex mini-game</div>
+      </div>
+      <div class="title-block">
+        <div class="title-main">
+          دوامة <span>Vortex</span> التفاعلية
+        </div>
+        <p class="title-sub">
+          حرّكي المؤشر أو المسّي الشاشة لتشكيل أنماط ضوئية تفاعلية –
+          مناسبة لشد انتباه الطلاب قبل بداية اللعبة أو الاختبار.
+        </p>
+        <p class="title-sub-en">
+          Move your mouse or touch the screen to bend the light trail.
+          Perfect as an attention‑grabber before starting a quiz or live game.
+        </p>
+      </div>
+    </div>
+
+    <div class="overlay-bottom">
+      <div class="instructions">
+        <div class="instructions-title">طريقة اللعب / How it works</div>
+        <ul class="instructions-steps">
+          <li>حرّكي المؤشر أو الأصبع في أي مكان على الشاشة.</li>
+          <li>شاهدي الجُزيئات وهي تلتف حول حركة يدك في دوامة ملوّنة.</li>
+          <li>استخدمي الشاشة كباكجراوند تفاعلي قبل البدء في جلسة Quizverse.</li>
+        </ul>
+        <div class="instructions-en">
+          Move your cursor or finger to attract the particles and create a neon vortex.
+          Great as an ice‑breaker or waiting screen during class.
+        </div>
+      </div>
+
+      <div class="cta-group">
+        <a href="/" class="btn btn-secondary">
+          ← العودة إلى Quizverse
+        </a>
+        <button type="button" class="btn btn-primary" id="resetButton">
+          إعادة الضبط / Reset trail
+        </button>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Live visual powered by Vortex
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
@@ -68,6 +389,16 @@
       mouse.x = e.touches[0].clientX;
       mouse.y = e.touches[0].clientY;
     }, { passive: false });
+
+    const resetButton = document.getElementById('resetButton');
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        particles = [];
+        hue = 0;
+        ctx.fillStyle = 'rgba(10, 10, 10, 1)';
+        ctx.fillRect(0, 0, w, h);
+      });
+    }
 
     resize();
     window.addEventListener('resize', resize);

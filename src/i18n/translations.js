@@ -20,6 +20,20 @@ export const translations = {
       pricing: 'Pricing',
       signIn: 'Sign In',
       getStarted: 'Get Started',
+      curricula: 'Curricula & Quizzes',
+    },
+    // Curricula
+    curricula: {
+      title: 'Curricula & Ready-made Quizzes',
+      subtitle: 'Kuwait elementary curriculum 2026 and quizzes across all subjects. Play or view details.',
+      kuwaitSection: 'Kuwait Elementary Curriculum 2026',
+      kuwaitSectionDesc: 'Arabic, Math, Science, National Education, and more.',
+      allSubjectsSection: 'All Subjects',
+      allSubjectsSectionDesc: 'Geography, History, Science, Language, and more.',
+      questions: 'questions',
+      play: 'Play',
+      details: 'Details',
+      empty: 'No quizzes loaded yet. Create a quiz or reset to load default curricula.',
     },
     // Home
     home: {
@@ -534,6 +548,19 @@ export const translations = {
       pricing: 'الأسعار',
       signIn: 'تسجيل الدخول',
       getStarted: 'ابدأ الآن',
+      curricula: 'مناهج وكويزات',
+    },
+    curricula: {
+      title: 'المناهج والكويزات الجاهزة',
+      subtitle: 'منهج الكويت الابتدائي ٢٠٢٦ وكويزات كل المواد. العب أو اعرض التفاصيل.',
+      kuwaitSection: 'منهج الكويت الابتدائي ٢٠٢٦',
+      kuwaitSectionDesc: 'لغة عربية، رياضيات، علوم، تربية وطنية، والمزيد.',
+      allSubjectsSection: 'كل المواد',
+      allSubjectsSectionDesc: 'جغرافيا، تاريخ، علوم، لغة، والمزيد.',
+      questions: 'أسئلة',
+      play: 'العب',
+      details: 'التفاصيل',
+      empty: 'لا توجد كويزات محمّلة بعد. أنشئ كويزاً أو أعد التعيين لتحميل المناهج الافتراضية.',
     },
     home: {
       headline: 'العب. أنشئ.',
