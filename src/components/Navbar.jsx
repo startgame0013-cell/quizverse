@@ -6,7 +6,9 @@ import { useAuth } from '@/context/AuthContext'
 const navItems = [
   ['/', 'nav.home'],
   ['/curricula', 'nav.curricula'],
+  ['/study', 'nav.studyLibrary'],
   ['/create-quiz', 'nav.createQuiz'],
+  ['/ai-generator', 'nav.aiGenerator'],
   ['/join', 'nav.joinGame'],
   ['/leaderboard', 'nav.leaderboard'],
 ]

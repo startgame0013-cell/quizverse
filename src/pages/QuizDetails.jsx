@@ -1,3 +1,13 @@
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { ArrowLeft, PenSquare, Play, Radio, Copy, CheckCircle2, ClipboardList } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useLanguage } from '@/context/LanguageContext'
+import { useToast } from '@/context/ToastContext'
+import { getQuizById, getQuestionDisplay, getQuizDisplay, duplicateQuiz } from '@/lib/quizStore'
+import API from '@/lib/api.js'
+
 export default function QuizDetails() {
   const { t, lang } = useLanguage()
   const { success, error: showError } = useToast()
@@ -98,6 +108,12 @@ export default function QuizDetails() {
         <Button variant="outline" className="gap-2" onClick={handleHost}>
           <Radio className="size-4" />
           {t('quizDetails.hostLive')}
+        </Button>
+        <Button variant="outline" className="gap-2" asChild>
+          <Link to={`/quiz/${id}/reports`}>
+            <ClipboardList className="size-4" />
+            {t('quizDetails.soloReports')}
+          </Link>
         </Button>
         <Button variant="outline" className="gap-2" onClick={handleDuplicate}>
           <Copy className="size-4" />

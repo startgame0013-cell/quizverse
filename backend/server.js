@@ -14,6 +14,7 @@ import aiRoutes from './routes/ai.js';
 import statsRoutes from './routes/stats.js';
 import subscriptionRoutes from './routes/subscription.js';
 import gameRoutes from './routes/game.js';
+import reportsRoutes from './routes/reports.js';
 import GameSession from './models/GameSession.js';
 
 await connectDB();
@@ -44,11 +45,19 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/quizzes', quizzesRoutes);
 app.use('/api/scores', scoresRoutes);
 app.use('/api/classes', classesRoutes);
-app.use('/api/ai', aiRoutes);
+const aiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40,
+  message: { ok: false, error: 'Too many AI requests. Try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api/ai', aiLimiter, aiRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.set('io', io);
 app.use('/api/game', gameRoutes);
+app.use('/api/reports', reportsRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
@@ -140,7 +149,15 @@ io.on('connection', (socket) => {
     const points = correct ? Math.max(300, Math.round(1000 - (Number(timeTaken) || 0) * 50)) : 0;
     if (session.players[playerIndex]) {
       session.players[playerIndex].score += points;
-      session.answers.push({ playerId: String(playerIndex), nickname: session.players[playerIndex].nickname, answerIndex, correct, points, timeTaken: Number(timeTaken) || 0 });
+      session.answers.push({
+        playerId: String(playerIndex),
+        nickname: session.players[playerIndex].nickname,
+        questionIndex: session.currentQuestionIndex,
+        answerIndex,
+        correct,
+        points,
+        timeTaken: Number(timeTaken) || 0,
+      });
       await session.save();
       const lb = (session.players || []).map((p) => ({ nickname: p.nickname, score: p.score })).sort((a, b) => b.score - a.score).map((p, i) => ({ ...p, rank: i + 1 }));
     io.to(`game:${pin}`).emit('game:answer', { playerIndex, correct, points, leaderboard: lb });

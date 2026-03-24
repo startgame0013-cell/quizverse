@@ -10,9 +10,13 @@ import MyQuizzes from './pages/MyQuizzes'
 import QuizDetails from './pages/QuizDetails'
 import PlayQuiz from './pages/PlayQuiz'
 import JoinGame from './pages/JoinGame'
+import LiveGameReport from './pages/LiveGameReport'
+import QuizSoloReports from './pages/QuizSoloReports'
 import WaitingRoom from './pages/WaitingRoom'
 import Leaderboard from './pages/Leaderboard'
 import Curricula from './pages/Curricula'
+import StudyLibrary from './pages/StudyLibrary'
+import StudyLibraryEntry from './pages/StudyLibraryEntry'
 import MiniGames from './pages/MiniGames'
 import Flashcards from './pages/Flashcards'
 import Privacy from './pages/Privacy'
@@ -62,11 +66,15 @@ export default function App() {
               <Route path="/quiz/:id" element={<PlayQuiz />} />
               <Route path="/quiz/:id/details" element={<QuizDetails />} />
               <Route path="/join" element={<JoinGame />} />
+              <Route path="/live/report/:pin" element={<LiveGameReport />} />
               <Route path="/live/host/:pin" element={<HostLiveGame />} />
               <Route path="/live/play/:pin" element={<LiveGamePlayer />} />
+              <Route path="/quiz/:id/reports" element={<QuizSoloReports />} />
               <Route path="/waiting" element={<WaitingRoom />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/curricula" element={<Curricula />} />
+              <Route path="/study" element={<StudyLibrary />} />
+              <Route path="/study/:id" element={<StudyLibraryEntry />} />
 
               <Route path="/mini-games" element={<MiniGames />} />
               <Route path="/mini-games/memory" element={<MemoryMatch />} />

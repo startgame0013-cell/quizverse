@@ -135,11 +135,14 @@ export default function HostLiveGame() {
                 <span className="text-primary font-bold">{p.score} pts</span>
               </div>
             ))}
-            <Button asChild className="w-full gap-2 mt-6">
-              <Link to="/">
-                {t('live.backHome', 'Back to Home')}
-              </Link>
-            </Button>
+            <div className="flex flex-col gap-2 mt-6">
+              <Button asChild variant="outline" className="w-full gap-2">
+                <Link to={`/live/report/${pin}`}>{t('live.detailedReport')}</Link>
+              </Button>
+              <Button asChild className="w-full gap-2">
+                <Link to="/">{t('live.backHome', 'Back to Home')}</Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

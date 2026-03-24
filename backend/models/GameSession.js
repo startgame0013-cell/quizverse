@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 const answerSchema = new mongoose.Schema({
   playerId: String,
   nickname: String,
+  /** Which question this answer belongs to (host advancers). */
+  questionIndex: { type: Number, default: null },
   answerIndex: Number,
   correct: Boolean,
   points: Number,
