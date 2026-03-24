@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getMockQuestions } from '@/data/mockAiQuestions'
 import { saveQuiz } from '@/lib/quizStore'
+import { createQuizOnServer, quizClientToServerPayload } from '@/lib/quizApi'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
 import { useAuth } from '@/context/AuthContext'
@@ -24,7 +25,7 @@ const COUNTS = [3, 5, 7, 10]
 export default function AiQuizGenerator() {
   const { t, lang } = useLanguage()
   const { success, error: showError, info } = useToast()
-  const { user } = useAuth()
+  const { user, getToken } = useAuth()
   const navigate = useNavigate()
   const [mode, setMode] = useState('topic')
   const [topic, setTopic] = useState('')
@@ -112,7 +113,7 @@ export default function AiQuizGenerator() {
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!questions?.length) return
     const titleFallback = lang === 'ar' ? 'كويز مولّد بالذكاء الاصطناعي' : 'AI Generated Quiz'
     const title =
@@ -131,8 +132,29 @@ export default function AiQuizGenerator() {
       title,
       description: desc,
       difficulty,
-      questions,
+      category: 'general',
+      language: lang === 'ar' ? 'ar' : 'en',
+      questions: questions.map((q) => ({
+        ...q,
+        text: q.text || '',
+        options: q.options?.length === 4 ? q.options : ['', '', '', ''],
+        correctIndex: q.correctIndex ?? 0,
+        explanation: q.explanation || '',
+      })),
     }
+
+    if (useRealApi()) {
+      try {
+        const payload = quizClientToServerPayload(quiz)
+        const created = await createQuizOnServer(getToken(), payload)
+        success(t('createQuiz.saved'))
+        navigate(`/quiz/${String(created._id)}/details`)
+      } catch (err) {
+        showError(err.message || t('createQuiz.saveError'))
+      }
+      return
+    }
+
     const saved = saveQuiz(quiz)
     success(t('createQuiz.saved'))
     navigate(`/quiz/${saved.id}/details`)

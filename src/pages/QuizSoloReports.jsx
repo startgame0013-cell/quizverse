@@ -5,14 +5,15 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
-import { getQuizById, getQuizDisplay } from '@/lib/quizStore'
+import { getQuizDisplay } from '@/lib/quizStore'
+import { useQuiz } from '@/hooks/useQuiz'
 import API from '@/lib/api.js'
 
 export default function QuizSoloReports() {
   const { id } = useParams()
   const { t, lang } = useLanguage()
   const { isAuthenticated } = useAuth()
-  const quiz = getQuizById(id)
+  const { quiz, loading: quizLoading, error: quizErr } = useQuiz(id)
   const [attempts, setAttempts] = useState([])
   const [error, setError] = useState('')
 
@@ -35,10 +36,20 @@ export default function QuizSoloReports() {
     }
   }, [API, id, isAuthenticated, t])
 
+  if (quizLoading) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center text-muted-foreground">
+        <p>{t('playQuiz.loadingQuiz')}</p>
+      </div>
+    )
+  }
+
   if (!quiz) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <p className="text-muted-foreground">{t('playQuiz.notFound')}</p>
+        <p className="text-muted-foreground">
+          {quizErr === 'noApi' ? t('playQuiz.cloudNeedsApi') : t('playQuiz.notFound')}
+        </p>
         <Button asChild className="mt-4">
           <Link to="/my-quizzes">{t('playQuiz.backToQuizzes')}</Link>
         </Button>

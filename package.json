@@ -1,5 +1,6 @@
 {
   "name": "quizverse",
+  "description": "QuizVerse — JavaScript + React (Vite) frontend; Express API in backend/ (Fastify-compatible role). Deploy SPA on Vercel; API on Render/Railway or optional Vercel serverless.",
   "private": true,
   "version": "1.0.0",
   "type": "module",

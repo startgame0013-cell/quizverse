@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Mail, Lock, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,6 +14,7 @@ export default function SignIn() {
   const { signIn } = useAuth()
   const { success, error: showError } = useToast()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -25,7 +26,9 @@ export default function SignIn() {
     try {
       await signIn(email, password)
       success(t('auth.signInSuccess'))
-      navigate('/')
+      const r = searchParams.get('redirect')
+      const safe = r && r.startsWith('/') && !r.startsWith('//') ? r : '/'
+      navigate(safe)
     } catch (err) {
       showError(err.message || t('auth.signInFailed', 'Invalid email or password'))
     } finally {
@@ -63,7 +66,18 @@ export default function SignIn() {
           </form>
           <p className="mt-4 text-center text-sm text-muted-foreground">
             {t('auth.noAccount')}{' '}
-            <Link to="/register" className="text-primary font-medium hover:underline">
+            <Link
+              to={
+                (() => {
+                  const r = searchParams.get('redirect')
+                  if (!r) return '/register'
+                  const enc = encodeURIComponent(r)
+                  if (r.includes('plan=school')) return `/register?role=teacher&redirect=${enc}`
+                  return `/register?redirect=${enc}`
+                })()
+              }
+              className="text-primary font-medium hover:underline"
+            >
               {t('auth.register')}
             </Link>
           </p>

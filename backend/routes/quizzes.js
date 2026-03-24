@@ -16,6 +16,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+/** Logged-in user's quizzes (MongoDB) — must be before /:id */
+router.get('/mine', protect, async (req, res) => {
+  try {
+    const quizzes = await Quiz.find({ createdBy: req.user._id }).sort({ updatedAt: -1 }).lean();
+    res.json({ ok: true, quizzes });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id).populate('createdBy', 'name').lean();

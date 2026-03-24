@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Mail, Lock, User, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,6 +14,7 @@ export default function Register() {
   const { register } = useAuth()
   const { success, error: showError } = useToast()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [submitting, setSubmitting] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,9 +26,12 @@ export default function Register() {
     if (!email.trim() || !password.trim()) return
     setSubmitting(true)
     try {
-      await register(email, password, name.trim() || undefined, displayName.trim() || undefined)
+      const role = searchParams.get('role') === 'teacher' ? 'teacher' : undefined
+      await register(email, password, name.trim() || undefined, displayName.trim() || undefined, role)
       success(t('auth.registerSuccess'))
-      navigate('/')
+      const r = searchParams.get('redirect')
+      const safe = r && r.startsWith('/') && !r.startsWith('//') ? r : '/'
+      navigate(safe)
     } catch (err) {
       showError(err.message || t('auth.registerFailed', 'Registration failed'))
     } finally {

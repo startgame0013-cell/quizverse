@@ -6,13 +6,27 @@ Arabic-first, mobile-first quiz platform for schools, teachers, students, famili
 
 ## Tech stack
 
-- **Frontend:** React 18 + Vite 5
+**Language:** **JavaScript** (ES modules) end-to-end — no TypeScript requirement.
+
+- **Frontend (site):** **React 18** + **Vite 5** — SPA, bilingual (AR/EN), RTL.
 - **Styling:** Tailwind CSS (dark theme, yellow highlights)
 - **Routing:** React Router 6
 - **State:** React Context (Language, Auth, Toast)
-- **Persistence:** LocalStorage (quizzes, user, language)
+- **Persistence:** LocalStorage (quizzes, user, language); server features use MongoDB when API is connected
 - **Icons:** lucide-react, react-icons
 - **UI:** shadcn-style components (Button, Card, Input, Select, Tabs, Badge, etc.)
+
+**Backend API:** **`backend/`** is **Node.js + Express** (REST, Socket.IO for live games, JWT auth). You can swap Express for **Fastify** in the same role if you prefer; the repo is structured as a classic JS API server.
+
+**Deployment options:**
+
+| Piece | Typical setup |
+|-------|----------------|
+| Frontend | **Vercel** (static `dist/`, `vercel.json` SPA fallback) |
+| API + WebSockets | **Render**, Railway, Fly.io, or any Node host — set `VITE_API_URL` / `VITE_SOCKET_URL` on Vercel to this URL |
+| Serverless on Vercel | Optional: move individual routes to **Vercel Serverless Functions** (`/api/*`) — same JavaScript; this repo currently ships a **single Express app** in `backend/` for simplicity |
+
+Environment variables: see root `.env.example` (Vite) and `backend/.env.example` (MongoDB, `JWT_SECRET`, `OPENAI_API_KEY`, `FRONTEND_URL`).
 
 ## Features
 
@@ -21,7 +35,7 @@ Arabic-first, mobile-first quiz platform for schools, teachers, students, famili
 - **Pagination:** My Quizzes (5 per page), Leaderboard
 - **Kuwait Curriculum:** Demo quizzes for elementary school
 - **Create Quiz:** Manual builder with questions, options, difficulty
-- **AI Generator:** Topic + difficulty → mock questions
+- **AI Generator:** Topic and/or **text-based PDF** → questions via OpenAI when `OPENAI_API_KEY` is set on the backend; mock data if API offline
 - **Leaderboard:** Tabs (Global, School, Family, This Week)
 - **Auth:** Sign in / Register (demo with LocalStorage)
 
@@ -44,7 +58,11 @@ Arabic-first, mobile-first quiz platform for schools, teachers, students, famili
 | `/mini-games/true-false` | True or False |
 | `/mini-games/flag-challenge` | Flag Challenge |
 | `/mini-games/quick-trivia` | Quick Trivia |
-| `/ai-generator` | AI Generator |
+| `/ai-generator` | AI Generator (topic / PDF) |
+| `/study` | Study library |
+| `/study/:id` | Study library entry |
+| `/live/report/:pin` | Live game detailed report |
+| `/quiz/:id/reports` | Solo attempt reports |
 | `/sign-in` | Sign In |
 | `/register` | Register |
 | `/get-started` | Get Started |

@@ -42,25 +42,60 @@ export function AuthProvider({ children }) {
     })
     const data = await res.json()
     if (!data.ok) throw new Error(data.error || 'Login failed')
-    const u = { id: data.user.id, email: data.user.email, name: data.user.name, displayName: data.user.displayName || data.user.name, role: data.user.role }
+    const u = {
+      id: data.user.id,
+      email: data.user.email,
+      name: data.user.name,
+      displayName: data.user.displayName || data.user.name,
+      role: data.user.role,
+      plan: data.user.plan || 'free',
+      xp: data.user.xp ?? 0,
+      level: data.user.level ?? 1,
+      streak: data.user.streak ?? 0,
+      teamCode: data.user.teamCode || '',
+    }
     persist(u, data.token)
     return u
   }
 
-  const register = async (email, password, name, displayName) => {
+  const register = async (email, password, name, displayName, role) => {
     if (!API) {
-      const u = { id: 'u_' + Date.now(), email, name: name || email.split('@')[0], displayName: displayName || name || email.split('@')[0], demo: true }
+      const u = {
+        id: 'u_' + Date.now(),
+        email,
+        name: name || email.split('@')[0],
+        displayName: displayName || name || email.split('@')[0],
+        role: role === 'teacher' ? 'teacher' : 'student',
+        demo: true,
+      }
       persist(u, null)
       return u
     }
     const res = await fetch(`${API}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.trim(), password, name: (name || '').trim() || email.split('@')[0], displayName: (displayName || '').trim() || undefined }),
+      body: JSON.stringify({
+        email: email.trim(),
+        password,
+        name: (name || '').trim() || email.split('@')[0],
+        displayName: (displayName || '').trim() || undefined,
+        ...(role === 'teacher' || role === 'admin' ? { role } : {}),
+      }),
     })
     const data = await res.json()
     if (!data.ok) throw new Error(data.error || 'Registration failed')
-    const u = { id: data.user.id, email: data.user.email, name: data.user.name, displayName: data.user.displayName || data.user.name, role: data.user.role }
+    const u = {
+      id: data.user.id,
+      email: data.user.email,
+      name: data.user.name,
+      displayName: data.user.displayName || data.user.name,
+      role: data.user.role,
+      plan: data.user.plan || 'free',
+      xp: data.user.xp ?? 0,
+      level: data.user.level ?? 1,
+      streak: data.user.streak ?? 0,
+      teamCode: data.user.teamCode || '',
+    }
     persist(u, data.token)
     return u
   }

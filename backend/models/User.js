@@ -17,9 +17,22 @@ const userSchema = new mongoose.Schema(
     /** Subscription: free | basic | pro | school */
     plan: { type: String, enum: ['free', 'basic', 'pro', 'school'], default: 'free' },
     planExpiresAt: { type: Date, default: null },
+    /** Optional school / SIS identifier for institutional reporting */
+    externalStudentId: { type: String, trim: true, default: '' },
+    /** Gamification — total XP (solo quizzes + bonuses) */
+    xp: { type: Number, default: 0, min: 0 },
+    level: { type: Number, default: 1, min: 1 },
+    /** Daily streak: consecutive UTC days with at least one qualifying solo completion */
+    streak: { type: Number, default: 0, min: 0 },
+    lastPlayDay: { type: String, default: '' },
+    /** Team code for team leaderboard (uppercase, e.g. PHOENIX) */
+    teamCode: { type: String, trim: true, uppercase: true, default: '', maxlength: 12 },
   },
   { timestamps: true }
 );
+
+userSchema.index({ xp: -1 });
+userSchema.index({ teamCode: 1, xp: -1 });
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

@@ -1,7 +1,7 @@
 {
   "name": "quizverse-backend",
   "version": "1.0.0",
-  "description": "QuizVerse — API server",
+  "description": "QuizVerse API — Node.js + Express (JavaScript). Alternative: Fastify. Not required for static Vercel SPA; host separately or use serverless handlers.",
   "type": "module",
   "main": "server.js",
   "scripts": {

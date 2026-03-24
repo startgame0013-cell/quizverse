@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 
-const navItems = [
+const staticNavItems = [
   ['/', 'nav.home'],
   ['/curricula', 'nav.curricula'],
   ['/study', 'nav.studyLibrary'],
@@ -18,6 +18,11 @@ export default function Navbar() {
   const { t, lang, setLang } = useLanguage()
   const { user, signOut, isAuthenticated } = useAuth()
   const location = useLocation()
+
+  const navItems = [
+    ...staticNavItems,
+    ...(user?.role === 'teacher' || user?.role === 'admin' ? [['/tracking', 'nav.tracking']] : []),
+  ]
 
   const toggleLang = () => {
     try {

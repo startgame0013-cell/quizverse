@@ -29,6 +29,13 @@ export const DEMO_LEADERBOARD = {
     { rank: 2, name: 'RisingStar', score: 750, quiz: 'Islamic Trivia' },
     { rank: 3, name: 'NewPlayer', score: 620, quiz: 'Science Basics' },
   ],
+  /** Demo team totals (when API offline) */
+  teams: [
+    { rank: 1, name: 'PHOENIX', teamCode: 'PHOENIX', xp: 12400, members: 5 },
+    { rank: 2, name: 'VIPERS', teamCode: 'VIPERS', xp: 10200, members: 4 },
+    { rank: 3, name: 'ORION', teamCode: 'ORION', xp: 9100, members: 6 },
+    { rank: 4, name: 'NOVA', teamCode: 'NOVA', xp: 7800, members: 3 },
+  ],
 }
 
 export const DEMO_GAME_SESSION = {

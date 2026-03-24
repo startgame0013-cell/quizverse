@@ -13,7 +13,7 @@ router.post('/', protect, async (req, res) => {
     if (req.user.role !== 'teacher' && req.user.role !== 'admin') {
       return res.status(403).json({ ok: false, error: 'Teachers only' });
     }
-    const { name } = req.body;
+    const { name, institutionName } = req.body;
     if (!name?.trim()) return res.status(400).json({ ok: false, error: 'Class name required' });
     let code;
     let exists = true;
@@ -21,7 +21,12 @@ router.post('/', protect, async (req, res) => {
       code = randomCode();
       exists = await Class.findOne({ code });
     }
-    const cls = await Class.create({ name: name.trim(), code, teacher: req.user._id });
+    const cls = await Class.create({
+      name: name.trim(),
+      institutionName: typeof institutionName === 'string' ? institutionName.trim().slice(0, 200) : '',
+      code,
+      teacher: req.user._id,
+    });
     res.status(201).json({ ok: true, class: cls });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });

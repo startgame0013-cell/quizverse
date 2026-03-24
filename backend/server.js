@@ -12,9 +12,11 @@ import scoresRoutes from './routes/scores.js';
 import classesRoutes from './routes/classes.js';
 import aiRoutes from './routes/ai.js';
 import statsRoutes from './routes/stats.js';
-import subscriptionRoutes from './routes/subscription.js';
+import subscriptionRoutes, { handlePaddleWebhook } from './routes/subscription.js';
 import gameRoutes from './routes/game.js';
 import reportsRoutes from './routes/reports.js';
+import trackingRoutes from './routes/tracking.js';
+import gamificationRoutes from './routes/gamification.js';
 import GameSession from './models/GameSession.js';
 
 await connectDB();
@@ -33,6 +35,12 @@ const PORT = process.env.PORT || 4000;
 
 app.use(cors({ origin: corsOrigins, credentials: true }));
 app.use(helmet({ contentSecurityPolicy: false }));
+// Paddle webhooks require raw body for HMAC verification — must run before express.json()
+app.post(
+  '/api/subscription/webhook',
+  express.raw({ type: 'application/json' }),
+  handlePaddleWebhook
+);
 app.use(express.json());
 
 // Rate limit auth routes to prevent brute force
@@ -58,6 +66,8 @@ app.use('/api/subscription', subscriptionRoutes);
 app.set('io', io);
 app.use('/api/game', gameRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/tracking', trackingRoutes);
+app.use('/api/gamification', gamificationRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

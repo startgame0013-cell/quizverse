@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, CheckCircle, ChevronLeft, ChevronRight, Clock, Timer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getQuizById, getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
+import { getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
+import { useQuiz } from '@/hooks/useQuiz'
 import API from '@/lib/api.js'
 
 const SKIPPED = -1
@@ -21,11 +22,14 @@ export default function PlayQuiz() {
   const { t, lang } = useLanguage()
   const { user } = useAuth()
   const { id } = useParams()
-  const quiz = getQuizById(id)
+  const [searchParams] = useSearchParams()
+  const classIdFromQuery = searchParams.get('classId')?.trim() || ''
+  const { quiz, loading: quizLoading, error: quizError } = useQuiz(id)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [finished, setFinished] = useState(false)
   const [elapsedSec, setElapsedSec] = useState(0)
+  const [gReward, setGReward] = useState(null)
   const [timeLeft, setTimeLeft] = useState(0)
   const questionTimerRef = useRef(null)
   const qStartedRef = useRef(Date.now())
@@ -36,6 +40,17 @@ export default function PlayQuiz() {
   )
 
   currentIndexRef.current = currentIndex
+
+  useEffect(() => {
+    setCurrentIndex(0)
+    setAnswers({})
+    setFinished(false)
+    setElapsedSec(0)
+    setGReward(null)
+    timesMsRef.current = {}
+    sessionKeyRef.current =
+      typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `solo_${Date.now()}_${Math.random()}`
+  }, [id, quiz?.id])
 
   const bumpQuestionMs = (idx) => {
     if (timesMsRef.current[idx] != null) return
@@ -142,14 +157,30 @@ export default function PlayQuiz() {
         total: questions.length,
         timeSpentSec: elapsedSec,
         responses,
+        ...(classIdFromQuery ? { classId: classIdFromQuery } : {}),
       }),
-    }).catch(() => {})
-  }, [finished, quiz, id, user, score, answers, questions, elapsedSec, lang])
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.gamification) setGReward(d.gamification)
+      })
+      .catch(() => {})
+  }, [finished, quiz, id, user, score, answers, questions, elapsedSec, lang, classIdFromQuery])
 
-  if (!quiz) {
+  if (quizLoading) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center text-muted-foreground">
+        <p>{t('playQuiz.loadingQuiz')}</p>
+      </div>
+    )
+  }
+
+  if (quizError === 'noApi' || !quiz) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <p className="text-muted-foreground">{t('playQuiz.notFound')}</p>
+        <p className="text-muted-foreground">
+          {quizError === 'noApi' ? t('playQuiz.cloudNeedsApi') : t('playQuiz.notFound')}
+        </p>
         <Button asChild className="mt-4">
           <Link to="/my-quizzes">{t('playQuiz.backToQuizzes')}</Link>
         </Button>
@@ -207,6 +238,16 @@ export default function PlayQuiz() {
                 {t('playQuiz.correctAnswers')}: {score} · {t('playQuiz.timeTaken')}:{' '}
                 {formatMmSs(elapsedSec)}
               </p>
+              {gReward && !user?.demo && (
+                <div className="mt-3 rounded-lg border border-primary/25 bg-primary/10 px-3 py-2 text-sm">
+                  <p className="font-semibold text-primary">
+                    +{gReward.xpEarned} {t('playQuiz.xpLabel')} · {t('playQuiz.levelShort')} {gReward.level}
+                  </p>
+                  <p className="text-muted-foreground mt-1">
+                    {t('playQuiz.streakLabel')}: {gReward.streak} · {t('playQuiz.totalXp')}: {gReward.xp}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="flex gap-3 flex-wrap">
               <Button asChild>

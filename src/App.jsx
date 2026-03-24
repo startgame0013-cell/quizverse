@@ -42,6 +42,8 @@ const GetStarted = lazy(() => import('./pages/GetStarted'))
 const VisitorStats = lazy(() => import('./pages/VisitorStats'))
 const HostLiveGame = lazy(() => import('./pages/HostLiveGame'))
 const LiveGamePlayer = lazy(() => import('./pages/LiveGamePlayer'))
+const InstitutionalTracking = lazy(() => import('./pages/InstitutionalTracking'))
+const TeacherClassQuizReport = lazy(() => import('./pages/TeacherClassQuizReport'))
 
 function PageFallback() {
   return (
@@ -101,6 +103,9 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/get-started" element={<GetStarted />} />
               <Route path="/visitor-stats" element={<VisitorStats />} />
+              <Route path="/tracking" element={<InstitutionalTracking />} />
+              <Route path="/tracking/class/:classId/quiz/:quizId" element={<TeacherClassQuizReport />} />
+              <Route path="/tracking/class/:classId" element={<InstitutionalTracking />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

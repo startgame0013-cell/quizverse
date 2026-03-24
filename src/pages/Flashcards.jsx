@@ -1,23 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, RotateCw, Layers } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getQuizById, getQuestionDisplay, getQuizDisplay, getAllQuizzes } from '@/lib/quizStore'
+import { Card, CardContent } from '@/components/ui/card'
+import { getQuestionDisplay, getQuizDisplay, getAllQuizzes } from '@/lib/quizStore'
+import { useQuiz } from '@/hooks/useQuiz'
+import { fetchMyQuizzes, serverQuizToClient } from '@/lib/quizApi'
 import { useLanguage } from '@/context/LanguageContext'
+import { useAuth } from '@/context/AuthContext'
+import API from '@/lib/api.js'
 
 export default function Flashcards() {
   const { t, lang } = useLanguage()
+  const { user, getToken } = useAuth()
   const { quizId } = useParams()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
+  const [cloudList, setCloudList] = useState([])
 
-  const quiz = quizId ? getQuizById(quizId) : null
-  const quizzes = getAllQuizzes()
+  const { quiz, loading: quizLoading, error: quizErr } = useQuiz(quizId || undefined)
+
+  useEffect(() => {
+    if (!API || !user || user.demo || !getToken()) {
+      setCloudList([])
+      return
+    }
+    let cancel = false
+    fetchMyQuizzes(getToken())
+      .then((list) => {
+        if (!cancel) setCloudList((list || []).map(serverQuizToClient))
+      })
+      .catch(() => {
+        if (!cancel) setCloudList([])
+      })
+    return () => {
+      cancel = true
+    }
+  }, [API, user, getToken])
+
+  const mergedQuizzes = useMemo(() => {
+    const local = getAllQuizzes()
+    const merged = [...cloudList, ...local]
+    merged.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+    return merged
+  }, [cloudList])
+
+  useEffect(() => {
+    setCurrentIndex(0)
+    setFlipped(false)
+  }, [quizId])
 
   // اختر كويز — عرض قائمة الكويزات
   if (!quizId) {
-    const withQuestions = quizzes.filter((q) => (q.questions || []).length > 0)
+    const withQuestions = mergedQuizzes.filter((q) => (q.questions || []).length > 0)
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">{t('flashcards.title')}</h1>
@@ -62,11 +97,21 @@ export default function Flashcards() {
     )
   }
 
+  if (quizLoading) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center text-muted-foreground">
+        <p>{t('playQuiz.loadingQuiz')}</p>
+      </div>
+    )
+  }
+
   // كويز غير موجود
   if (!quiz) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <p className="text-muted-foreground">{t('playQuiz.notFound')}</p>
+        <p className="text-muted-foreground">
+          {quizErr === 'noApi' ? t('playQuiz.cloudNeedsApi') : t('playQuiz.notFound')}
+        </p>
         <Button asChild className="mt-4">
           <Link to="/flashcards">{t('flashcards.backToFlashcards')}</Link>
         </Button>

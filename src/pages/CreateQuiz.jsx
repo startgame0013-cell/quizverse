@@ -6,8 +6,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 import { saveQuiz, getQuizById } from '@/lib/quizStore'
+import {
+  isMongoObjectId,
+  fetchQuizPublic,
+  serverQuizToClient,
+  createQuizOnServer,
+  updateQuizOnServer,
+  quizClientToServerPayload,
+} from '@/lib/quizApi'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
+import { useAuth } from '@/context/AuthContext'
+import API from '@/lib/api.js'
 
 const DIFFICULTIES = [
   { value: 'easy', labelKey: 'difficulty.easy' },
@@ -123,8 +133,9 @@ function QuestionBlock({ index, question, onChange, onRemove, canRemove, t }) {
 }
 
 export default function CreateQuiz() {
-  const { t } = useLanguage()
-  const { success } = useToast()
+  const { t, lang } = useLanguage()
+  const { success, error: showError } = useToast()
+  const { user, getToken } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const location = useLocation()
@@ -139,6 +150,24 @@ export default function CreateQuiz() {
   const [stage, setStage] = useState('any')
   const [questions, setQuestions] = useState([emptyQuestion()])
   const [saved, setSaved] = useState(false)
+  const [editLoading, setEditLoading] = useState(false)
+
+  const applyQuizToForm = (q) => {
+    setTitle(q.title || '')
+    setDescription(q.description || '')
+    setDifficulty(q.difficulty || 'medium')
+    setCategory(q.category || 'general')
+    setAudience(q.audience || 'students')
+    setStage(q.stage || 'any')
+    setQuestions(
+      (q.questions?.length ? q.questions : [emptyQuestion()]).map((qn) => ({
+        text: qn.text || '',
+        options: qn.options?.length === 4 ? qn.options : ['', '', '', ''],
+        correctIndex: qn.correctIndex ?? 0,
+        explanation: qn.explanation || '',
+      }))
+    )
+  }
 
   useEffect(() => {
     if (aiState?.topic) {
@@ -155,26 +184,20 @@ export default function CreateQuiz() {
       )
       return
     }
-    if (editId) {
-      const q = getQuizById(editId)
-      if (q) {
-        setTitle(q.title || '')
-        setDescription(q.description || '')
-        setDifficulty(q.difficulty || 'medium')
-        setCategory(q.category || 'general')
-        setAudience(q.audience || 'students')
-        setStage(q.stage || 'any')
-        setQuestions(
-          (q.questions?.length ? q.questions : [emptyQuestion()]).map((qn) => ({
-            text: qn.text || '',
-            options: qn.options?.length === 4 ? qn.options : ['', '', '', ''],
-            correctIndex: qn.correctIndex ?? 0,
-            explanation: qn.explanation || '',
-          }))
-        )
-      }
+    if (!editId) return
+
+    if (isMongoObjectId(editId) && API) {
+      setEditLoading(true)
+      fetchQuizPublic(editId)
+        .then((raw) => applyQuizToForm(serverQuizToClient(raw)))
+        .catch(() => showError(t('playQuiz.notFound')))
+        .finally(() => setEditLoading(false))
+      return
     }
-  }, [editId, aiState?.topic])
+
+    const q = getQuizById(editId)
+    if (q) applyQuizToForm(q)
+  }, [editId, aiState?.topic, t, showError])
 
   const addQuestion = () => setQuestions((q) => [...q, emptyQuestion()])
   const removeQuestion = (index) => {
@@ -197,7 +220,7 @@ export default function CreateQuiz() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const quiz = {
       id: editId,
@@ -207,6 +230,7 @@ export default function CreateQuiz() {
       category: category || undefined,
       audience: audience || undefined,
       stage: stage === 'any' ? undefined : stage,
+      language: lang === 'ar' ? 'ar' : 'en',
       questions: questions.map((q) => ({
         ...q,
         text: q.text.trim(),
@@ -215,6 +239,26 @@ export default function CreateQuiz() {
         explanation: q.explanation?.trim() || undefined,
       })),
     }
+
+    const canCloud = !!(API && user && !user.demo && getToken())
+    if (canCloud && (!editId || isMongoObjectId(editId))) {
+      try {
+        const payload = quizClientToServerPayload(quiz)
+        if (editId && isMongoObjectId(editId)) {
+          await updateQuizOnServer(getToken(), editId, payload)
+        } else {
+          const created = await createQuizOnServer(getToken(), payload)
+          quiz.id = String(created._id)
+        }
+        success(t('createQuiz.saved'))
+        setSaved(true)
+        setTimeout(() => navigate(`/quiz/${quiz.id}/details`), 1200)
+      } catch (err) {
+        showError(err.message || t('createQuiz.saveError'))
+      }
+      return
+    }
+
     saveQuiz(quiz)
     success(t('createQuiz.saved'))
     setSaved(true)
@@ -246,6 +290,9 @@ export default function CreateQuiz() {
       </div>
 
       <div className="max-w-2xl">
+        {editLoading && (
+          <p className="mb-4 text-sm text-muted-foreground">{t('playQuiz.loadingQuiz')}</p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-8">
           <Card>
             <CardHeader>
@@ -344,7 +391,7 @@ export default function CreateQuiz() {
             <Button type="button" variant="outline" onClick={handleCancel}>
               {t('createQuiz.cancel')}
             </Button>
-            <Button type="submit" className="gap-2" disabled={saved}>
+            <Button type="submit" className="gap-2" disabled={saved || editLoading}>
               <Save className="size-4" />
               {saved ? t('createQuiz.saved') : t('createQuiz.saveQuiz')}
             </Button>

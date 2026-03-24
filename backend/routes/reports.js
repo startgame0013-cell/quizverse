@@ -3,21 +3,37 @@ import mongoose from 'mongoose'
 import GameSession from '../models/GameSession.js'
 import SoloQuizAttempt from '../models/SoloQuizAttempt.js'
 import Quiz from '../models/Quiz.js'
+import Class from '../models/Class.js'
 import { protect } from '../middleware/auth.js'
+import { awardSoloXp } from '../lib/gamification.js'
 
 const router = express.Router()
 
 /** Solo practice — logged-in user only. Idempotent via sessionKey. */
 router.post('/solo', protect, async (req, res) => {
   try {
-    const { quizId, quizTitle, sessionKey, score, total, timeSpentSec, responses } = req.body
+    const { quizId, quizTitle, sessionKey, score, total, timeSpentSec, responses, classId: classIdBody } = req.body
     if (!quizId || !sessionKey || !Array.isArray(responses)) {
       return res.status(400).json({ ok: false, error: 'quizId, sessionKey, responses[] required' })
+    }
+    let classId = null
+    if (classIdBody && mongoose.Types.ObjectId.isValid(String(classIdBody))) {
+      const cls = await Class.findById(classIdBody)
+      if (!cls) {
+        return res.status(400).json({ ok: false, error: 'Class not found' })
+      }
+      const sid = String(req.user._id)
+      const inClass = (cls.students || []).some((s) => String(s) === sid)
+      if (!inClass && req.user.role !== 'admin') {
+        return res.status(403).json({ ok: false, error: 'You must be enrolled in this class to attach attempts' })
+      }
+      classId = cls._id
     }
     const existing = await SoloQuizAttempt.findOne({ user: req.user._id, sessionKey: String(sessionKey) })
     if (existing) {
       return res.json({ ok: true, id: existing._id, duplicate: true })
     }
+    let gamification = null
     const rec = await SoloQuizAttempt.create({
       user: req.user._id,
       quizId: String(quizId),
@@ -26,6 +42,7 @@ router.post('/solo', protect, async (req, res) => {
       score: Math.max(0, Number(score) || 0),
       total: Math.max(1, Number(total) || 1),
       timeSpentSec: Math.max(0, Number(timeSpentSec) || 0),
+      classId,
       responses: responses.map((r) => ({
         questionIndex: Number(r.questionIndex),
         questionId: String(r.questionId || ''),
@@ -34,7 +51,15 @@ router.post('/solo', protect, async (req, res) => {
         timeMs: Math.max(0, Number(r.timeMs) || 0),
       })),
     })
-    res.status(201).json({ ok: true, id: rec._id })
+    try {
+      gamification = await awardSoloXp(req.user._id, Math.max(0, Number(score) || 0), Math.max(1, Number(total) || 1))
+      if (gamification?.xpEarned != null) {
+        await SoloQuizAttempt.findByIdAndUpdate(rec._id, { xpEarned: gamification.xpEarned })
+      }
+    } catch (e) {
+      console.error('gamification award failed', e.message)
+    }
+    res.status(201).json({ ok: true, id: rec._id, gamification })
   } catch (err) {
     if (err?.code === 11000) {
       return res.json({ ok: true, duplicate: true })

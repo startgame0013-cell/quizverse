@@ -1,24 +1,64 @@
+import { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, PenSquare, Play, Radio, Copy, CheckCircle2, ClipboardList } from 'lucide-react'
+import {
+  ArrowLeft,
+  PenSquare,
+  Play,
+  Radio,
+  Copy,
+  CheckCircle2,
+  ClipboardList,
+  LayoutDashboard,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
-import { getQuizById, getQuestionDisplay, getQuizDisplay, duplicateQuiz } from '@/lib/quizStore'
+import { useAuth } from '@/context/AuthContext'
+import { duplicateQuiz, getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
+import { useQuiz } from '@/hooks/useQuiz'
+import { isMongoObjectId, createQuizOnServer, quizClientToServerPayload } from '@/lib/quizApi'
 import API from '@/lib/api.js'
 
 export default function QuizDetails() {
   const { t, lang } = useLanguage()
   const { success, error: showError } = useToast()
+  const { user, getToken } = useAuth()
   const { id } = useParams()
   const navigate = useNavigate()
-  const quiz = getQuizById(id)
+  const [classes, setClasses] = useState([])
+  const [selectedClassId, setSelectedClassId] = useState('')
+  const { quiz, loading: quizLoading, error: quizErr } = useQuiz(id)
+
+  useEffect(() => {
+    if (!API || !user || (user.role !== 'teacher' && user.role !== 'admin')) return
+    const token = getToken()
+    if (!token) return
+    fetch(`${API}/api/classes`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && Array.isArray(d.classes)) setClasses(d.classes)
+      })
+      .catch(() => {})
+  }, [API, user, getToken])
+
+  if (quizLoading) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center text-muted-foreground">
+        <p>{t('playQuiz.loadingQuiz')}</p>
+      </div>
+    )
+  }
 
   if (!quiz) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <p className="text-muted-foreground">{t('playQuiz.notFound')}</p>
+        <p className="text-muted-foreground">
+          {quizErr === 'noApi' ? t('playQuiz.cloudNeedsApi') : t('playQuiz.notFound')}
+        </p>
         <Button asChild className="mt-4">
           <Link to="/my-quizzes">{t('playQuiz.backToQuizzes')}</Link>
         </Button>
@@ -26,7 +66,22 @@ export default function QuizDetails() {
     )
   }
 
-  const handleDuplicate = () => {
+  const handleDuplicate = async () => {
+    if (!quiz) return
+    if (isMongoObjectId(id) && API && user && !user.demo && getToken()) {
+      try {
+        const payload = quizClientToServerPayload({
+          ...quiz,
+          title: `${quiz.title || t('myQuizzes.untitled')} (Copy)`,
+        })
+        const created = await createQuizOnServer(getToken(), payload)
+        success(t('createQuiz.saved'))
+        navigate(`/quiz/${String(created._id)}/details`)
+      } catch (e) {
+        showError(e.message || 'Duplicate failed')
+      }
+      return
+    }
     const copy = duplicateQuiz(id)
     if (copy) {
       success(t('createQuiz.saved'))
@@ -41,14 +96,25 @@ export default function QuizDetails() {
       return
     }
     try {
+      const token = getToken()
+      const headers = { 'Content-Type': 'application/json' }
+      if (token) headers.Authorization = `Bearer ${token}`
+      const body = {
+        quizId: id,
+        quizTitle: quizDisplay.title || t('myQuizzes.untitled'),
+        quizData: quiz,
+      }
+      if (selectedClassId) {
+        if (!token) {
+          showError(t('quizDetails.needTokenForClass'))
+          return
+        }
+        body.classId = selectedClassId
+      }
       const res = await fetch(`${API}/api/game/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          quizId: id,
-          quizTitle: quizDisplay.title || t('myQuizzes.untitled'),
-          quizData: quiz,
-        }),
+        headers,
+        body: JSON.stringify(body),
       })
       const data = await res.json()
       if (data.ok && data.pin) {
@@ -92,7 +158,38 @@ export default function QuizDetails() {
         </div>
       </div>
 
+      {(user?.role === 'teacher' || user?.role === 'admin') && classes.length > 0 && (
+        <div className="mb-6 max-w-lg space-y-2 rounded-xl border border-border bg-muted/20 p-4">
+          <Label className="text-foreground">{t('quizDetails.linkToClass')}</Label>
+          <Select
+            value={selectedClassId || 'none'}
+            onValueChange={(v) => setSelectedClassId(v === 'none' ? '' : v)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={t('quizDetails.selectClass')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">{t('quizDetails.noClass')}</SelectItem>
+              {classes.map((c) => (
+                <SelectItem key={c._id} value={c._id}>
+                  {c.name} ({c.code})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground">{t('quizDetails.classTrackingHint')}</p>
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-3 mb-8">
+        {(user?.role === 'teacher' || user?.role === 'admin') && (
+          <Button variant="outline" className="gap-2" asChild>
+            <Link to="/tracking">
+              <LayoutDashboard className="size-4" />
+              {t('quizDetails.institutionalTracking')}
+            </Link>
+          </Button>
+        )}
         <Button asChild className="gap-2">
           <Link to={`/create-quiz?edit=${id}`}>
             <PenSquare className="size-4" />
@@ -100,7 +197,9 @@ export default function QuizDetails() {
           </Link>
         </Button>
         <Button variant="outline" className="gap-2" asChild>
-          <Link to={`/quiz/${id}`}>
+          <Link
+            to={`/quiz/${id}${selectedClassId ? `?classId=${encodeURIComponent(selectedClassId)}` : ''}`}
+          >
             <Play className="size-4" />
             {t('quizDetails.play')}
           </Link>

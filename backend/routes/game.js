@@ -1,18 +1,42 @@
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import GameSession from '../models/GameSession.js'
+import User from '../models/User.js'
+import Class from '../models/Class.js'
 
 const router = express.Router()
+const JWT_SECRET = process.env.JWT_SECRET || 'quizverse-secret'
 
 function generatePin() {
   return String(Math.floor(100000 + Math.random() * 900000))
 }
 
-// Create game session (host)
+// Create game session (host). Optional classId: requires Bearer token; must be class teacher.
 router.post('/create', async (req, res) => {
   try {
-    const { quizId, quizTitle, quizData, hostName } = req.body
+    const { quizId, quizTitle, quizData, hostName, classId: classIdBody } = req.body
     if (!quizId || !quizData?.questions?.length) {
       return res.status(400).json({ ok: false, error: 'quizId and quizData.questions required' })
+    }
+    let resolvedClassId = null
+    if (classIdBody) {
+      const authHeader = req.headers.authorization
+      const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
+      if (!token) {
+        return res.status(401).json({ ok: false, error: 'Sign in required to attach a class to this session' })
+      }
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET)
+        const user = await User.findById(decoded.id)
+        if (!user) return res.status(401).json({ ok: false, error: 'Invalid token' })
+        const cls = await Class.findById(classIdBody)
+        if (!cls || String(cls.teacher) !== String(user._id)) {
+          return res.status(403).json({ ok: false, error: 'You can only link your own classes' })
+        }
+        resolvedClassId = cls._id
+      } catch {
+        return res.status(401).json({ ok: false, error: 'Invalid token' })
+      }
     }
     let pin = generatePin()
     let exists = await GameSession.findOne({ pin, status: { $in: ['waiting', 'playing'] } })
@@ -24,6 +48,7 @@ router.post('/create', async (req, res) => {
     }
     const session = await GameSession.create({
       pin,
+      classId: resolvedClassId,
       quizId,
       quizTitle: quizTitle || quizData?.title || 'Quiz',
       quizData,

@@ -7,8 +7,18 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getAllQuizzes, deleteQuiz, duplicateQuiz, getQuizDisplay, resetQuizzesToDefault } from '@/lib/quizStore'
+import {
+  isMongoObjectId,
+  fetchMyQuizzes,
+  serverQuizToClient,
+  createQuizOnServer,
+  deleteQuizOnServer,
+  quizClientToServerPayload,
+} from '@/lib/quizApi'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
+import { useAuth } from '@/context/AuthContext'
+import API from '@/lib/api.js'
 import Pagination from '@/components/Pagination'
 
 const PAGE_SIZE = 5
@@ -55,7 +65,8 @@ function buildDisplayTitle(quiz, lang, t, display) {
 
 export default function MyQuizzes() {
   const { t, lang } = useLanguage()
-  const { success } = useToast()
+  const { success, error: showError } = useToast()
+  const { user, getToken } = useAuth()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [filterDifficulty, setFilterDifficulty] = useState('')
@@ -63,8 +74,33 @@ export default function MyQuizzes() {
   const [filterStage, setFilterStage] = useState('')
   const [page, setPage] = useState(0)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [cloudQuizzes, setCloudQuizzes] = useState([])
+  const [localTick, setLocalTick] = useState(0)
 
-  const quizzes = getAllQuizzes()
+  useEffect(() => {
+    if (!API || !user || user.demo || !getToken()) {
+      setCloudQuizzes([])
+      return
+    }
+    let cancel = false
+    fetchMyQuizzes(getToken())
+      .then((list) => {
+        if (!cancel) setCloudQuizzes((list || []).map(serverQuizToClient))
+      })
+      .catch(() => {
+        if (!cancel) setCloudQuizzes([])
+      })
+    return () => {
+      cancel = true
+    }
+  }, [API, user, getToken])
+
+  const quizzes = useMemo(() => {
+    const local = getAllQuizzes()
+    const merged = [...cloudQuizzes, ...local]
+    merged.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
+    return merged
+  }, [cloudQuizzes, localTick])
 
   const filtered = useMemo(() => {
     return quizzes.filter((q) => {
@@ -87,22 +123,48 @@ export default function MyQuizzes() {
     setPage(0)
   }, [search, filterDifficulty, filterCategory, filterStage])
 
-  const handleDelete = (e, id) => {
+  const handleDelete = async (e, id) => {
     e.preventDefault()
     e.stopPropagation()
-    if (window.confirm(t('common.deleteConfirm'))) {
-      deleteQuiz(id)
-      success(t('common.deleteSuccess'))
-      window.location.reload()
+    if (!window.confirm(t('common.deleteConfirm'))) return
+    if (isMongoObjectId(id) && API && user && !user.demo && getToken()) {
+      try {
+        await deleteQuizOnServer(getToken(), id)
+        setCloudQuizzes((prev) => prev.filter((q) => q.id !== id))
+        success(t('common.deleteSuccess'))
+      } catch (err) {
+        showError(err.message || t('createQuiz.saveError'))
+      }
+      return
     }
+    deleteQuiz(id)
+    setLocalTick((x) => x + 1)
+    success(t('common.deleteSuccess'))
   }
 
-  const handleDuplicate = (e, id) => {
+  const handleDuplicate = async (e, quiz) => {
     e.preventDefault()
     e.stopPropagation()
+    const id = quiz.id
+    if (isMongoObjectId(id) && API && user && !user.demo && getToken()) {
+      try {
+        const payload = quizClientToServerPayload({
+          ...quiz,
+          title: `${quiz.title || t('myQuizzes.untitled')} (Copy)`,
+        })
+        const created = await createQuizOnServer(getToken(), payload)
+        setCloudQuizzes((prev) => [serverQuizToClient(created), ...prev])
+        success(t('createQuiz.saved'))
+        navigate(`/quiz/${String(created._id)}/details`)
+      } catch (err) {
+        showError(err.message || t('createQuiz.saveError'))
+      }
+      return
+    }
     const copy = duplicateQuiz(id)
     if (copy) {
       success(t('createQuiz.saved'))
+      setLocalTick((x) => x + 1)
       navigate(`/quiz/${copy.id}/details`)
     }
   }
@@ -255,8 +317,13 @@ export default function MyQuizzes() {
             <Card key={quiz.id} className="transition-shadow hover:shadow-soft">
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                 <Link to={`/quiz/${quiz.id}/details`} className="flex-1 min-w-0">
-                  <CardTitle className="text-lg truncate">
+                  <CardTitle className="text-lg truncate flex flex-wrap items-center gap-2">
                     {title}
+                    {quiz.source === 'cloud' && (
+                      <Badge variant="secondary" className="text-xs font-normal shrink-0">
+                        {t('myQuizzes.cloud')}
+                      </Badge>
+                    )}
                   </CardTitle>
                   <CardDescription className="mt-1">
                     {quiz.questions?.length || 0} {t('myQuizzes.questions')} · {formatDate(quiz.updatedAt, lang)}
@@ -278,7 +345,7 @@ export default function MyQuizzes() {
                       <Layers className="size-4" />
                     </Link>
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={(e) => handleDuplicate(e, quiz.id)} title={t('myQuizzes.duplicate')}>
+                  <Button variant="ghost" size="icon" onClick={(e) => handleDuplicate(e, quiz)} title={t('myQuizzes.duplicate')}>
                     <Copy className="size-4" />
                   </Button>
                   <Button variant="ghost" size="icon" asChild title={t('myQuizzes.host')}>

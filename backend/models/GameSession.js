@@ -22,6 +22,8 @@ const playerSchema = new mongoose.Schema({
 const gameSessionSchema = new mongoose.Schema(
   {
     pin: { type: String, required: true, unique: true },
+    /** When set, live reports roll up under this class for the teacher dashboard */
+    classId: { type: mongoose.Schema.Types.ObjectId, ref: 'Class', default: null, index: true },
     quizId: { type: String, required: true },
     quizTitle: { type: String, default: '' },
     quizData: { type: mongoose.Schema.Types.Mixed },
