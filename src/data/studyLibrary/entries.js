@@ -33,6 +33,63 @@
  */
 export const STUDY_ENTRIES = [
   {
+    id: 'english-g1-sem1-unit1-summary',
+    subjectId: 'english',
+    gradeId: 'G1',
+    unitId: 'all-about-myself',
+    unitTitleEn: 'Semester 1 - Unit 1',
+    unitTitleAr: 'الفصل الأول - الوحدة الأولى',
+    type: 'summary',
+    titleEn: 'All About Myself',
+    titleAr: 'كل شيء عني',
+    descriptionEn: 'Grade 1 English, semester 1. Phonics, greetings, body parts, colours, and numbers 1-3.',
+    descriptionAr: 'إنجليزي الصف الأول، الفصل الأول. أصوات الحروف، التحيات، أجزاء الجسم، الألوان، والأرقام ١-٣.',
+    bodyEn:
+      'Source: Skyline English For Kuwait (1-A), Grade 1, Semester 1, Student’s Book.\n\nUnit focus:\n- Phonics: Aa /ae/, Cc /k/, Ee /e/, Hh /h/, Ll /l/, Tt /t/\n- Reading and vocabulary: body parts, numbers, colours, target sound words\n- Grammar: possessive adjectives (my, your), present simple, singular and plural nouns, indefinite articles (a/an), personal pronoun I\n- Listening and speaking: greetings and responses, introducing oneself and others, asking for and giving simple information, identifying body parts, counting from 1 to 3, describing objects using basic colours\n- Writing: penmanship, tracing and copying letters, numbers, and simple CVC words\n\nTeaching note:\nThis unit is for the first five weeks, with 2 days allocated for adjustment.',
+    bodyAr:
+      'المصدر: Skyline English For Kuwait (1-A) - الصف الأول - الفصل الأول - Student’s Book.\n\nمحاور الوحدة:\n- الأصوات: Aa /ae/ و Cc /k/ و Ee /e/ و Hh /h/ و Ll /l/ و Tt /t/\n- القراءة والمفردات: أجزاء الجسم، الأرقام، الألوان، وكلمات الأصوات المستهدفة\n- القواعد: صفات الملكية my و your، المضارع البسيط، الاسم المفرد والجمع، a/an، والضمير I\n- الاستماع والتحدث: التحية والرد عليها، التعريف بالنفس وبالآخرين، طلب المعلومات البسيطة وإعطاؤها، تحديد أجزاء الجسم، العد من ١ إلى ٣، ووصف الأشياء بالألوان الأساسية\n- الكتابة: تحسين الخط، وتتبع ونسخ الحروف والأرقام وكلمات CVC البسيطة\n\nملاحظة تدريسية:\nتمتد هذه الوحدة عبر الأسابيع الخمسة الأولى، مع تخصيص يومين للتهيئة والتكيف.',
+    tags: ['english', 'grade1', 'semester1', 'unit1', 'phonics'],
+    updatedAt: '2026-03',
+  },
+  {
+    id: 'english-g1-sem1-unit2-summary',
+    subjectId: 'english',
+    gradeId: 'G1',
+    unitId: 'meet-my-family',
+    unitTitleEn: 'Semester 1 - Unit 2',
+    unitTitleAr: 'الفصل الأول - الوحدة الثانية',
+    type: 'summary',
+    titleEn: 'Meet My Family',
+    titleAr: 'تعرف على عائلتي',
+    descriptionEn: 'Grade 1 English, semester 1. Family members, numbers 4-6, daily routines, and yes/no questions.',
+    descriptionAr: 'إنجليزي الصف الأول، الفصل الأول. أفراد العائلة، الأرقام ٤-٦، الروتين اليومي، وأسئلة نعم/لا.',
+    bodyEn:
+      'Source: Skyline English For Kuwait (1-A), Grade 1, Semester 1, Student’s Book.\n\nUnit focus:\n- Phonics: Ff /f/, Mm /m/, Bb /b/, Oo /oʊ/, Uu /ʌ/, Xx /ks/\n- Reading and vocabulary: family members, numbers, colours, and target sound words\n- Grammar: possessive adjectives (my, his, her), present simple, yes/no questions\n- Listening and speaking: identifying and naming family members, asking and answering questions to give personal information, talking about daily family routines, counting from 4 to 6, describing objects with basic colour words\n- Writing: tracing and copying letters, numbers, and CVC words\n\nTeaching note:\nThis unit is planned for weeks 6 to 10.',
+    bodyAr:
+      'المصدر: Skyline English For Kuwait (1-A) - الصف الأول - الفصل الأول - Student’s Book.\n\nمحاور الوحدة:\n- الأصوات: Ff /f/ و Mm /m/ و Bb /b/ و Oo /oʊ/ و Uu /ʌ/ و Xx /ks/\n- القراءة والمفردات: أفراد العائلة، الأرقام، الألوان، وكلمات الأصوات المستهدفة\n- القواعد: صفات الملكية my و his و her، المضارع البسيط، وأسئلة نعم/لا\n- الاستماع والتحدث: التعرف على أفراد العائلة وتسميتهم، طرح الأسئلة والإجابة عنها لإعطاء معلومات شخصية، الحديث عن الروتين اليومي للعائلة، العد من ٤ إلى ٦، ووصف الأشياء بالألوان الأساسية\n- الكتابة: تتبع ونسخ الحروف والأرقام وكلمات CVC\n\nملاحظة تدريسية:\nتمتد هذه الوحدة من الأسبوع السادس إلى الأسبوع العاشر.',
+    tags: ['english', 'grade1', 'semester1', 'unit2', 'family'],
+    updatedAt: '2026-03',
+  },
+  {
+    id: 'english-g1-sem1-unit3-summary',
+    subjectId: 'english',
+    gradeId: 'G1',
+    unitId: 'my-house',
+    unitTitleEn: 'Semester 1 - Unit 3',
+    unitTitleAr: 'الفصل الأول - الوحدة الثالثة',
+    type: 'summary',
+    titleEn: 'My House',
+    titleAr: 'بيتي',
+    descriptionEn: 'Grade 1 English, semester 1. Household items, positions, demonstratives, and numbers 7-8.',
+    descriptionAr: 'إنجليزي الصف الأول، الفصل الأول. مفردات المنزل، المواقع، أسماء الإشارة، والأرقام ٧-٨.',
+    bodyEn:
+      'Source: Skyline English For Kuwait (1-A), Grade 1, Semester 1, Student’s Book.\n\nUnit focus:\n- Phonics: Dd /d/, Gg /g/, Ii /ɪ/, Kk /k/, Qq /kw/, Ww /w/, Yy /j/\n- Reading and vocabulary: household items, numbers, colours, and target sound words\n- Grammar: present simple, prepositions of place (on, in, under), wh-questions such as Where is...? and What colour is/are...?, demonstratives this and that\n- Listening and speaking: asking and answering questions about locations and positions, describing objects by colour, counting 7-8, describing a house and its furniture\n- Writing: tracing and copying letters, numbers, CVC words, simple words, short phrases, and short sentences\n\nImportant note:\nUnit Four is suspended in this plan. The total number of periods in the semester is 60.',
+    bodyAr:
+      'المصدر: Skyline English For Kuwait (1-A) - الصف الأول - الفصل الأول - Student’s Book.\n\nمحاور الوحدة:\n- الأصوات: Dd /d/ و Gg /g/ و Ii /ɪ/ و Kk /k/ و Qq /kw/ و Ww /w/ و Yy /j/\n- القراءة والمفردات: أدوات وأثاث المنزل، الأرقام، الألوان، وكلمات الأصوات المستهدفة\n- القواعد: المضارع البسيط، حروف الجر للمكان on و in و under، وأسئلة Wh مثل Where is...? و What colour is/are...؟، وأسماء الإشارة this و that\n- الاستماع والتحدث: السؤال والإجابة عن المواقع والأماكن، وصف الأشياء بالألوان، العد من ٧ إلى ٨، ووصف البيت وأثاثه\n- الكتابة: تتبع ونسخ الحروف والأرقام وكلمات CVC والكلمات البسيطة والعبارات والجمل القصيرة\n\nملاحظة مهمة:\nالوحدة الرابعة موقوفة في هذا التوزيع، وإجمالي حصص الفصل الدراسي ٦٠ حصة.',
+    tags: ['english', 'grade1', 'semester1', 'unit3', 'house'],
+    updatedAt: '2026-03',
+  },
+  {
     id: 'math-g5-fractions-summary',
     subjectId: 'math',
     gradeId: 'G5',
