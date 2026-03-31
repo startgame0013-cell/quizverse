@@ -18,12 +18,13 @@ const plans = [
     features: [
       'العب كويزات غير محدودة',
       'لا تحتاج تسجيل',
+      'مناسب للتجربة السريعة واللعب المباشر',
     ],
   },
   {
     id: 'premium',
     name: 'بريميوم',
-    price: '2.99 د.ك',
+    price: '4.99 د.ك',
     period: '/ شهر',
     icon: Crown,
     cta: 'اشترك الآن',
@@ -32,12 +33,13 @@ const plans = [
       'إنشاء كويزات غير محدودة',
       'شهادات إتمام',
       'تحليلات ونتائج مفصلة',
+      'أفضل خيار للأفراد وصنّاع المحتوى التعليمي',
     ],
   },
   {
     id: 'teacher',
     name: 'معلم',
-    price: '7.99 د.ك',
+    price: '9.99 د.ك',
     period: '/ شهر',
     icon: GraduationCap,
     cta: 'اختر خطة المعلم',
@@ -45,6 +47,7 @@ const plans = [
       'كل مميزات البريميوم',
       'لوحة تحكم للمعلم',
       'إدارة الطلاب والنتائج',
+      'مناسب للفصول والمدارس والمتابعة المستمرة',
     ],
   },
 ]
@@ -62,7 +65,7 @@ export default function Pricing() {
       <div className="mx-auto mb-14 max-w-3xl text-center">
         <h1 className="text-4xl font-bold tracking-tight text-foreground">الأسعار والاشتراكات</h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          اختر الخطة المناسبة لك. تصميم عربي بسيط وواضح، مع ثيم QuizVerse الأسود والذهبي.
+          اختر الخطة المناسبة لك وابدأ بتجربة تعليمية أقوى. خطط واضحة، قيمة أعلى، وتجربة عربية متكاملة.
         </p>
       </div>
 
@@ -88,6 +91,13 @@ export default function Pricing() {
                 <p className="mt-3 text-4xl font-bold text-foreground">
                   {price}
                   {period && <span className="text-lg font-medium text-muted-foreground"> {period}</span>}
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {id === 'free'
+                    ? 'ابدأ فوراً بدون التزام'
+                    : id === 'premium'
+                      ? 'لأفضل توازن بين السعر والمميزات'
+                      : 'حل عملي للمعلمين والإدارة الصفية'}
                 </p>
               </div>
             </CardHeader>
