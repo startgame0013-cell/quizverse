@@ -573,23 +573,23 @@ export const translations = {
     aiGenerator: {
       title: 'AI Quiz Generator',
       subtitle:
-        'Topic mode: uses the real API when you are signed in and OPENAI_API_KEY is set on the server; otherwise sample (mock) questions. PDF mode: upload a text-based PDF — server extracts text and builds questions (no OCR for scans in phase 1).',
+        'Topic mode uses the real API when you are signed in and OPENAI_API_KEY is set on the server; otherwise sample questions are used. File mode accepts images, PDF, TXT, and DOCX so lessons and study materials can be turned into quiz questions.',
       generateTitle: 'Generate questions',
-      generateDesc: 'Choose topic or PDF, difficulty, and number of questions.',
+      generateDesc: 'Choose a topic or upload a file, then select difficulty and question count.',
       modeTopic: 'From topic',
-      modePdf: 'From PDF (text)',
+      modeFile: 'From file or image',
       topic: 'Topic',
       topicPlaceholder: 'e.g. World capitals, Science, History',
-      pdfFile: 'PDF file',
-      pdfHint:
-        'Text-based PDFs only (selectable text). Scanned pages without OCR may fail — use a clearer scan pipeline later.',
-      pdfPickFile: 'Choose a PDF file.',
-      pdfNoText:
-        'Not enough text in this PDF. Try a text-based PDF, or scanned documents need OCR (not included in phase 1).',
-      needSignIn: 'Sign in to use PDF import or the live AI API.',
-      needApiPdf: 'PDF generation requires the QuizVerse backend (API URL).',
+      fileLabel: 'File or image',
+      fileHint:
+        'Supported: PNG, JPG, WEBP, PDF, TXT, and DOCX. Images are analyzed with AI vision; documents are read and converted into questions.',
+      filePick: 'Choose a file or image first.',
+      fileNoText:
+        'Could not extract enough content from this file. Try a clearer image or a document with more readable text.',
+      needSignIn: 'Sign in to use file import or the live AI API.',
+      needApiFile: 'File generation requires the QuizVerse backend (API URL).',
       questionCount: 'Number of questions',
-      sourcePdf: 'Source',
+      sourceFile: 'Source',
       mockFallback: 'Using sample questions — connect API + sign in + OPENAI_API_KEY for real AI.',
       errorGeneric: 'Something went wrong.',
       difficulty: 'Difficulty',
@@ -1372,23 +1372,23 @@ export const translations = {
     aiGenerator: {
       title: 'مولد كويز بالذكاء الاصطناعي',
       subtitle:
-        'وضع الموضوع: يستخدم الـ API الحقيقي عند تسجيل الدخول ووجود OPENAI_API_KEY على الخادم؛ وإلا أسئلة تجريبية. وضع PDF: ارفعي ملف PDF نصياً (ليس ممسوحاً بدون OCR في المرحلة 1) ليُستخرج النص ويُولَّد منه الكويز.',
+        'وضع الموضوع يستخدم الـ API الحقيقي عند تسجيل الدخول ووجود OPENAI_API_KEY على الخادم؛ وإلا تُستخدم أسئلة تجريبية. وضع الملف يدعم الصور وPDF وTXT وDOCX لتحويل الدروس والملفات إلى أسئلة كويز.',
       generateTitle: 'إنشاء أسئلة',
-      generateDesc: 'اختري موضوعاً أو PDF، ثم الصعوبة وعدد الأسئلة.',
+      generateDesc: 'اختري موضوعاً أو ارفعي ملفاً، ثم الصعوبة وعدد الأسئلة.',
       modeTopic: 'من موضوع',
-      modePdf: 'من PDF (نصي)',
+      modeFile: 'من ملف أو صورة',
       topic: 'الموضوع',
       topicPlaceholder: 'مثال: عواصم العالم، العلوم، التاريخ',
-      pdfFile: 'ملف PDF',
-      pdfHint:
-        'PDF نصي فقط (نص قابل للتحديد). الملفات الممسوحة بدون طبقة نص قد تفشل — الـ OCR لمرحلة لاحقة.',
-      pdfPickFile: 'اختر ملف PDF.',
-      pdfNoText:
-        'لا يوجد نص كافٍ في الملف. جرّبي PDF نصياً؛ المسح الضوئي يحتاج OCR وليس ضمن المرحلة الأولى.',
-      needSignIn: 'سجّلي الدخول لاستيراد PDF أو الـ API الحقيقي.',
-      needApiPdf: 'استيراد PDF يحتاج خادم QuizVerse (رابط API).',
+      fileLabel: 'ملف أو صورة',
+      fileHint:
+        'المدعوم: PNG وJPG وWEBP وPDF وTXT وDOCX. الصور تُحلَّل عبر الذكاء الاصطناعي، والملفات النصية تُقرأ ثم تتحول إلى أسئلة.',
+      filePick: 'اختري ملفاً أو صورة أولاً.',
+      fileNoText:
+        'تعذر استخراج محتوى كافٍ من هذا الملف. جرّبي صورة أوضح أو ملفاً يحتوي على نص أكثر وضوحاً.',
+      needSignIn: 'سجّلي الدخول لاستخدام استيراد الملفات أو الـ API الحقيقي.',
+      needApiFile: 'إنشاء الأسئلة من الملفات يحتاج خادم QuizVerse (رابط API).',
       questionCount: 'عدد الأسئلة',
-      sourcePdf: 'المصدر',
+      sourceFile: 'المصدر',
       mockFallback: 'استخدام أسئلة تجريبية — للذكاء الحقيقي: API + تسجيل دخول + OPENAI_API_KEY.',
       errorGeneric: 'حدث خطأ.',
       difficulty: 'الصعوبة',

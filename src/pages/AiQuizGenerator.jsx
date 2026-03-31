@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Sparkles, Loader2, PenSquare, CheckCircle2, Save, FileText, Type } from 'lucide-react'
+import { Sparkles, Loader2, PenSquare, CheckCircle2, Save, Type, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -29,13 +29,13 @@ export default function AiQuizGenerator() {
   const navigate = useNavigate()
   const [mode, setMode] = useState('topic')
   const [topic, setTopic] = useState('')
-  const [pdfFile, setPdfFile] = useState(null)
-  const [pdfName, setPdfName] = useState('')
+  const [sourceFile, setSourceFile] = useState(null)
+  const [sourceName, setSourceName] = useState('')
   const [difficulty, setDifficulty] = useState('medium')
   const [questionCount, setQuestionCount] = useState(5)
   const [questions, setQuestions] = useState(null)
   const [loading, setLoading] = useState(false)
-  /** 'topic' | 'pdf' — what was used for the last successful generation */
+  /** 'topic' | 'file' — what was used for the last successful generation */
   const [generatedFrom, setGeneratedFrom] = useState(null)
 
   const useRealApi = () =>
@@ -44,15 +44,15 @@ export default function AiQuizGenerator() {
   const handleGenerate = async (e) => {
     e.preventDefault()
     if (mode === 'topic' && !topic.trim()) return
-    if (mode === 'pdf' && !API) {
-      showError(t('aiGenerator.needApiPdf'))
+    if (mode === 'file' && !API) {
+      showError(t('aiGenerator.needApiFile'))
       return
     }
-    if (mode === 'pdf' && !pdfFile) {
-      showError(t('aiGenerator.pdfPickFile'))
+    if (mode === 'file' && !sourceFile) {
+      showError(t('aiGenerator.filePick'))
       return
     }
-    if (mode === 'pdf' && !localStorage.getItem('quizverse_token')) {
+    if (mode === 'file' && !localStorage.getItem('quizverse_token')) {
       showError(t('aiGenerator.needSignIn'))
       return
     }
@@ -89,22 +89,22 @@ export default function AiQuizGenerator() {
       } else {
         const token = localStorage.getItem('quizverse_token')
         const fd = new FormData()
-        fd.append('pdf', pdfFile)
+        fd.append('file', sourceFile)
         fd.append('count', String(questionCount))
         fd.append('language', lang === 'ar' ? 'ar' : 'en')
         fd.append('difficulty', difficulty)
-        const res = await fetch(`${API}/api/ai/pdf-to-quiz`, {
+        const res = await fetch(`${API}/api/ai/source-to-quiz`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
           body: fd,
         })
         const data = await res.json()
         if (!data.ok) {
-          if (data.code === 'PDF_NO_TEXT') throw new Error(t('aiGenerator.pdfNoText'))
-          throw new Error(data.error || 'PDF quiz failed')
+          if (data.code === 'FILE_NO_TEXT') throw new Error(t('aiGenerator.fileNoText'))
+          throw new Error(data.error || 'Source quiz failed')
         }
         setQuestions(data.questions)
-        setGeneratedFrom('pdf')
+        setGeneratedFrom('file')
       }
     } catch (err) {
       showError(err.message || t('aiGenerator.errorGeneric'))
@@ -118,13 +118,13 @@ export default function AiQuizGenerator() {
     const titleFallback = lang === 'ar' ? 'كويز مولّد بالذكاء الاصطناعي' : 'AI Generated Quiz'
     const title =
       topic.trim() ||
-      (generatedFrom === 'pdf' && pdfName ? pdfName.replace(/\.pdf$/i, '') : '') ||
+      (generatedFrom === 'file' && sourceName ? sourceName.replace(/\.[^.]+$/i, '') : '') ||
       titleFallback
     const desc =
-      generatedFrom === 'pdf'
+      generatedFrom === 'file'
         ? lang === 'ar'
-          ? `مولّد من ملف PDF: ${pdfName || '—'}. الصعوبة: ${t(`difficulty.${difficulty}`)}.`
-          : `Generated from PDF: ${pdfName || '—'}. Difficulty: ${difficulty}.`
+          ? `مولّد من ملف أو صورة: ${sourceName || '—'}. الصعوبة: ${t(`difficulty.${difficulty}`)}.`
+          : `Generated from file or image: ${sourceName || '—'}. Difficulty: ${difficulty}.`
         : lang === 'ar'
           ? `مولّد من الموضوع: ${topic}. الصعوبة: ${t(`difficulty.${difficulty}`)}.`
           : `Generated from topic: ${topic}. Difficulty: ${difficulty}.`
@@ -191,13 +191,13 @@ export default function AiQuizGenerator() {
             </Button>
             <Button
               type="button"
-              variant={mode === 'pdf' ? 'default' : 'outline'}
+              variant={mode === 'file' ? 'default' : 'outline'}
               size="sm"
               className="gap-2"
-              onClick={() => setMode('pdf')}
+              onClick={() => setMode('file')}
             >
-              <FileText className="size-4" />
-              {t('aiGenerator.modePdf')}
+              <ImageIcon className="size-4" />
+              {t('aiGenerator.modeFile')}
             </Button>
           </div>
 
@@ -215,19 +215,19 @@ export default function AiQuizGenerator() {
               </div>
             ) : (
               <div className="space-y-2">
-                <Label htmlFor="pdf">{t('aiGenerator.pdfFile')}</Label>
+                <Label htmlFor="source">{t('aiGenerator.fileLabel')}</Label>
                 <Input
-                  id="pdf"
+                  id="source"
                   type="file"
-                  accept=".pdf,application/pdf"
+                  accept=".pdf,.txt,.docx,application/pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/png,image/jpeg,image/jpg,image/webp"
                   className="cursor-pointer"
                   onChange={(e) => {
                     const f = e.target.files?.[0]
-                    setPdfFile(f || null)
-                    setPdfName(f?.name || '')
+                    setSourceFile(f || null)
+                    setSourceName(f?.name || '')
                   }}
                 />
-                <p className="text-xs text-muted-foreground">{t('aiGenerator.pdfHint')}</p>
+                <p className="text-xs text-muted-foreground">{t('aiGenerator.fileHint')}</p>
               </div>
             )}
 
@@ -286,9 +286,9 @@ export default function AiQuizGenerator() {
             <div>
               <h2 className="text-xl font-semibold text-foreground">{t('aiGenerator.generatedTitle')}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                {generatedFrom === 'pdf' ? (
+                {generatedFrom === 'file' ? (
                   <>
-                    {t('aiGenerator.sourcePdf')}: {pdfName || '—'} · {t('aiGenerator.difficultyLabel')}:{' '}
+                    {t('aiGenerator.sourceFile')}: {sourceName || '—'} · {t('aiGenerator.difficultyLabel')}:{' '}
                     {t(`difficulty.${difficulty}`)}
                   </>
                 ) : (
