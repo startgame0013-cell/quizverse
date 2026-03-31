@@ -61,16 +61,39 @@ export default function Navbar() {
         className="flex items-center justify-between gap-4"
         style={{ maxWidth: '1200px', margin: '0 auto' }}
       >
-        {/* Logo - Left */}
-        <Link
-          to="/"
-          className="shrink-0 text-xl font-bold transition-opacity duration-150 hover:opacity-90 active:opacity-95"
-          style={{ color: '#FACC15', textDecoration: 'none' }}
-        >
-          QuizVerse
-        </Link>
+        <div className="flex items-center gap-6 min-w-0">
+          <Link
+            to="/"
+            className="shrink-0 text-xl font-bold transition-opacity duration-150 hover:opacity-90 active:opacity-95"
+            style={{ color: '#FACC15', textDecoration: 'none' }}
+          >
+            QuizVerse
+          </Link>
 
-        {/* Right: language + auth + hamburger (all nav links are inside the menu) */}
+          <div className="hidden lg:flex items-center gap-1 min-w-0">
+            {navItems.map(([path, labelKey]) => {
+              const isActive =
+                location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  className="transition-colors duration-150 hover:bg-[rgba(250,204,21,0.1)] rounded-lg"
+                  style={{
+                    ...baseLinkStyle,
+                    color: isActive ? '#FACC15' : '#fafafa',
+                    background: isActive ? linkHoverBg : 'transparent',
+                    fontSize: '0.95rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {t(labelKey)}
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
@@ -150,11 +173,11 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Hamburger: always visible — all links (Home, Curricula, Create Quiz, Join, Leaderboard) open from here */}
+          {/* Hamburger: mobile / tablet */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg transition-colors duration-150 hover:bg-white/12 active:bg-white/16 active:scale-95"
+            className="flex lg:hidden items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg transition-colors duration-150 hover:bg-white/12 active:bg-white/16 active:scale-95"
             style={{
               background: 'rgba(255,255,255,0.08)',
               color: '#fafafa',
