@@ -42,7 +42,7 @@ export default function Home() {
             className="mt-4 mb-6 text-center font-medium"
             style={{ color: '#F5C518', fontSize: '15px' }}
           >
-            أول منصة كويز عربية للمناهج التعليمية
+            أول منصة عربية خليجية لمتعة التعلم
           </p>
           <div className="mt-8">
             <Button size="lg" className="min-w-[180px] shadow-glow" asChild>

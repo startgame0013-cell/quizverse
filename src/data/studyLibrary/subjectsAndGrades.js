@@ -13,6 +13,7 @@ export const STUDY_SUBJECTS = [
 
 export const STUDY_GRADES = [
   { id: 'G1', labelEn: 'Grade 1', labelAr: 'الصف الأول' },
+  { id: 'G2', labelEn: 'Grade 2', labelAr: 'الصف الثاني' },
   { id: 'G4', labelEn: 'Grade 4', labelAr: 'الصف الرابع' },
   { id: 'G5', labelEn: 'Grade 5', labelAr: 'الصف الخامس' },
   { id: 'G6', labelEn: 'Grade 6', labelAr: 'الصف السادس' },
