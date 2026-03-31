@@ -34,14 +34,8 @@ export default function Home() {
         <div className="absolute top-20 left-1/4 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-10 right-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
         <div className="relative mx-auto max-w-3xl text-center">
-          <p className="mb-4 text-sm font-medium tracking-[0.24em] text-primary uppercase">
+          <p className="text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl">
             QuizVerse
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            {t('home.cleanHeadline')}
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            {t('home.cleanSubtitle')}
           </p>
           <div className="mt-8">
             <Button size="lg" className="min-w-[180px] shadow-glow" asChild>
