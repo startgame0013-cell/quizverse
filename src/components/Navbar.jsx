@@ -24,6 +24,7 @@ export default function Navbar() {
     ...staticNavItems,
     ...(user?.role === 'teacher' || user?.role === 'admin' ? [['/tracking', 'nav.tracking']] : []),
   ]
+  const primaryDesktopNavItems = navItems.slice(0, 4)
 
   const toggleLang = () => {
     try {
@@ -72,7 +73,7 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden lg:flex items-center gap-1 min-w-0">
-            {navItems.map(([path, labelKey]) => {
+            {primaryDesktopNavItems.map(([path, labelKey]) => {
               const isActive =
                 location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
               return (
@@ -174,11 +175,11 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Hamburger: mobile / tablet */}
+          {/* Hamburger: available on all screen sizes */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex lg:hidden items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg transition-colors duration-150 hover:bg-white/12 active:bg-white/16 active:scale-95"
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 rounded-lg transition-colors duration-150 hover:bg-white/12 active:bg-white/16 active:scale-95"
             style={{
               background: 'rgba(255,255,255,0.08)',
               color: '#fafafa',
@@ -193,7 +194,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Dropdown menu: opens when clicking the hamburger (all screen sizes) */}
+      {/* Dropdown menu for the remaining navigation links */}
       {menuOpen && (
         <div
           className="fixed inset-0 z-[1999]"
