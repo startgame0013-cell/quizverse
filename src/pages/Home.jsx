@@ -85,6 +85,7 @@ export default function Home() {
               <Link to="/create-quiz" className="transition-colors hover:text-foreground">{t('nav.createQuiz')}</Link>
               <Link to="/join" className="transition-colors hover:text-foreground">{t('nav.joinGame')}</Link>
               <Link to="/leaderboard" className="transition-colors hover:text-foreground">{t('nav.leaderboard')}</Link>
+              <Link to="/pricing" className="transition-colors hover:text-foreground">{t('nav.pricing')}</Link>
               <Link to="/mini-games" className="transition-colors hover:text-foreground">{t('nav.miniGames')}</Link>
               <Link to="/flashcards" className="transition-colors hover:text-foreground">{t('nav.flashcards')}</Link>
               <Link to="/ai-generator" className="transition-colors hover:text-foreground">{t('nav.aiGenerator')}</Link>

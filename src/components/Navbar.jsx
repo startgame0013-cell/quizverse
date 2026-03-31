@@ -7,6 +7,7 @@ const staticNavItems = [
   ['/', 'nav.home'],
   ['/curricula', 'nav.curricula'],
   ['/study', 'nav.studyLibrary'],
+  ['/pricing', 'nav.pricing'],
   ['/create-quiz', 'nav.createQuiz'],
   ['/ai-generator', 'nav.aiGenerator'],
   ['/join', 'nav.joinGame'],
