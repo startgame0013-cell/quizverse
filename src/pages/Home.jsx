@@ -38,6 +38,12 @@ export default function Home() {
           <p className="text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl">
             QuizVerse
           </p>
+          <p
+            className="mt-4 mb-6 text-center font-medium"
+            style={{ color: '#F5C518', fontSize: '15px' }}
+          >
+            أول منصة كويز عربية للمناهج التعليمية
+          </p>
           <div className="mt-8">
             <Button size="lg" className="min-w-[180px] shadow-glow" asChild>
               <Link to="/quizzes">
