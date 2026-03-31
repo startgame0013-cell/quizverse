@@ -10,6 +10,20 @@ import { getQuestionDisplay, quizContentLang } from '@/lib/quizStore'
 
 import API from '@/lib/api.js'
 
+function parseQuizDataParam(value) {
+  if (!value) return null
+
+  try {
+    return JSON.parse(value)
+  } catch {}
+
+  try {
+    return JSON.parse(decodeURIComponent(value))
+  } catch {
+    return null
+  }
+}
+
 export default function HostLiveGame() {
   const { pin } = useParams()
   const [searchParams] = useSearchParams()
@@ -27,11 +41,7 @@ export default function HostLiveGame() {
 
   let quizData = session?.quizData
   if (!quizData && searchParams.get('quizData')) {
-    try {
-      quizData = JSON.parse(decodeURIComponent(searchParams.get('quizData') || '{}'))
-    } catch {
-      quizData = null
-    }
+    quizData = parseQuizDataParam(searchParams.get('quizData'))
   }
   const questions = quizData?.questions || []
   const liveContentLang = quizContentLang(quizData || {})

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
   BookOpen,
+  Download,
   FileText,
   Link2,
   Search,
@@ -77,9 +78,23 @@ export default function StudyLibrary() {
             <p className="mt-1 text-muted-foreground max-w-2xl">{t('studyLibrary.subtitle')}</p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground border-l-2 border-primary/40 pl-3 py-1">
-          {t('studyLibrary.techNote')}
-        </p>
+        <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-muted-foreground">
+          <p>{t('studyLibrary.techNote')}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full bg-background/80 px-3 py-1 text-xs text-foreground">
+              <BookOpen className="size-3.5 text-primary" />
+              {t('studyLibrary.studyFlow1')}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-background/80 px-3 py-1 text-xs text-foreground">
+              <FileText className="size-3.5 text-primary" />
+              {t('studyLibrary.studyFlow2')}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-background/80 px-3 py-1 text-xs text-foreground">
+              <Download className="size-3.5 text-primary" />
+              {t('studyLibrary.studyFlow3')}
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="mb-8 space-y-4 rounded-xl border border-border bg-card/50 p-4 sm:p-5">

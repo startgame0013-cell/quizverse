@@ -278,7 +278,7 @@ export default function CreateQuiz() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('createQuiz.title')}</h1>
         <p className="mt-2 text-muted-foreground">
@@ -293,11 +293,39 @@ export default function CreateQuiz() {
         </p>
       </div>
 
-      <div className="max-w-2xl">
+      <div className="grid gap-8 lg:grid-cols-[1.3fr_0.8fr] lg:items-start">
         {editLoading && (
-          <p className="mb-4 text-sm text-muted-foreground">{t('playQuiz.loadingQuiz')}</p>
+          <p className="text-sm text-muted-foreground">{t('playQuiz.loadingQuiz')}</p>
         )}
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form id="create-quiz-form" onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-muted-foreground">
+              {t('createQuiz.questionsIntro')}
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-lg font-semibold text-foreground">{t('createQuiz.questions')}</h2>
+              <Button type="button" onClick={addQuestion} size="sm" className="gap-2">
+                <Plus className="size-4" />
+                {t('createQuiz.addQuestion')}
+              </Button>
+            </div>
+            <div className="space-y-6">
+              {questions.map((q, index) => (
+                <QuestionBlock
+                  key={index}
+                  index={index}
+                  question={q}
+                  onChange={updateQuestion}
+                  onRemove={() => removeQuestion(index)}
+                  canRemove={questions.length > 1}
+                  t={t}
+                />
+              ))}
+            </div>
+          </div>
+        </form>
+
+        <div className="space-y-6 lg:sticky lg:top-24">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -307,9 +335,13 @@ export default function CreateQuiz() {
               <CardDescription>{t('createQuiz.quizDetailsDesc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="rounded-lg border border-border bg-muted/20 px-3 py-2 text-xs text-muted-foreground">
+                {t('createQuiz.detailsSideNote')}
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="title">{t('createQuiz.quizTitle')}</Label>
                 <input
+                  form="create-quiz-form"
                   type="text"
                   id="title"
                   value={title}
@@ -322,12 +354,13 @@ export default function CreateQuiz() {
               <div className="space-y-2">
                 <Label htmlFor="description">{t('createQuiz.description')}</Label>
                 <textarea
+                  form="create-quiz-form"
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={t('createQuiz.descriptionPlaceholder')}
-                  rows={2}
-                  className="flex min-h-[80px] w-full rounded-lg border border-[#404040] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FACC15] focus:ring-offset-2 focus:ring-offset-[#0a0a0a]"
+                  rows={3}
+                  className="flex min-h-[92px] w-full rounded-lg border border-[#404040] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FACC15] focus:ring-offset-2 focus:ring-offset-[#0a0a0a]"
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -381,39 +414,16 @@ export default function CreateQuiz() {
             </CardContent>
           </Card>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">{t('createQuiz.questions')}</h2>
-              <Button type="button" onClick={addQuestion} size="sm" className="gap-2">
-                <Plus className="size-4" />
-                {t('createQuiz.addQuestion')}
-              </Button>
-            </div>
-            <div className="space-y-6">
-              {questions.map((q, index) => (
-                <QuestionBlock
-                  key={index}
-                  index={index}
-                  question={q}
-                  onChange={updateQuestion}
-                  onRemove={() => removeQuestion(index)}
-                  canRemove={questions.length > 1}
-                  t={t}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <Button type="button" variant="outline" onClick={handleCancel}>
-              {t('createQuiz.cancel')}
-            </Button>
-            <Button type="submit" className="gap-2" disabled={saved || editLoading}>
+          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+            <Button type="submit" form="create-quiz-form" className="gap-2" disabled={saved || editLoading}>
               <Save className="size-4" />
               {saved ? t('createQuiz.saved') : t('createQuiz.saveQuiz')}
             </Button>
+            <Button type="button" variant="outline" onClick={handleCancel}>
+              {t('createQuiz.cancel')}
+            </Button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   )
