@@ -2,6 +2,7 @@ import { useLocation, Link } from 'react-router-dom'
 import Navbar from './Navbar'
 import CookieBanner from './CookieBanner'
 import { PageErrorBoundary } from './PageErrorBoundary'
+import FooterExtras from './FooterExtras'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Layout({ children }) {
@@ -46,6 +47,7 @@ export default function Layout({ children }) {
             <p className="mt-5 text-center text-xs text-gray-500 sm:text-left max-w-2xl">
               {t('home.footerTagline')}
             </p>
+            <FooterExtras compact />
           </div>
         </footer>
       )}
