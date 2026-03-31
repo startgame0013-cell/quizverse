@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
 import { useAuth } from '@/context/AuthContext'
-import { duplicateQuiz, getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
+import { duplicateQuiz, getQuestionDisplay, getQuizDisplay, quizContentLang } from '@/lib/quizStore'
 import { useQuiz } from '@/hooks/useQuiz'
 import { isMongoObjectId, createQuizOnServer, quizClientToServerPayload } from '@/lib/quizApi'
 import API from '@/lib/api.js'
@@ -129,7 +129,8 @@ export default function QuizDetails() {
   }
 
   const questions = quiz.questions || []
-  const quizDisplay = getQuizDisplay(quiz, lang)
+  const contentLang = quizContentLang(quiz)
+  const quizDisplay = getQuizDisplay(quiz, contentLang)
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
@@ -228,8 +229,8 @@ export default function QuizDetails() {
         </CardHeader>
         <CardContent className="space-y-4">
           {questions.map((q, i) => {
-            const d = getQuestionDisplay(q, lang)
-            const explanation = lang === 'ar' ? (q.explanationAr || '') : (q.explanation || '')
+            const d = getQuestionDisplay(q, contentLang)
+            const explanation = contentLang === 'ar' ? (q.explanationAr || '') : (q.explanation || '')
             return (
             <div key={q.id || i} className="rounded-xl border border-border bg-muted/20 p-4">
               <p className="font-medium text-foreground">{i + 1}. {d.text || t('createQuiz.noQuestion')}</p>

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, RotateCw, Layers } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { getQuestionDisplay, getQuizDisplay, getAllQuizzes } from '@/lib/quizStore'
+import { getQuestionDisplay, getQuizDisplay, getAllQuizzes, quizContentLang } from '@/lib/quizStore'
 import { useQuiz } from '@/hooks/useQuiz'
 import { fetchMyQuizzes, serverQuizToClient } from '@/lib/quizApi'
 import { useLanguage } from '@/context/LanguageContext'
@@ -70,7 +70,7 @@ export default function Flashcards() {
         ) : (
           <div className="space-y-3">
             {withQuestions.map((q) => {
-              const d = getQuizDisplay(q, lang)
+              const d = getQuizDisplay(q, quizContentLang(q))
               const title = d.title || t('flashcards.untitledQuiz')
               return (
                 <Link key={q.id} to={`/flashcards/${q.id}`}>
@@ -119,6 +119,7 @@ export default function Flashcards() {
     )
   }
 
+  const contentLang = quizContentLang(quiz)
   const questions = quiz.questions || []
   if (questions.length === 0) {
     return (
@@ -132,11 +133,11 @@ export default function Flashcards() {
   }
 
   const current = questions[currentIndex]
-  const display = getQuestionDisplay(current, lang)
+  const display = getQuestionDisplay(current, contentLang)
   const correctAnswer = Array.isArray(display.options) && typeof current.correctIndex === 'number'
     ? (display.options[current.correctIndex] ?? '')
     : ''
-  const explanation = lang === 'ar' ? (current.explanationAr || '') : (current.explanation || '')
+  const explanation = contentLang === 'ar' ? (current.explanationAr || '') : (current.explanation || '')
   const isFirst = currentIndex === 0
   const isLast = currentIndex === questions.length - 1
 
@@ -150,7 +151,7 @@ export default function Flashcards() {
     if (!isFirst) setCurrentIndex((i) => i - 1)
   }
 
-  const quizTitle = getQuizDisplay(quiz, lang).title || ''
+  const quizTitle = getQuizDisplay(quiz, contentLang).title || ''
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">

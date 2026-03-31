@@ -75,6 +75,7 @@ export default function App() {
               <Route path="/waiting" element={<WaitingRoom />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/curricula" element={<Curricula />} />
+              <Route path="/quizzes" element={<Curricula />} />
               <Route path="/study" element={<StudyLibrary />} />
               <Route path="/study/:id" element={<StudyLibraryEntry />} />
 

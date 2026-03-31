@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
 import { useToast } from '@/context/ToastContext'
 import { createSocket } from '@/lib/socket'
-import { getQuestionDisplay } from '@/lib/quizStore'
+import { getQuestionDisplay, quizContentLang } from '@/lib/quizStore'
 
 import API from '@/lib/api.js'
 
@@ -34,6 +34,7 @@ export default function HostLiveGame() {
     }
   }
   const questions = quizData?.questions || []
+  const liveContentLang = quizContentLang(quizData || {})
   const joinUrl = `${window.location.origin}/join?pin=${pin}`
 
   useEffect(() => {
@@ -227,7 +228,7 @@ export default function HostLiveGame() {
   }
 
   if (currentQuestion) {
-    const d = getQuestionDisplay(currentQuestion, lang)
+    const d = getQuestionDisplay(currentQuestion, liveContentLang)
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
         <Card className="shadow-soft">

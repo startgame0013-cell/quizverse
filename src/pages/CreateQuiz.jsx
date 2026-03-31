@@ -148,6 +148,8 @@ export default function CreateQuiz() {
   const [category, setCategory] = useState('general')
   const [audience, setAudience] = useState('students')
   const [stage, setStage] = useState('any')
+  /** en | ar — language of quiz text (questions/title), not the site UI */
+  const [quizLanguage, setQuizLanguage] = useState(() => (lang === 'ar' ? 'ar' : 'en'))
   const [questions, setQuestions] = useState([emptyQuestion()])
   const [saved, setSaved] = useState(false)
   const [editLoading, setEditLoading] = useState(false)
@@ -159,6 +161,7 @@ export default function CreateQuiz() {
     setCategory(q.category || 'general')
     setAudience(q.audience || 'students')
     setStage(q.stage || 'any')
+    if (q.language === 'ar' || q.language === 'en') setQuizLanguage(q.language)
     setQuestions(
       (q.questions?.length ? q.questions : [emptyQuestion()]).map((qn) => ({
         text: qn.text || '',
@@ -182,6 +185,7 @@ export default function CreateQuiz() {
           explanation: qn.explanation || '',
         }))
       )
+      setQuizLanguage(lang === 'ar' ? 'ar' : 'en')
       return
     }
     if (!editId) return
@@ -230,7 +234,7 @@ export default function CreateQuiz() {
       category: category || undefined,
       audience: audience || undefined,
       stage: stage === 'any' ? undefined : stage,
-      language: lang === 'ar' ? 'ar' : 'en',
+      language: quizLanguage,
       questions: questions.map((q) => ({
         ...q,
         text: q.text.trim(),
@@ -360,6 +364,19 @@ export default function CreateQuiz() {
                     <option key={s.value} value={s.value}>{t(s.labelKey)}</option>
                   ))}
                 </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="quiz-language">{t('createQuiz.quizLanguage')}</Label>
+                <select
+                  id="quiz-language"
+                  value={quizLanguage}
+                  onChange={(e) => setQuizLanguage(e.target.value)}
+                  className="flex h-10 w-full rounded-lg border border-[#404040] bg-[#0a0a0a] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#FACC15]"
+                >
+                  <option value="en">{t('createQuiz.quizLangEn')}</option>
+                  <option value="ar">{t('createQuiz.quizLangAr')}</option>
+                </select>
+                <p className="text-xs text-muted-foreground">{t('createQuiz.quizLanguageHint')}</p>
               </div>
             </CardContent>
           </Card>

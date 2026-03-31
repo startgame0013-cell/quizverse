@@ -31,6 +31,16 @@ export function getQuizById(id) {
   return getAllQuizzes().find((q) => q.id === id) ?? null
 }
 
+/**
+ * Language for quiz content (title, questions), not the app UI language.
+ * Use with getQuestionDisplay / getQuizDisplay so English quizzes stay English when the site is in Arabic.
+ */
+export function quizContentLang(quiz) {
+  const l = quiz?.language
+  if (l === 'ar' || l === 'en') return l
+  return 'en'
+}
+
 /** Get question text/options in the selected language. Falls back to the other language if missing (so quizzes with only text/options still show). */
 export function getQuestionDisplay(question, lang) {
   if (!question) return { text: '', options: [] }
@@ -40,12 +50,14 @@ export function getQuestionDisplay(question, lang) {
   return { text, options }
 }
 
-/** Get quiz title/description in the selected language only (no fallback). */
+/** Get quiz title/description in the selected language; falls back to the other locale if empty. */
 export function getQuizDisplay(quiz, lang) {
   if (!quiz) return { title: '', description: '' }
   const isAr = lang === 'ar'
-  const title = isAr ? (quiz.titleAr || '') : (quiz.title || '')
-  const description = isAr ? (quiz.descriptionAr || '') : (quiz.description || '')
+  let title = isAr ? (quiz.titleAr || '') : (quiz.title || '')
+  let description = isAr ? (quiz.descriptionAr || '') : (quiz.description || '')
+  if (!title.trim()) title = isAr ? (quiz.title || '') : (quiz.titleAr || '')
+  if (!description.trim()) description = isAr ? (quiz.description || '') : (quiz.descriptionAr || '')
   return { title, description }
 }
 

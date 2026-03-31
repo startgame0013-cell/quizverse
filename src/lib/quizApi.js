@@ -41,12 +41,14 @@ export function clientQuizToServerPayload({
   category,
   questions,
   language = 'en',
+  titleAr,
+  descriptionAr,
 }) {
   return {
     title: (title || '').trim(),
-    titleAr: '',
+    titleAr: (titleAr ?? '').trim(),
     description: (description || '').trim(),
-    descriptionAr: '',
+    descriptionAr: (descriptionAr ?? '').trim(),
     category: category || 'general',
     language: language === 'ar' ? 'ar' : 'en',
     isPublic: true,

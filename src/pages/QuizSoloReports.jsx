@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
-import { getQuizDisplay } from '@/lib/quizStore'
+import { getQuizDisplay, quizContentLang } from '@/lib/quizStore'
 import { useQuiz } from '@/hooks/useQuiz'
 import API from '@/lib/api.js'
 
@@ -57,7 +57,7 @@ export default function QuizSoloReports() {
     )
   }
 
-  const display = getQuizDisplay(quiz, lang)
+  const display = getQuizDisplay(quiz, quizContentLang(quiz))
 
   if (!API) {
     return (

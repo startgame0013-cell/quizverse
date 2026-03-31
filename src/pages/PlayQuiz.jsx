@@ -3,7 +3,7 @@ import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, CheckCircle, ChevronLeft, ChevronRight, Clock, Timer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getQuestionDisplay, getQuizDisplay } from '@/lib/quizStore'
+import { getQuestionDisplay, getQuizDisplay, quizContentLang } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 import { useQuiz } from '@/hooks/useQuiz'
@@ -137,7 +137,7 @@ export default function PlayQuiz() {
     }
     if (!token || !user?.id) return
 
-    const title = getQuizDisplay(quiz, lang).title || ''
+    const title = getQuizDisplay(quiz, quizContentLang(quiz)).title || ''
     const responses = questions.map((q, i) => ({
       questionIndex: i,
       questionId: q.id || `q${i}`,
@@ -188,7 +188,8 @@ export default function PlayQuiz() {
     )
   }
 
-  const display = getQuestionDisplay(current, lang)
+  const contentLang = quizContentLang(quiz)
+  const display = getQuestionDisplay(current, contentLang)
   const rawSelected = answers[currentIndex]
   const selected = rawSelected === undefined ? null : rawSelected
   const isFirst = currentIndex === 0
@@ -294,7 +295,7 @@ export default function PlayQuiz() {
         <CardHeader className="pb-2 space-y-3">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="text-lg">
-              {getQuizDisplay(quiz, lang).title || ''}
+              {getQuizDisplay(quiz, contentLang).title || ''}
             </CardTitle>
             <p className="text-sm text-muted-foreground">
               {t('playQuiz.questionOf')} {currentIndex + 1} {t('playQuiz.of')} {questions.length}

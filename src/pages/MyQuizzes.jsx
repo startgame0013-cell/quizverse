@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { getAllQuizzes, deleteQuiz, duplicateQuiz, getQuizDisplay, resetQuizzesToDefault } from '@/lib/quizStore'
+import { getAllQuizzes, deleteQuiz, duplicateQuiz, getQuizDisplay, resetQuizzesToDefault, quizContentLang } from '@/lib/quizStore'
 import {
   isMongoObjectId,
   fetchMyQuizzes,
@@ -105,7 +105,7 @@ export default function MyQuizzes() {
   const filtered = useMemo(() => {
     return quizzes.filter((q) => {
       const searchLower = search.toLowerCase()
-      const d = getQuizDisplay(q, lang)
+      const d = getQuizDisplay(q, quizContentLang(q))
       const matchSearch = !search.trim() ||
         (d.title || '').toLowerCase().includes(searchLower) ||
         (d.description || '').toLowerCase().includes(searchLower)
@@ -311,7 +311,7 @@ export default function MyQuizzes() {
         <>
         <div className="space-y-4">
           {paginated.map((quiz) => {
-            const d = getQuizDisplay(quiz, lang)
+            const d = getQuizDisplay(quiz, quizContentLang(quiz))
             const title = buildDisplayTitle(quiz, lang, t, d)
             return (
             <Card key={quiz.id} className="transition-shadow hover:shadow-soft">

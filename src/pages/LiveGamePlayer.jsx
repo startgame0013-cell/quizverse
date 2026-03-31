@@ -4,7 +4,7 @@ import { Gamepad2, Trophy, Send, CheckCircle2, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
-import { getQuestionDisplay } from '@/lib/quizStore'
+import { getQuestionDisplay, quizContentLang } from '@/lib/quizStore'
 import { createSocket } from '@/lib/socket'
 import { requestNotificationPermission, notify } from '@/lib/notifications'
 
@@ -107,6 +107,7 @@ export default function LiveGamePlayer() {
   }
 
   const questions = session?.quizData?.questions || []
+  const liveContentLang = quizContentLang(session?.quizData || {})
   const q = currentQuestion
 
   if (playerIndex < 0 || !nickname) {
@@ -171,7 +172,7 @@ export default function LiveGamePlayer() {
   }
 
   if (currentQuestion) {
-    const d = getQuestionDisplay(q, lang)
+    const d = getQuestionDisplay(q, liveContentLang)
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
         <Card className="shadow-soft">
