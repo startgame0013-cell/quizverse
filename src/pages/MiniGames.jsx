@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Gamepad2, Zap, Type, CheckCircle, Calculator, Flag, Brain, CircleDot, ArrowRight } from 'lucide-react'
+import { Gamepad2, Zap, Type, CheckCircle, Calculator, Flag, Brain, CircleDot, Grid3x3, Users, ArrowRight } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -68,6 +68,24 @@ const GAMES = [
     descAr: 'دوامة جزيئات تفاعلية. المس أو حرّك للتحكم بالتيار.',
     path: '/mini-games/vortex',
     icon: CircleDot,
+  },
+  {
+    id: 'shade-grid',
+    nameEn: 'Shade Spot',
+    nameAr: 'لون مختلف',
+    descEn: 'Find the one square with a slightly different pastel shade. Easy, medium, or barely visible.',
+    descAr: 'اعثر على المربع بلون باستيل مختلف قليلاً. سهل، متوسط، أو فرق يكاد لا يُرى.',
+    path: '/mini-games/shade-grid',
+    icon: Grid3x3,
+  },
+  {
+    id: 'visual-riddle',
+    nameEn: 'Scene Sleuth',
+    nameAr: 'محقق المشهد',
+    descEn: 'Who is lying, rich, the thief…? Three sharp portrait photos; clues appear as overlays on the right person.',
+    descAr: 'من يكذب، من الغني، من اللص…؟ ثلاث صور بورتريه واضحة؛ الدلائل تظهر كطبقة فوق الشخص الصحيح.',
+    path: '/mini-games/visual-riddle',
+    icon: Users,
   },
 ]
 

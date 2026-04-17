@@ -37,6 +37,8 @@ const TrueOrFalse = lazy(() => import('./pages/TrueOrFalse'))
 const FlagChallenge = lazy(() => import('./pages/FlagChallenge'))
 const QuickTrivia = lazy(() => import('./pages/QuickTrivia'))
 const Vortex = lazy(() => import('./pages/Vortex'))
+const ShadeGrid = lazy(() => import('./pages/ShadeGrid'))
+const VisualRiddle = lazy(() => import('./pages/VisualRiddle'))
 const AiQuizGenerator = lazy(() => import('./pages/AiQuizGenerator'))
 const GetStarted = lazy(() => import('./pages/GetStarted'))
 const VisitorStats = lazy(() => import('./pages/VisitorStats'))
@@ -87,6 +89,8 @@ export default function App() {
               <Route path="/mini-games/flag-challenge" element={<FlagChallenge />} />
               <Route path="/mini-games/quick-trivia" element={<QuickTrivia />} />
               <Route path="/mini-games/vortex" element={<Vortex />} />
+              <Route path="/mini-games/shade-grid" element={<ShadeGrid />} />
+              <Route path="/mini-games/visual-riddle" element={<VisualRiddle />} />
 
               <Route path="/ai-generator" element={<AiQuizGenerator />} />
 
