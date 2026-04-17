@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Gamepad2, Zap, Type, CheckCircle, Calculator, Flag, Brain, CircleDot, Grid3x3, Users, ArrowRight } from 'lucide-react'
+import { Gamepad2, Zap, Type, CheckCircle, Calculator, Flag, Brain, CircleDot, Grid3x3, Camera, ArrowRight } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -80,12 +80,12 @@ const GAMES = [
   },
   {
     id: 'visual-riddle',
-    nameEn: 'Scene Sleuth',
-    nameAr: 'محقق المشهد',
-    descEn: 'Who is lying, rich, the thief…? Three sharp portrait photos; clues appear as overlays on the right person.',
-    descAr: 'من يكذب، من الغني، من اللص…؟ ثلاث صور بورتريه واضحة؛ الدلائل تظهر كطبقة فوق الشخص الصحيح.',
+    nameEn: 'Photo Spot',
+    nameAr: 'صورة مختلفة',
+    descEn: 'Same portrait in three panels — find the one with a slightly different tone, like Shade Spot but with a real photo.',
+    descAr: 'نفس الصورة في ثلاث لوحات — اعثر على اللوحة اللي إضاءتها أو لونها مختلف شوي، نفس فكرة لون مختلف لكن بصورة حقيقية.',
     path: '/mini-games/visual-riddle',
-    icon: Users,
+    icon: Camera,
   },
 ]
 
