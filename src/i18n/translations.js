@@ -24,6 +24,10 @@ export const translations = {
       studyLibrary: 'Study library',
       tracking: 'Institutional tracking',
     },
+    layout: {
+      betaBanner:
+        'This site is in beta — an experimental preview. Features and data may change.',
+    },
     // Curricula
     studyLibrary: {
       title: 'Study library',
@@ -103,6 +107,8 @@ export const translations = {
     home: {
       headline: 'Play. Create.',
       brand: 'QuizVerse',
+      betaHeroHeadline: 'This site is in beta',
+      betaHeroSubline: 'An experimental preview — features and data may change.',
       cleanHeadline: 'Simple quizzes for fast learning and ready-made practice.',
       cleanSubtitle: 'Browse Kuwait curricula, start playing instantly, or generate a quiz with AI.',
       cleanFeatureCurriculaDesc: 'Organized quizzes for Kuwait curricula with quick filtering by level and subject.',
@@ -791,6 +797,9 @@ export const translations = {
       studyLibrary: 'مكتبة المراجعة',
       tracking: 'التتبع المؤسسي',
     },
+    layout: {
+      betaBanner: 'الموقع قيد التجربة — تجربة تجريبية. قد تتغير بعض الميزات أو البيانات.',
+    },
     studyLibrary: {
       title: 'مكتبة المراجعة',
       subtitle:
@@ -868,6 +877,8 @@ export const translations = {
     home: {
       headline: 'العب. أنشئ.',
       brand: 'QuizVerse',
+      betaHeroHeadline: 'الموقع قيد التجربة',
+      betaHeroSubline: 'تجربة تجريبية — قد تتغير بعض الميزات أو البيانات.',
       cleanHeadline: 'كويزات بسيطة ونظيفة للتعلم السريع والمراجعة الجاهزة.',
       cleanSubtitle: 'تصفّح مناهج الكويت، ابدأ اللعب فوراً، أو أنشئ كويز بالذكاء الاصطناعي.',
       cleanFeatureCurriculaDesc: 'كويزات منظمة لمناهج الكويت مع تصفية سريعة حسب المرحلة والمادة.',

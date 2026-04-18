@@ -6,7 +6,7 @@ import FooterExtras from './FooterExtras'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Layout({ children }) {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const location = useLocation()
   const isHome = location.pathname === '/'
 
@@ -14,6 +14,15 @@ export default function Layout({ children }) {
     <div className="min-h-screen flex flex-col bg-[#0a0a0a]">
       <Navbar />
       <main className="flex-1 pt-14 relative z-[1]">
+        {!isHome && (
+          <div
+            role="status"
+            dir={lang === 'ar' ? 'rtl' : 'ltr'}
+            className="border-b border-[#FACC15]/40 bg-[#FACC15]/15 px-4 py-2.5 text-center text-xs font-medium text-[#FEF9C3] sm:text-sm"
+          >
+            {t('layout.betaBanner')}
+          </div>
+        )}
         <PageErrorBoundary>
           {children}
         </PageErrorBoundary>

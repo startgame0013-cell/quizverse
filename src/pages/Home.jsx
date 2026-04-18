@@ -6,7 +6,7 @@ import FooterExtras from '@/components/FooterExtras'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Home() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const featureCards = [
     {
       titleKey: 'home.kuwaitCurriculaTitle',
@@ -35,6 +35,18 @@ export default function Home() {
         <div className="absolute top-20 left-1/4 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-10 right-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
         <div className="relative mx-auto max-w-3xl text-center">
+          <div
+            role="status"
+            dir={lang === 'ar' ? 'rtl' : 'ltr'}
+            className="mb-8 rounded-2xl border border-[#FACC15]/40 bg-[#FACC15]/[0.12] px-4 py-6 sm:mb-10 sm:px-6 sm:py-8"
+          >
+            <p className="text-balance text-2xl font-bold leading-tight text-[#FACC15] sm:text-4xl md:text-5xl">
+              {t('home.betaHeroHeadline')}
+            </p>
+            <p className="mx-auto mt-4 max-w-xl text-pretty text-sm font-medium text-[#FEF9C3]/95 sm:text-base md:text-lg">
+              {t('home.betaHeroSubline')}
+            </p>
+          </div>
           <p className="text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl">
             QuizVerse
           </p>
