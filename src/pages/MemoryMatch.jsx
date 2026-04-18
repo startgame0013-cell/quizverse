@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 
 const EMOJI_PAIRS = ['🌟', '🎯', '🔥', '💡', '⚡', '🎨', '🌈', '🚀']
 
@@ -97,6 +98,7 @@ export default function MemoryMatch() {
           )}
         </CardContent>
       </Card>
+      <PageComments pageKey="/mini-games/memory" />
     </div>
   )
 }

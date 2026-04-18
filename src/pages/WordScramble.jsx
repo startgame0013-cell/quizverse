@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 import { getScrambledWord } from '@/data/gameData'
 
 const TOTAL_ROUNDS = 5
@@ -130,6 +131,7 @@ export default function WordScramble() {
           )}
         </CardContent>
       </Card>
+      <PageComments pageKey="/mini-games/word-scramble" />
     </div>
   )
 }

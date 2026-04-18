@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 
 /** @typedef {'easy' | 'medium' | 'hard'} Difficulty */
 
@@ -184,6 +185,7 @@ export default function ShadeGrid() {
           {t('miniGames.shadeGridFooter')}
         </p>
       </div>
+      <PageComments pageKey="/mini-games/shade-grid" />
     </div>
   )
 }

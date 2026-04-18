@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 import { useToast } from '@/context/ToastContext'
 import API from '@/lib/api.js'
 
@@ -95,6 +96,7 @@ export default function JoinGame() {
           </form>
         </CardContent>
       </Card>
+      <PageComments pageKey="/join" />
     </div>
   )
 }

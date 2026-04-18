@@ -71,6 +71,7 @@ export const translations = {
       registerLink: 'Register',
       loading: 'Loading…',
       empty: 'No comments yet.',
+      vortexLink: 'Comments & feedback (mini-games hub)',
     },
     // Curricula
     studyLibrary: {
@@ -887,6 +888,7 @@ export const translations = {
       registerLink: 'تسجيل جديد',
       loading: 'جاري التحميل…',
       empty: 'لا تعليقات بعد.',
+      vortexLink: 'التعليقات والملاحظات (صفحة الألعاب المصغّرة)',
     },
     studyLibrary: {
       title: 'مكتبة المراجعة',

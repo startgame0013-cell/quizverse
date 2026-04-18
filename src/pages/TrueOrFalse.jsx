@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw, ThumbsUp, ThumbsDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 import { getTrueFalseQuestion } from '@/data/gameData'
 
 const TOTAL_ROUNDS = 10
@@ -107,6 +108,7 @@ export default function TrueOrFalse() {
           )}
         </CardContent>
       </Card>
+      <PageComments pageKey="/mini-games/true-false" />
     </div>
   )
 }

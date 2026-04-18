@@ -132,7 +132,7 @@ export default function MiniGames() {
         ))}
       </div>
 
-      <PageComments pageKey="/mini-games" />
+      <PageComments id="mini-games-comments" pageKey="/mini-games" />
     </div>
   )
 }

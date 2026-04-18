@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getAllQuizzes, getQuizDisplay, saveQuiz, quizContentLang } from '@/lib/quizStore'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 import { KUWAIT_ELEMENTARY_2026_QUIZZES } from '@/data/kuwaitElementary2026'
 import { KUWAIT_INTERMEDIATE_2026_QUIZZES } from '@/data/kuwaitIntermediate2026'
 import { KUWAIT_SECONDARY_2026_QUIZZES } from '@/data/kuwaitSecondary2026'
@@ -209,6 +210,7 @@ export default function Curricula() {
           </div>
         </section>
       )}
+      <PageComments pageKey="/curricula" />
     </div>
   )
 }

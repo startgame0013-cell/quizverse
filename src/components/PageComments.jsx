@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import API from '@/lib/api.js'
 
-export default function PageComments({ pageKey }) {
+export default function PageComments({ pageKey, id: sectionId, className: sectionClass }) {
   const { t, lang } = useLanguage()
   const { isAuthenticated, getToken } = useAuth()
   const { success, error } = useToast()
@@ -69,7 +69,8 @@ export default function PageComments({ pageKey }) {
 
   return (
     <section
-      className="mt-12 rounded-2xl border border-border bg-card/40 px-4 py-8 sm:px-6"
+      id={sectionId || undefined}
+      className={`mt-12 rounded-2xl border border-border bg-card/40 px-4 py-8 sm:px-6${sectionClass ? ` ${sectionClass}` : ''}`}
       dir={lang === 'ar' ? 'rtl' : 'ltr'}
     >
       <div className="mx-auto max-w-2xl">

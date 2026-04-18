@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 
 /** @typedef {'easy' | 'medium' | 'hard'} Difficulty */
 
@@ -165,6 +166,7 @@ export default function VisualRiddle() {
           </a>
         </p>
       </div>
+      <PageComments pageKey="/mini-games/visual-riddle" />
     </div>
   )
 }

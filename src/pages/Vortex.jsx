@@ -44,6 +44,15 @@ export default function Vortex() {
         allow="autoplay; fullscreen"
         onLoad={() => setLoading(false)}
       />
+
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-30 flex justify-center pb-4 pt-8">
+        <Link
+          to="/mini-games#mini-games-comments"
+          className="pointer-events-auto rounded-full border border-white/25 bg-black/70 px-4 py-2 text-xs font-medium text-[#FACC15] backdrop-blur-sm transition-colors hover:border-[#FACC15]/60 hover:bg-black/85 sm:text-sm"
+        >
+          {t('pageComments.vortexLink')}
+        </Link>
+      </div>
     </div>
   )
 }

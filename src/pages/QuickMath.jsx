@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 
 const OPS = [
   { fn: (a, b) => a + b, sym: '+' },
@@ -138,6 +139,7 @@ export default function QuickMath() {
           )}
         </CardContent>
       </Card>
+      <PageComments pageKey="/mini-games/quick-math" />
     </div>
   )
 }
