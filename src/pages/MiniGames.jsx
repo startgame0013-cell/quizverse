@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/context/LanguageContext'
+import PageComments from '@/components/PageComments'
 
 const GAMES = [
   {
@@ -130,6 +131,8 @@ export default function MiniGames() {
           </Card>
         ))}
       </div>
+
+      <PageComments pageKey="/mini-games" />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { Play, Sparkles, GraduationCap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import FooterExtras from '@/components/FooterExtras'
+import PageComments from '@/components/PageComments'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Home() {
@@ -65,6 +66,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <div className="border-t border-border px-4 pb-12 sm:px-6 lg:px-8">
+        <PageComments pageKey="/" />
+      </div>
 
       <section className="border-t border-border px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">

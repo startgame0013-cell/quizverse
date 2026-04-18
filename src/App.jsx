@@ -42,6 +42,7 @@ const VisualRiddle = lazy(() => import('./pages/VisualRiddle'))
 const AiQuizGenerator = lazy(() => import('./pages/AiQuizGenerator'))
 const GetStarted = lazy(() => import('./pages/GetStarted'))
 const VisitorStats = lazy(() => import('./pages/VisitorStats'))
+const Feedback = lazy(() => import('./pages/Feedback'))
 const HostLiveGame = lazy(() => import('./pages/HostLiveGame'))
 const LiveGamePlayer = lazy(() => import('./pages/LiveGamePlayer'))
 const InstitutionalTracking = lazy(() => import('./pages/InstitutionalTracking'))
@@ -106,6 +107,7 @@ export default function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/about" element={<About />} />
+              <Route path="/feedback" element={<Feedback />} />
               <Route path="/get-started" element={<GetStarted />} />
               <Route path="/visitor-stats" element={<VisitorStats />} />
               <Route path="/tracking" element={<InstitutionalTracking />} />

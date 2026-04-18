@@ -12,6 +12,7 @@ import scoresRoutes from './routes/scores.js';
 import classesRoutes from './routes/classes.js';
 import aiRoutes from './routes/ai.js';
 import statsRoutes from './routes/stats.js';
+import communityRoutes from './routes/community.js';
 import subscriptionRoutes, { handlePaddleWebhook } from './routes/subscription.js';
 import gameRoutes from './routes/game.js';
 import reportsRoutes from './routes/reports.js';
@@ -62,6 +63,7 @@ const aiLimiter = rateLimit({
 });
 app.use('/api/ai', aiLimiter, aiRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/community', communityRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.set('io', io);
 app.use('/api/game', gameRoutes);

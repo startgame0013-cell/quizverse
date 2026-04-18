@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom'
+import { useLanguage } from '@/context/LanguageContext'
+
 const socials = [
   {
     key: 'instagram',
@@ -32,10 +35,19 @@ const socials = [
 ]
 
 export default function FooterExtras({ compact = false }) {
+  const { t } = useLanguage()
   return (
     <div className={compact ? 'mt-5 border-t border-white/5 pt-5' : 'mt-6 border-t border-border pt-6'}>
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="text-center sm:text-right">
+          <p className="mb-2 text-sm">
+            <Link
+              to="/feedback"
+              className="font-semibold text-[#FACC15] underline-offset-4 transition-colors hover:underline"
+            >
+              {t('nav.feedback')}
+            </Link>
+          </p>
           <p className="text-sm font-semibold text-[#FACC15]">للتواصل والاقتراحات والشكاوي</p>
           <a
             href="mailto:a.o.sh.369@gmail.com"

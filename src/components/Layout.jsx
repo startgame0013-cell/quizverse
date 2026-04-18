@@ -51,6 +51,7 @@ export default function Layout({ children }) {
                 <Link to="/terms" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.terms')}</Link>
                 <Link to="/faq" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.faq')}</Link>
                 <Link to="/pricing" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.pricing')}</Link>
+                <Link to="/feedback" className="transition-colors duration-150 hover:text-[#FACC15] py-1">{t('nav.feedback')}</Link>
               </div>
             </div>
             <p className="mt-5 text-center text-xs text-gray-500 sm:text-left max-w-2xl">

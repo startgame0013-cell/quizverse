@@ -74,13 +74,16 @@ router.get('/visits', async (req, res) => {
     const recent = await Visit.find()
       .sort({ createdAt: -1 })
       .limit(50)
-      .select('ip country city path createdAt')
+      .select('country city path createdAt')
       .lean();
 
     const countryNames = {
       KW: 'Kuwait', SA: 'Saudi Arabia', AE: 'UAE', BH: 'Bahrain', OM: 'Oman', QA: 'Qatar',
       EG: 'Egypt', JO: 'Jordan', LB: 'Lebanon', SY: 'Syria', IQ: 'Iraq', IR: 'Iran',
       US: 'USA', GB: 'UK', IN: 'India', PK: 'Pakistan', BD: 'Bangladesh',
+      MA: 'Morocco', DZ: 'Algeria', TN: 'Tunisia', YE: 'Yemen', PS: 'Palestine',
+      TR: 'Turkey', DE: 'Germany', FR: 'France', ES: 'Spain', IT: 'Italy', NL: 'Netherlands',
+      CA: 'Canada', AU: 'Australia', PH: 'Philippines', NG: 'Nigeria', KE: 'Kenya',
     };
 
     res.json({
@@ -92,8 +95,11 @@ router.get('/visits', async (req, res) => {
         count: r.count,
       })),
       recent: recent.map((v) => ({
-        ...v,
+        path: v.path,
+        city: v.city || '',
         country: countryNames[v.country] || v.country || '-',
+        countryCode: v.country || '',
+        createdAt: v.createdAt,
       })),
     });
   } catch (err) {
