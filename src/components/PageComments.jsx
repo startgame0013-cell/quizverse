@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { Component, useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -8,7 +8,30 @@ import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import API from '@/lib/api.js'
 
-export default function PageComments({ pageKey, id: sectionId, className: sectionClass }) {
+class PageCommentsErrorBoundary extends Component {
+  state = { hasError: false }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  componentDidCatch(e) {
+    if (import.meta.env.DEV) console.warn('PageComments:', e)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <p className="mt-8 text-center text-xs text-muted-foreground">
+          {this.props.fallbackText}
+        </p>
+      )
+    }
+    return this.props.children
+  }
+}
+
+function PageCommentsInner({ pageKey, sectionId, sectionClass }) {
   const { t, lang } = useLanguage()
   const { isAuthenticated, getToken } = useAuth()
   const { success, error } = useToast()
@@ -24,12 +47,23 @@ export default function PageComments({ pageKey, id: sectionId, className: sectio
     }
     setLoading(true)
     fetch(`${API}/api/community/comments?pageKey=${encodeURIComponent(pageKey)}`)
-      .then((r) => r.json())
+      .then(async (r) => {
+        const text = await r.text()
+        try {
+          return JSON.parse(text)
+        } catch {
+          return {}
+        }
+      })
       .then((d) => {
-        if (d.ok) setComments(d.comments || [])
+        if (d.ok && Array.isArray(d.comments)) setComments(d.comments)
+        else setComments([])
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(() => {
+        setComments([])
+        setLoading(false)
+      })
   }, [pageKey])
 
   useEffect(() => {
@@ -40,7 +74,7 @@ export default function PageComments({ pageKey, id: sectionId, className: sectio
     e.preventDefault()
     const text = body.trim()
     if (text.length < 2) return
-    const token = getToken?.()
+    const token = typeof getToken === 'function' ? getToken() : null
     if (!API || !token) {
       error(t('pageComments.needLogin'))
       return
@@ -55,7 +89,12 @@ export default function PageComments({ pageKey, id: sectionId, className: sectio
         },
         body: JSON.stringify({ pageKey, body: text }),
       })
-      const d = await res.json()
+      let d = {}
+      try {
+        d = await res.json()
+      } catch {
+        d = {}
+      }
       if (!d.ok) throw new Error(d.error || 'fail')
       setBody('')
       success(t('pageComments.sent'))
@@ -64,6 +103,15 @@ export default function PageComments({ pageKey, id: sectionId, className: sectio
       error(t('pageComments.sendError'))
     } finally {
       setSending(false)
+    }
+  }
+
+  const formatDate = (iso) => {
+    if (!iso) return ''
+    try {
+      return new Date(iso).toLocaleString(lang === 'ar' ? 'ar' : 'en')
+    } catch {
+      return ''
     }
   }
 
@@ -112,20 +160,34 @@ export default function PageComments({ pageKey, id: sectionId, className: sectio
           ) : comments.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t('pageComments.empty')}</p>
           ) : (
-            comments.map((c, i) => (
-              <div key={`${c.createdAt}-${i}`} className="rounded-lg border border-border/60 bg-background/50 px-4 py-3">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <span className="font-medium text-primary">{c.displayName || '—'}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {c.createdAt ? new Date(c.createdAt).toLocaleString(lang === 'ar' ? 'ar' : 'en') : ''}
-                  </span>
+            comments.map((c, i) => {
+              const bodyText = typeof c?.body === 'string' ? c.body : ''
+              const name = typeof c?.displayName === 'string' ? c.displayName : '—'
+              return (
+                <div
+                  key={c?._id || `${String(c?.createdAt)}-${i}`}
+                  className="rounded-lg border border-border/60 bg-background/50 px-4 py-3"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <span className="font-medium text-primary">{name}</span>
+                    <span className="text-xs text-muted-foreground">{formatDate(c?.createdAt)}</span>
+                  </div>
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/90">{bodyText}</p>
                 </div>
-                <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/90">{c.body}</p>
-              </div>
-            ))
+              )
+            })
           )}
         </div>
       </div>
     </section>
+  )
+}
+
+export default function PageComments({ pageKey, id: sectionId, className: sectionClass }) {
+  const { t } = useLanguage()
+  return (
+    <PageCommentsErrorBoundary fallbackText={t('pageComments.sectionError')}>
+      <PageCommentsInner pageKey={pageKey} sectionId={sectionId} sectionClass={sectionClass} />
+    </PageCommentsErrorBoundary>
   )
 }

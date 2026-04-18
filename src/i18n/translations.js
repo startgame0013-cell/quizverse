@@ -72,6 +72,7 @@ export const translations = {
       loading: 'Loading…',
       empty: 'No comments yet.',
       vortexLink: 'Comments & feedback (mini-games hub)',
+      sectionError: 'Comments could not load on this section.',
     },
     // Curricula
     studyLibrary: {
@@ -889,6 +890,7 @@ export const translations = {
       loading: 'جاري التحميل…',
       empty: 'لا تعليقات بعد.',
       vortexLink: 'التعليقات والملاحظات (صفحة الألعاب المصغّرة)',
+      sectionError: 'تعذر عرض التعليقات في هذا القسم.',
     },
     studyLibrary: {
       title: 'مكتبة المراجعة',

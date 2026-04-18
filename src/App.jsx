@@ -1,4 +1,5 @@
-import { Suspense, lazy } from 'react'
+import { Suspense } from 'react'
+import { lazyWithRetry } from '@/lib/lazyRetry'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { LanguageProvider } from './context/LanguageContext'
 import { ToastProvider } from './context/ToastContext'
@@ -30,23 +31,23 @@ import Register from './pages/Register'
 import VisitTracker from './components/VisitTracker'
 import { Analytics } from '@vercel/analytics/react'
 
-const MemoryMatch = lazy(() => import('./pages/MemoryMatch'))
-const WordScramble = lazy(() => import('./pages/WordScramble'))
-const QuickMath = lazy(() => import('./pages/QuickMath'))
-const TrueOrFalse = lazy(() => import('./pages/TrueOrFalse'))
-const FlagChallenge = lazy(() => import('./pages/FlagChallenge'))
-const QuickTrivia = lazy(() => import('./pages/QuickTrivia'))
-const Vortex = lazy(() => import('./pages/Vortex'))
-const ShadeGrid = lazy(() => import('./pages/ShadeGrid'))
-const VisualRiddle = lazy(() => import('./pages/VisualRiddle'))
-const AiQuizGenerator = lazy(() => import('./pages/AiQuizGenerator'))
-const GetStarted = lazy(() => import('./pages/GetStarted'))
-const VisitorStats = lazy(() => import('./pages/VisitorStats'))
-const Feedback = lazy(() => import('./pages/Feedback'))
-const HostLiveGame = lazy(() => import('./pages/HostLiveGame'))
-const LiveGamePlayer = lazy(() => import('./pages/LiveGamePlayer'))
-const InstitutionalTracking = lazy(() => import('./pages/InstitutionalTracking'))
-const TeacherClassQuizReport = lazy(() => import('./pages/TeacherClassQuizReport'))
+const MemoryMatch = lazyWithRetry(() => import('./pages/MemoryMatch'))
+const WordScramble = lazyWithRetry(() => import('./pages/WordScramble'))
+const QuickMath = lazyWithRetry(() => import('./pages/QuickMath'))
+const TrueOrFalse = lazyWithRetry(() => import('./pages/TrueOrFalse'))
+const FlagChallenge = lazyWithRetry(() => import('./pages/FlagChallenge'))
+const QuickTrivia = lazyWithRetry(() => import('./pages/QuickTrivia'))
+const Vortex = lazyWithRetry(() => import('./pages/Vortex'))
+const ShadeGrid = lazyWithRetry(() => import('./pages/ShadeGrid'))
+const VisualRiddle = lazyWithRetry(() => import('./pages/VisualRiddle'))
+const AiQuizGenerator = lazyWithRetry(() => import('./pages/AiQuizGenerator'))
+const GetStarted = lazyWithRetry(() => import('./pages/GetStarted'))
+const VisitorStats = lazyWithRetry(() => import('./pages/VisitorStats'))
+const Feedback = lazyWithRetry(() => import('./pages/Feedback'))
+const HostLiveGame = lazyWithRetry(() => import('./pages/HostLiveGame'))
+const LiveGamePlayer = lazyWithRetry(() => import('./pages/LiveGamePlayer'))
+const InstitutionalTracking = lazyWithRetry(() => import('./pages/InstitutionalTracking'))
+const TeacherClassQuizReport = lazyWithRetry(() => import('./pages/TeacherClassQuizReport'))
 
 function PageFallback() {
   return (
